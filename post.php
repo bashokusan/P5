@@ -1,3 +1,22 @@
+<?php
+// Composer autoload
+require 'vendor/autoload.php';
+
+// Whoops, to be deleted when live
+$whoops = new \Whoops\Run;
+$whoops->prependHandler(new \Whoops\Handler\PrettyPageHandler);
+$whoops->register();
+
+
+$db = new PDO("mysql:host=127.0.0.1; dbname=miniblog", "root", "root");
+$query = $db->prepare("SELECT * FROM articles WHERE id = :id");
+$query->execute([
+  'id' => $_GET['id']
+]);
+$response = $query->fetch();
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
   <head>
@@ -15,11 +34,11 @@
       </nav>
     </header>
 
-    <h2>Titre du post</h2>
-    <em>date de publication</em> <em>date de modification</em>
+    <h2><?= $response['title'] ?></h2>
+    <em><?= $response['publish_date'] ?></em><em>, modifié le <?= $response['update_date'] ?></em>
     <p>Auteur</p>
-    <p>Chapô du post</p>
-    <p>Contenu du post</p>
+    <p><?= $response['kicker'] ?></p>
+    <p><?= $response['content'] ?></p>
 
     </body>
 </html>
