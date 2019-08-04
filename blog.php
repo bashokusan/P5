@@ -1,3 +1,14 @@
+<?php
+// Composer autoload
+require 'vendor/autoload.php';
+
+// Whoops, to be deleted when live
+$whoops = new \Whoops\Run;
+$whoops->prependHandler(new \Whoops\Handler\PrettyPageHandler);
+$whoops->register();
+
+
+?>
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
   <head>
