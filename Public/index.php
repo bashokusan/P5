@@ -10,7 +10,6 @@ $whoops = new \Whoops\Run;
 $whoops->prependHandler(new \Whoops\Handler\PrettyPageHandler);
 $whoops->register();
 
-
 // Routeur
 ob_start();
 if($_GET['page'] === 'blog')
@@ -19,7 +18,7 @@ if($_GET['page'] === 'blog')
 
   require_once "../Views/blog.php";
 }
-elseif($_GET['page'] == 'post' && isset($_GET['id']))
+elseif($_GET['page'] == 'post' && isset($_GET['id']) && (int)$_GET['id'] <= (int)Post::count()[0])
 {
   $response = Post::showOne($_GET['id']);
 
@@ -31,7 +30,7 @@ elseif($_GET['page'] === 'home')
 }
 else
 {
-  require_once "../Views/home.php";
+  require_once "../Views/notFound.php";
 }
 $content = ob_get_clean();
 

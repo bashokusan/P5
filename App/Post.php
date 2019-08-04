@@ -45,24 +45,36 @@ class Post
     return $this->update_date;
   }
 
+  public static function count()
+  {
+    $query = Database::setPDO()->query('SELECT count(id) FROM articles');
+    $count = $query->fetch();
+    return $count;
+    
+    $query->closeCursor();
+  }
 
   public static function showAll() :array
   {
-    $data = Database::setPDO()->query('SELECT * FROM articles');
-    $data->setFetchMode(PDO::FETCH_CLASS, Post::class);
-    $response = $data->fetchAll();
+    $query = Database::setPDO()->query('SELECT * FROM articles');
+    $query->setFetchMode(PDO::FETCH_CLASS, Post::class);
+    $response = $query->fetchAll();
     return $response;
+
+    $query->closeCursor();
   }
 
   public static function showOne($param) :Post
   {
-    $data = Database::setPDO()->prepare("SELECT * FROM articles WHERE id = :id");
-    $data->execute([
+    $query = Database::setPDO()->prepare("SELECT * FROM articles WHERE id = :id");
+    $query->execute([
       'id' => $param
     ]);
-    $data->setFetchMode(PDO::FETCH_CLASS, Post::class);
-    $response = $data->fetch();
+    $query->setFetchMode(PDO::FETCH_CLASS, Post::class);
+    $response = $query->fetch();
     return $response;
+
+    $query->closeCursor();
   }
 
 }

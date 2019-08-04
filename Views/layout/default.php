@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Home</title>
   </head>
+  <link rel="stylesheet" href="../Public/css/stylesheet.min.css">
   <body>
 
     <header>
@@ -18,8 +19,6 @@
 
     <?= $content ?>
 
-    <footer>
-      <a href="#">Administration</a>
-    </footer>
+    <?php require_once "footer.php" ?>
   </body>
 </html>

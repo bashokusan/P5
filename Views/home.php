@@ -2,7 +2,7 @@
   <h2>A propos de moi</h2>
   <p>Pierre Simonnet</p>
   <p>Je suis web développeur</p>
-  <a href="content/PierreSimonnet_CV.pdf">Téléchargez mon CV</a>
+  <a href="../content/PierreSimonnet_CV.pdf">Téléchargez mon CV</a>
   <h3>Mes réseaux :</h3>
   <ul>
     <li><a href="https://github.com/bashokusan">Github</a></li>
