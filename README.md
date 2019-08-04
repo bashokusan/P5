@@ -13,3 +13,8 @@
   * Update post
   * Delete post
   * Checks comments
+
+### Libraries :
+
+* symfony/var-dumper
+* filp/whoops
