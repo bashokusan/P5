@@ -39,7 +39,11 @@ class Post
   }
 
   public function getUpdateDate(){
-    return $this->update_date;
+    if($this->update_date){
+      return "Modifié le " . $this->update_date;
+    }else{
+      return null;
+    }
   }
 
 }
