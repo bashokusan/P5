@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title><?= $title ?? 'Mon site' ?></title>
+    <title><?= $title ?? $title = 'Mon site' ?></title>
     <meta name="description" content="">
 
     <link rel="stylesheet" href="../Public/css/stylesheet.min.css">
@@ -14,17 +14,24 @@
   <body>
 
     <header>
-      <a href="index.php"><img src="../content/favicon.png" alt="logo"></a>
+      <div class="logo">
+        <a href="index.php"><img src="../content/logo_white.png" alt="logo"></a>
+      </div>
       <nav>
         <ul>
-          <li><a href="?page=home">About</a></li>
-          <li><a href="?page=blog">Blog</a></li>
-          <li><a href="#">Contactez moi !</a></li>
+          <div class="nav_menu">
+            <?= $menu ?>
+          </div>
+          <div class="nav_cta">
+            <li><a href="#">Contactez moi !</a></li>
+          </div>
         </ul>
       </nav>
     </header>
 
-    <?= $content ?>
+    <div class="container">
+      <?= $content ?>
+    </div>
 
     <?php require_once "footer.php" ?>
   </body>

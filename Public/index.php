@@ -2,13 +2,17 @@
 // Composer autoload
 require_once '../vendor/autoload.php';
 
-use App\Database;
-use App\model\PostManager;
 
 // Whoops library, to be deleted when live
 $whoops = new \Whoops\Run;
 $whoops->prependHandler(new \Whoops\Handler\PrettyPageHandler);
 $whoops->register();
+
+
+use App\Database;
+use App\Helpers;
+use App\model\PostManager;
+
 
 // Routeur
 ob_start();
@@ -44,5 +48,7 @@ else
 }
 
 $content = ob_get_clean();
+
+$menu = Helpers::menu();
 
 require_once "../views/layout/default.php";
