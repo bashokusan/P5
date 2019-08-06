@@ -5,7 +5,7 @@
   <p><em><?= $response->getPublishDate() ?></em></p>
   <?= ($response->getUpdateDate()) ? "<p><em>" . $response->getUpdateDate() . "</em></p>" : ""; ?>
   <p>Auteur</p>
-  <p><?= $response->getKicker() ?></p>
+  <h3><?= $response->getKicker() ?></h3>
   <p><?= $response->getContent() ?></p>
 </div>
 <div class="comment_section">
