@@ -13,8 +13,8 @@
 
 <div class="">
   <h2>Me contacter</h2>
-  <form class="" action="index.html" method="post">
-    <p><input type="text" name="name" value="" placeholder="votre nom"></p>
+  <form class="" action="#" method="post">
+    <p><input type="text" name="name" value="" placeholder="votre nom"><input type="email" name="" value="" placeholder="votre email"></p>
     <p><textarea name="message" rows="8" cols="80" placeholder="votre message"></textarea></p>
     <p><button type="submit" name="button">Envoyer</button></p>
   </form>

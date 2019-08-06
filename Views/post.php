@@ -1,8 +1,37 @@
 <?php $title = "Blog | " . $response->getTitle() ?>
 
-<h2><?= $response->getTitle() ?></h2>
-<p><em><?= $response->getPublishDate() ?></em></p>
-<?= ($response->getUpdateDate()) ? "<p><em>" . $response->getUpdateDate() . "</em></p>" : ""; ?>
-<p>Auteur</p>
-<p><?= $response->getKicker() ?></p>
-<p><?= $response->getContent() ?></p>
+<div class="post_card">
+  <h2><?= $response->getTitle() ?></h2>
+  <p><em><?= $response->getPublishDate() ?></em></p>
+  <?= ($response->getUpdateDate()) ? "<p><em>" . $response->getUpdateDate() . "</em></p>" : ""; ?>
+  <p>Auteur</p>
+  <p><?= $response->getKicker() ?></p>
+  <p><?= $response->getContent() ?></p>
+</div>
+<div class="comment_section">
+
+  <h3>Commentaires</h3>
+
+  <div class="comment_form">
+    <form class="" action="#" method="post">
+      <p><input type="text" name="name" value="" placeholder="votre nom"></p>
+      <p><textarea name="message" rows="4" cols="80" placeholder="votre commentaire"></textarea></p>
+      <p><button type="submit" name="button">Envoyer</button></p>
+    </form>
+  </div>
+
+<div class="comment_list">
+  <?php if($comments) : ?>
+    <?php foreach($comments as $comment) : ?>
+      <div class="comment">
+        <p><?= $comment->getAuthor() ?></p>
+        <p><em><?= $comment->getDate() ?></em></p>
+        <p><?= $comment->getComment() ?></p>
+      </div>
+    <?php endforeach ?>
+  <?php else : ?>
+    <p>Soyez le premier à commenter.</p>
+  <?php endif ?>
+</div>
+
+</div>
