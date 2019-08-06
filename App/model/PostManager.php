@@ -6,9 +6,16 @@ use PDO;
 use App\Database;
 use App\model\Post;
 
+/**
+ * PostManager
+ */
 class PostManager
 {
 
+  /**
+   * Pour compter le nombre d'articles
+   * @return [le nombre d'article]
+   */
   public static function count()
   {
     $query = Database::setPDO()->query('SELECT count(id) FROM articles');
@@ -18,6 +25,10 @@ class PostManager
     $query->closeCursor();
   }
 
+  /**
+   * Pour afficher tous les articles
+   * @return [Objet]
+   */
   public static function showAll()
   {
     $query = Database::setPDO()->query('SELECT * FROM articles');
@@ -28,6 +39,11 @@ class PostManager
     $query->closeCursor();
   }
 
+  /**
+   * Pour afficher un article
+   * @param  [string] $param L'id de l'article
+   * @return [Objet]
+   */
   public static function showOne($param)
   {
     $query = Database::setPDO()->prepare("SELECT * FROM articles WHERE id = :id");

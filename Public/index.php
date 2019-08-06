@@ -15,6 +15,7 @@ $whoops->register();
 use App\Database;
 use App\Helpers;
 use App\model\PostManager;
+use App\model\CommentManager;
 
 // Routeur
 ob_start();
@@ -47,6 +48,8 @@ elseif(isset($_GET['page']))
     if(((int)$_GET['id']) &&  (int)$_GET['id'] <= (int)PostManager::count()[0])
     {
       $response = PostManager::showOne($_GET['id']);
+      $comments = CommentManager::showAll($_GET['id']);
+
       require_once "../Views/post.php";
     }
     else
