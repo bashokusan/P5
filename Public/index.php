@@ -42,7 +42,7 @@ elseif(isset($_GET['page']))
     require_once "../Views/blog.php";
   }
 
-  elseif($page == 'post' && isset($_GET['id']))
+  elseif($page === 'post' && isset($_GET['id']))
   {
     // Vérifie si l'id de l'url est inférieur ou égal au nombre d'article en BDD
     if(((int)$_GET['id']) &&  (int)$_GET['id'] <= (int)PostManager::count()[0])
@@ -62,6 +62,29 @@ elseif(isset($_GET['page']))
     echo "page introuvable";
   }
 
+}
+
+// Vérifie si il y a un paramètre action et postid
+elseif (isset($_GET['action']) && $_GET['action'] === 'post'
+    && isset($_GET['postid']) && (int)$_GET['postid'] <= (int)PostManager::count()[0])
+{
+  if(!empty($_POST['author']) && !empty($_POST['comment']))
+  {
+    $author = htmlentities($_POST['author']);
+    $comment = htmlentities($_POST['comment']);
+    $response = CommentManager::postComment($author, $comment, (int)$_GET['postid']);
+    if($response)
+    {
+      header('Location: ?page=post&id='.(int)$_GET['postid']);
+    }
+    else{
+      echo "commentaire non ajouté";
+    }
+  }
+  else
+  {
+    echo "tous les champs doivent être remplis";
+  }
 }
 
 else

@@ -13,9 +13,9 @@
   <h3>Commentaires</h3>
 
   <div class="comment_form">
-    <form class="" action="#" method="post">
-      <p><input type="text" name="name" value="" placeholder="votre nom"></p>
-      <p><textarea name="message" rows="4" cols="80" placeholder="votre commentaire"></textarea></p>
+    <form class="" action="?action=post&postid=<?= $response->getId() ?>" method="post">
+      <p><input type="text" name="author" value="" placeholder="votre nom"></p>
+      <p><textarea name="comment" rows="4" cols="80" placeholder="votre commentaire"></textarea></p>
       <p><button type="submit" name="button">Envoyer</button></p>
     </form>
   </div>
@@ -25,7 +25,7 @@
     <?php foreach($comments as $comment) : ?>
       <div class="comment">
         <p><?= $comment->getAuthor() ?></p>
-        <p><em><?= $comment->getDate() ?></em></p>
+        <p><em><?= $comment->getPublishDate() ?></em></p>
         <p><?= $comment->getComment() ?></p>
       </div>
     <?php endforeach ?>

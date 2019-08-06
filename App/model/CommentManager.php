@@ -18,7 +18,7 @@ class CommentManager
    */
   public static function showAll($param)
   {
-    $query = Database::setPDO()->prepare("SELECT * FROM comments WHERE id_article = :id");
+    $query = Database::setPDO()->prepare("SELECT * FROM comments WHERE id_article = :id ORDER BY publish_date DESC");
     $query->execute([
       'id' => $param
     ]);
@@ -27,5 +27,24 @@ class CommentManager
     return $response;
 
     $query->closeCursor();
+  }
+
+  /**
+   * Pour insérer un commentaire en BDD
+   * @param  string $author  $_GET['author']
+   * @param  string $comment $_GET['comment']
+   * @param  int    $id      id du post
+   * @return bool          retourne true si le commentaire est bien enregistré.
+   */
+  public static function postComment(string $author, string $comment, int $id) :bool
+  {
+    $query = Database::setPDO()->prepare("INSERT INTO comments (id_article, author, comment, publish_date)
+                                          VALUES(:id_article, :author, :comment, NOW()) ");
+    $response = $query->execute([
+                                  'id_article' => $id,
+                                  'author' => $author,
+                                  'comment' => $comment
+                                ]);
+    return $response;
   }
 }

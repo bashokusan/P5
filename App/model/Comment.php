@@ -13,7 +13,7 @@ class Comment
   private $id_article;
   private $author;
   private $comment;
-  private $date;
+  private $publish_date;
 
   // Getters
 
@@ -33,8 +33,8 @@ class Comment
     return $this->comment;
   }
 
-  public function getDate(){
-    return $this->date;
+  public function getPublishDate(){
+    return $this->publish_date;
   }
 
 
