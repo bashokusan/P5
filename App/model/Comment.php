@@ -26,15 +26,15 @@ class Comment
   }
 
   public function getAuthor(){
-    return $this->author;
+    return "<p>" . $this->author . "</p>";
   }
 
   public function getComment(){
-    return $this->comment;
+    return "<p>" . $this->comment . "</p>";
   }
 
   public function getPublishDate(){
-    return $this->publish_date;
+    return "<p><em>le " . $this->publish_date . "</em></p>";
   }
 
 

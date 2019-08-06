@@ -23,24 +23,24 @@ class Post
   }
 
   public function getTitle(){
-    return $this->title;
+    return "<h2>" . $this->title . "</h2>";
   }
 
   public function getKicker(){
-    return $this->kicker;
+    return "<h3>" . $this->kicker . "</h3>";
   }
 
   public function getContent(){
-    return $this->content;
+    return "<p>" . nl2br($this->content) . "</p>";
   }
 
   public function getPublishDate(){
-    return $this->publish_date;
+    return "<p><em>Publié le " . $this->publish_date . "</em></p>";
   }
 
   public function getUpdateDate(){
     if($this->update_date){
-      return "Modifié le " . $this->update_date;
+      return "<p><em>Modifié le " . $this->update_date . "</em></p>";
     }else{
       return null;
     }
