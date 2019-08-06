@@ -1,4 +1,7 @@
 <?php
+// Chargement du loadtime
+define('LOADTIME', microtime(true));
+
 // Composer autoload
 require_once '../vendor/autoload.php';
 
