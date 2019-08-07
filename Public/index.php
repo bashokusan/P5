@@ -16,9 +16,14 @@ use App\Database;
 use App\Helpers;
 use App\model\PostManager;
 use App\model\CommentManager;
+use App\model\Contact;
 
 // Routeur
 ob_start();
+
+// Prépare les success et errors
+$success;
+$error;
 
 // Vérifie si on est sur la racine
 if($_SERVER['REQUEST_URI'] === '/P5/Public/index.php')
@@ -54,17 +59,18 @@ elseif(isset($_GET['page']))
     }
     else
     {
-      echo "id invalide";
+      $error = "id invalide";
     }
   }
   else
   {
-    echo "page introuvable";
+    $errors = "page introuvable";
   }
 
 }
 
-// Vérifie si il y a un paramètre action et postid
+// Publier un commentaire
+// Vérifie si il y a un paramètre action = post et postid
 elseif (isset($_GET['action']) && $_GET['action'] === 'comment'
     && isset($_GET['postid']) && (int)$_GET['postid'] <= (int)PostManager::count()[0])
 {
@@ -78,18 +84,46 @@ elseif (isset($_GET['action']) && $_GET['action'] === 'comment'
       header('Location: ?page=post&id='.(int)$_GET['postid']);
     }
     else{
-      echo "commentaire non ajouté";
+      $error = "commentaire non ajouté";
     }
   }
   else
   {
-    echo "tous les champs doivent être remplis";
+    $error =  "tous les champs doivent être remplis";
+  }
+}
+
+// Envoyer un message via le formulaire de contact
+// Vérifie si il y a un paramètre action = contact
+elseif(isset($_GET['action']) && $_GET['action'] === 'contact')
+{
+  if(!empty($_POST['name']) && !empty($_POST['email'])  && !empty($_POST['message']))
+  {
+    $name = htmlentities($_POST['name']);
+    $email = htmlentities($_POST['email']);
+    $message = htmlentities($_POST['message']);
+
+    $message = new Contact($name, $email, $message);
+    $message->sendMessage();
+
+    if($message)
+    {
+      $success =  "votre message à bien été envoyé";
+    }
+    else
+    {
+      $error = "un erreur est survenue";
+    }
+  }
+  else
+  {
+    $error = "tous les champs doivent être remplis";
   }
 }
 
 else
 {
-  echo "cette page n'existe pas";
+  $error = "cette page n'existe pas";
 }
 
 $content = ob_get_clean();
