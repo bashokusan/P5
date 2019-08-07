@@ -13,9 +13,17 @@
 
   <div class="comment_form">
     <form class="" action="?action=post&postid=<?= $response->getId() ?>" method="post">
-      <p><input type="text" name="author" value="" placeholder="votre nom"></p>
-      <p><textarea name="comment" rows="4" cols="80" placeholder="votre commentaire"></textarea></p>
-      <p><button type="submit" name="button">Envoyer</button></p>
+      <div>
+        <label for="name">Votre nom</label>
+        <input type="text" name="author" id="name" value="" placeholder="votre nom">
+      </div>
+      <div>
+        <label for="comment">Votre commentaire</label>
+        <textarea name="comment" id="comment" rows="4" cols="80" placeholder="votre commentaire"></textarea>
+      </div>
+      <div>
+        <button type="submit" name="button">Envoyer</button>
+      </div>
     </form>
   </div>
 
