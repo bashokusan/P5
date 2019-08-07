@@ -1,7 +1,7 @@
 <?php $title = "Blog | " . $response->getTitle() ?>
 
 <div class="post_card">
-  <?= $response->getTitle() ?>
+  <h2><?= $response->getTitle() ?></h2>
   <?= $response->getPublishDate() ?><?= ($response->getUpdateDate()) ? $response->getUpdateDate() : ""; ?>
   <p>Par Auteur</p>
   <?= $response->getKicker() ?>

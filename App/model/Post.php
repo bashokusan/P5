@@ -23,7 +23,7 @@ class Post
   }
 
   public function getTitle(){
-    return "<h2>" . $this->title . "</h2>";
+    return $this->title;
   }
 
   public function getKicker(){
