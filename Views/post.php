@@ -12,7 +12,7 @@
   <h3>Commentaires</h3>
 
   <div class="comment_form">
-    <form class="" action="?action=post&postid=<?= $response->getId() ?>" method="post">
+    <form class="" action="?action=comment&postid=<?= $response->getId() ?>" method="post">
       <div>
         <label for="name">Votre nom</label>
         <input type="text" name="author" id="name" value="" placeholder="votre nom">
