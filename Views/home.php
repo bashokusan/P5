@@ -22,7 +22,7 @@
 
 <div class="contact_form">
   <h2>Me contacter</h2>
-  <form class="" action="#" method="post">
+  <form class="" action="?action=contact" method="post">
     <div>
       <fieldset>
         <label for="name">Votre nom</label>
