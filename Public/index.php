@@ -65,7 +65,7 @@ elseif(isset($_GET['page']))
 }
 
 // Vérifie si il y a un paramètre action et postid
-elseif (isset($_GET['action']) && $_GET['action'] === 'post'
+elseif (isset($_GET['action']) && $_GET['action'] === 'comment'
     && isset($_GET['postid']) && (int)$_GET['postid'] <= (int)PostManager::count()[0])
 {
   if(!empty($_POST['author']) && !empty($_POST['comment']))

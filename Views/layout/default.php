@@ -31,6 +31,7 @@
     </header>
 
     <div class="container">
+      <?php require_once "notification.php" ?>
       <?= $content ?>
     </div>
 
