@@ -29,9 +29,9 @@ class PostManager
    * Pour afficher tous les articles
    * @return [Objet]
    */
-  public static function showAll()
+  public static function showAll($limit, $offset)
   {
-    $query = Database::setPDO()->query('SELECT * FROM articles ORDER BY id DESC');
+    $query = Database::setPDO()->query("SELECT * FROM articles ORDER BY id DESC LIMIT $limit OFFSET $offset");
     $query->setFetchMode(PDO::FETCH_CLASS, Post::class);
     $response = $query->fetchAll();
     return $response;
