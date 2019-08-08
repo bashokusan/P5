@@ -15,7 +15,8 @@ class Helpers
 
   public static function menu() : string
   {
-    return static::menuItem('blog', 'Blog');
+    return static::menuItem('home', 'About')
+        . static::menuItem('blog', 'Blog');
   }
 
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\model;
+namespace App\Model;
 
 use PDO;
 use App\Database;
-use App\model\Post;
+use App\Model\Post;
 
 /**
  * PostManager
@@ -31,7 +31,7 @@ class PostManager
    */
   public static function showAll()
   {
-    $query = Database::setPDO()->query('SELECT * FROM articles');
+    $query = Database::setPDO()->query('SELECT * FROM articles ORDER BY id DESC');
     $query->setFetchMode(PDO::FETCH_CLASS, Post::class);
     $response = $query->fetchAll();
     return $response;

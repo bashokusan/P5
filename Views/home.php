@@ -1,3 +1,5 @@
+<?php $title = "Mon site" ?>
+
 <div class="main_info">
 
   <h1>Bienvenue sur mon super site</h1>
@@ -6,7 +8,7 @@
     <h2>A propos de moi</h2>
     <p>Pierre Simonnet</p>
     <p>Je suis web développeur</p>
-    <a href="../content/PierreSimonnet_CV.pdf">Téléchargez mon CV</a>
+    <span><i class="fas fa-file-download"></i></span> <a href="../Content/PierreSimonnet_CV.pdf">Téléchargez mon CV</a>
   </div>
 
   <div class="sns">
@@ -22,6 +24,7 @@
 
 <div class="contact_form">
   <h2>Me contacter</h2>
+
   <form class="" action="?action=contact" method="post">
     <div>
       <fieldset>

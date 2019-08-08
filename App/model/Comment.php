@@ -1,6 +1,6 @@
 <?php
 
-namespace App\model;
+namespace App\Model;
 
 /**
  * Class Comment
@@ -21,20 +21,24 @@ class Comment
     return $this->id;
   }
 
-  public function getIdArticle(){
+  public function getIdArticle() :string
+  {
     return $this->id_article;
   }
 
-  public function getAuthor(){
+  public function getAuthor() :string
+  {
     return "<p>" . $this->author . "</p>";
   }
 
-  public function getComment(){
+  public function getComment() :string
+  {
     return "<p>" . $this->comment . "</p>";
   }
 
-  public function getPublishDate(){
-    return "<p><em>le " . $this->publish_date . "</em></p>";
+  public function getPublishDate() :string
+  {
+    return "<p><em>le " . date("d/m/Y à H:m", strtotime($this->publish_date)) . "</em></p>";
   }
 
 

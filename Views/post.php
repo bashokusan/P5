@@ -1,16 +1,15 @@
-<?php $title = "Blog | " . $response->getTitle() ?>
+<?php $title = "Blog | " .  $response->getTitle() ?>
 
 <div class="post_card">
   <h2><?= $response->getTitle() ?></h2>
-  <?= $response->getPublishDate() ?><?= ($response->getUpdateDate()) ? $response->getUpdateDate() : ""; ?>
+  <p><em>Publié le <?= $response->getPublishDate() ?><?= ($response->getUpdateDate()) ? " - Modifié le " . $response->getUpdateDate() : ""; ?></em></p>
   <p>Par Auteur</p>
-  <?= $response->getKicker() ?>
-  <?= $response->getContent() ?>
+  <h3><?= $response->getKicker() ?></h3>
+  <p><?= $response->getContent() ?></p>
 </div>
 <div class="comment_section">
 
   <h3>Commentaires</h3>
-
   <div class="comment_form">
     <form class="" action="?action=comment&postid=<?= $response->getId() ?>" method="post">
       <div>

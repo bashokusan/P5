@@ -1,6 +1,8 @@
 <?php
 
-namespace App\model;
+namespace App\Model;
+
+use DateTime;
 
 /**
  * Class Post
@@ -18,29 +20,35 @@ class Post
 
   // Getters
 
-  public function getId(){
+  public function getId() :int
+  {
     return $this->id;
   }
 
-  public function getTitle(){
-    return $this->title;
+  public function getTitle() : string
+  {
+    return htmlentities($this->title);
   }
 
-  public function getKicker(){
-    return "<h3>" . $this->kicker . "</h3>";
+  public function getKicker() :string
+  {
+    return htmlentities($this->kicker);
   }
 
-  public function getContent(){
-    return "<p>" . nl2br($this->content) . "</p>";
+  public function getContent() :string
+  {
+    return nl2br(htmlentities($this->content));
   }
 
-  public function getPublishDate(){
-    return "<p><em>Publié le " . $this->publish_date . "</em></p>";
+  public function getPublishDate() :string
+  {
+    return date("d/m/Y", strtotime($this->publish_date));
   }
 
-  public function getUpdateDate(){
+  public function getUpdateDate() : ?string
+  {
     if($this->update_date){
-      return "<p><em>Modifié le " . $this->update_date . "</em></p>";
+      return date("d/m/Y", strtotime($this->update_date));
     }else{
       return null;
     }
