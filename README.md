@@ -8,7 +8,10 @@
   * See post
   * See list of comments
   * Drop comment
+  * Pagination
+  
 * For admin :
+  * All the above +
   * Write new post
   * Update post
   * Delete post
@@ -18,3 +21,4 @@
 
 * symfony/var-dumper
 * filp/whoops
+* swiftmailer/swiftmailer

@@ -16,7 +16,7 @@
 
     <header>
       <div class="logo">
-        <a href="index.php"><img src=<?= $title !== "Accueil" ? "../Content/logo_white.png" : "../Content/logo_aqua.png" ?> alt="logo"></a>
+        <a href="index.php"><img src=<?= $title !== "Mon site" ? "../Content/logo_white.png" : "../Content/logo_aqua.png" ?> alt="logo"></a>
       </div>
       <nav>
         <ul>
@@ -24,7 +24,7 @@
             <?= $menu ?>
           </div>
           <div class="nav_cta">
-            <li><a href="#">Administration</a></li>
+            <li><a href="?page=admin">Administration</a></li>
           </div>
         </ul>
       </nav>

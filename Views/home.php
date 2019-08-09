@@ -1,5 +1,3 @@
-<?php $title = "Mon site" ?>
-
 <div class="main_info">
 
   <h1>Bienvenue sur mon super site</h1>
@@ -24,7 +22,7 @@
 
 <div class="contact_form">
   <h2>Me contacter</h2>
-
+  <?= $error ?>
   <form class="" action="?action=contact" method="post">
     <div>
       <fieldset>
