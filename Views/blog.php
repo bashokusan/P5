@@ -5,6 +5,9 @@
       <p><em>Publié le <?= $post->getPublishDate() ?><?= ($post->getUpdateDate()) ? " - Modifié le " . $post->getUpdateDate() : ""; ?></em></p>
       <p>Par Auteur</p>
       <h3><?= $post->getKicker() ?></h3>
+      <?php if($post->getCountComment()) : ?>
+        <p><?= $post->getCountComment() == 1 ? $post->getCountComment() . " commentaire" : $post->getCountComment() . " commentaires" ?></p>
+      <?php endif ?>
       <a href="?page=post&id=<?= $post->getId() ?>">Lire la suite</a><span><?= $post->getId() ?></span>
     </div>
   <?php endforeach ?>

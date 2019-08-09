@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use DateTime;
+use App\Model\CommentManager;
 
 /**
  * Class Post
@@ -17,6 +18,7 @@ class Post
   private $content;
   private $publish_date;
   private $update_date;
+  private $countComment;
 
   // Getters
 
@@ -54,4 +56,13 @@ class Post
     }
   }
 
+  public function getCountComment() :?string
+  {
+    $this->countComment = (int)CommentManager::countComment($this->getId())[0];
+    if($this->countComment == 0)
+    {
+      return null;
+    }
+    return $this->countComment;
+  }
 }

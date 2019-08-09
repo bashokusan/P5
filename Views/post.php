@@ -28,6 +28,7 @@
 
 <div class="comment_list">
   <?php if($comments) : ?>
+    <p><?= $response->getCountComment() == 1 ? $response->getCountComment() . " commentaire" : $response->getCountComment() . " commentaires" ?></p>
     <?php foreach($comments as $comment) : ?>
       <div class="comment">
         <div class="comment_info">

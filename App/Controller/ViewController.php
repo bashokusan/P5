@@ -40,6 +40,7 @@ class ViewController
       }
       $offset = $limit * ($currentNbr - 1);
       $response = PostManager::showAll($limit, $offset);
+
       require_once "../Views/blog.php";
   }
 

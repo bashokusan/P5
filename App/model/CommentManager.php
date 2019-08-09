@@ -11,6 +11,7 @@ use App\model\Comment;
  */
 class CommentManager
 {
+
   /**
    * Pour afficher les commentaires d'un article
    * @param  [string] $param L'id de l'article
@@ -25,6 +26,18 @@ class CommentManager
     $query->setFetchMode(PDO::FETCH_CLASS, Comment::class);
     $response = $query->fetchAll();
     return $response;
+
+    $query->closeCursor();
+  }
+
+  public static function countComment($param)
+  {
+    $query = Database::setPDO()->prepare("SELECT count(id) FROM comments WHERE id_article = :id");
+    $query->execute([
+      'id' => $param
+    ]);;
+    $countComment = $query->fetch();
+    return $countComment;
 
     $query->closeCursor();
   }

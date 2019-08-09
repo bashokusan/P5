@@ -33,12 +33,12 @@ class Comment
 
   public function getComment() :string
   {
-    return "<p>" . $this->comment . "</p>";
+    return "<p>" . nl2br($this->comment) . "</p>";
   }
 
   public function getPublishDate() :string
   {
-    return "<p><em>le " . date("d/m/Y à H:m", strtotime($this->publish_date)) . "</em></p>";
+    return "<p><em>le " . date("d/m/Y à H:i", strtotime($this->publish_date)) . "</em></p>";
   }
 
 
