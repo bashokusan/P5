@@ -1,14 +1,14 @@
 <div class="posts_container">
   <?php foreach($response as $post) : ?>
     <div class="post_card">
-      <h2><?= $post->getTitle() ?></h2>
+      <h2><?= $post->getId() ?> | <?= $post->getTitle() ?></h2>
       <p><em>Publié le <?= $post->getPublishDate() ?><?= ($post->getUpdateDate()) ? " - Modifié le " . $post->getUpdateDate() : ""; ?></em></p>
-      <p>Par Auteur</p>
+      <p>Par <?= $post->getAuthor() ?></p>
       <h3><?= $post->getKicker() ?></h3>
       <?php if($post->getCountComment()) : ?>
         <p><?= $post->getCountComment() == 1 ? $post->getCountComment() . " commentaire" : $post->getCountComment() . " commentaires" ?></p>
       <?php endif ?>
-      <a href="?page=post&id=<?= $post->getId() ?>">Lire la suite</a><span><?= $post->getId() ?></span>
+      <a href="?page=post&id=<?= $post->getId() ?>">Lire la suite</a>
     </div>
   <?php endforeach ?>
 </div>

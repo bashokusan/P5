@@ -23,7 +23,7 @@
 <div class="contact_form">
   <h2>Me contacter</h2>
   <?= $error ?>
-  <form class="" action="?action=contact" method="post">
+  <form class="" action="?page=home&action=contact" method="post">
     <div>
       <fieldset>
         <label for="name">Votre nom</label>

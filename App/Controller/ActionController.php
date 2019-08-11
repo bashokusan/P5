@@ -15,16 +15,21 @@ class ActionController
    */
   public static function comment()
   {
-    if(isset($_GET['postid']) && (int)$_GET['postid'] <= (int)PostManager::count()[0])
+    if(isset($_GET['id']))
     {
+      $id = (int)$_GET['id'];
+
       if(!empty($_POST['author']) && !empty($_POST['comment']))
       {
         $author = htmlentities($_POST['author']);
         $comment = htmlentities($_POST['comment']);
-        $id = (int)$_GET['postid'];
 
         $response = CommentManager::postComment($author, $comment, $id);
-        if(!$response)
+        if($response)
+        {
+          header("Location:?page=post&id=$id");
+        }
+        else
         {
           $error = "Une erreur est survenue";
         }
@@ -33,7 +38,6 @@ class ActionController
       {
         $error = "tous les champs doivent être remplis";
       }
-      header('Location: ?page=post&id='.(int)$_GET['postid']);
     }
     else
     {
@@ -61,11 +65,13 @@ class ActionController
         if($message)
         {
           $success =  "votre message à bien été envoyé, vous allez recevoir une copie par email";
+          header('Location:?page=home');
         }
         else
         {
           $error = "Une erreur est survenue";
         }
+
       }
       else
       {
@@ -77,7 +83,6 @@ class ActionController
       $error = "tous les champs doivent être remplis";
     }
 
-    header('Location: ?page=home');
   }
 
 }

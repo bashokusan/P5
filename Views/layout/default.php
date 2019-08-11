@@ -16,7 +16,7 @@
 
     <header>
       <div class="logo">
-        <a href="index.php"><img src=<?= $title !== "Mon site" ? "../Content/logo_white.png" : "../Content/logo_aqua.png" ?> alt="logo"></a>
+        <a href="index.php"><img src=<?= $title !== "Home" ? "../Content/logo_white.png" : "../Content/logo_aqua.png" ?> alt="logo"></a>
       </div>
       <nav>
         <ul>

@@ -58,6 +58,12 @@ class CommentManager
                                   'author' => $author,
                                   'comment' => $comment
                                 ]);
+
+    $query = Database::setPDO()->prepare("UPDATE articles SET countComment = countComment + 1 WHERE id = :id");
+    $query->execute([
+                    'id' => $id,
+                  ]);
+
     return $response;
   }
 }

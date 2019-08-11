@@ -1,17 +1,18 @@
-<?php $title = "Blog | " .  $response->getTitle() ?>
+<?php $title = "Blog | " .  $post->getTitle() ?>
 
 <div class="post_card">
-  <h2><?= $response->getTitle() ?></h2>
-  <p><em>Publié le <?= $response->getPublishDate() ?><?= ($response->getUpdateDate()) ? " - Modifié le " . $response->getUpdateDate() : ""; ?></em></p>
-  <p>Par Auteur</p>
-  <h3><?= $response->getKicker() ?></h3>
-  <p><?= $response->getContent() ?></p>
+  <h2><?= $post->getTitle() ?></h2>
+  <p><em>Publié le <?= $post->getPublishDate() ?><?= ($post->getUpdateDate()) ? " - Modifié le " . $post->getUpdateDate() : ""; ?></em></p>
+  <p>Par <?= $post->getAuthor() ?></p>
+  <h3><?= $post->getKicker() ?></h3>
+  <p><?= $post->getContent() ?></p>
 </div>
 <div class="comment_section">
 
   <h3>Commentaires</h3>
   <div class="comment_form">
-    <form class="" action="?action=comment&postid=<?= $response->getId() ?>" method="post">
+    <? $error; ?>
+    <form class="" action="?page=post&id=<?= $post->getId() ?>&action=comment" method="post">
       <div>
         <label for="name">Votre nom</label>
         <input type="text" name="author" id="name" value="" placeholder="votre nom">
@@ -28,7 +29,7 @@
 
 <div class="comment_list">
   <?php if($comments) : ?>
-    <p><?= $response->getCountComment() == 1 ? $response->getCountComment() . " commentaire" : $response->getCountComment() . " commentaires" ?></p>
+    <p><?= $post->getCountComment() == 1 ? $post->getCountComment() . " commentaire" : $post->getCountComment() . " commentaires" ?></p>
     <?php foreach($comments as $comment) : ?>
       <div class="comment">
         <div class="comment_info">

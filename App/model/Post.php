@@ -13,11 +13,12 @@ class Post
 {
 
   private $id;
+  private $author;
   private $title;
   private $kicker;
   private $content;
-  private $publish_date;
-  private $update_date;
+  private $publishDate;
+  private $updateDate;
   private $countComment;
 
   // Getters
@@ -25,6 +26,11 @@ class Post
   public function getId() :int
   {
     return $this->id;
+  }
+
+  public function getAuthor() : string
+  {
+    return htmlentities($this->author);
   }
 
   public function getTitle() : string
@@ -44,13 +50,13 @@ class Post
 
   public function getPublishDate() :string
   {
-    return date("d/m/Y", strtotime($this->publish_date));
+    return date("d/m/Y", strtotime($this->publishDate));
   }
 
   public function getUpdateDate() : ?string
   {
-    if($this->update_date){
-      return date("d/m/Y", strtotime($this->update_date));
+    if($this->updateDate){
+      return date("d/m/Y", strtotime($this->updateDate));
     }else{
       return null;
     }
@@ -58,8 +64,7 @@ class Post
 
   public function getCountComment() :?string
   {
-    $this->countComment = (int)CommentManager::countComment($this->getId())[0];
-    if($this->countComment == 0)
+    if($this->countComment === null)
     {
       return null;
     }

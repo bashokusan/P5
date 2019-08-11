@@ -15,7 +15,6 @@ $whoops->register();
 
 use App\Helpers;
 use App\Controller\ViewController;
-use App\Controller\ActionController;
 
 
 $pageToLoad = scandir('../Views');
@@ -35,43 +34,13 @@ try {
   elseif(in_array($_GET['page'] . '.php', $pageToLoad))
   {
     $view = $_GET['page'];
-    $title = $view;
+    $title = ucfirst($view);
     ViewController::$view();
   }
-
-
-  // Gestion des actions
-  // Vérifie si il y a un paramètre action
-  elseif(isset($_GET['action']))
-  {
-    $action = $_GET['action'];
-
-    // Publier un commentaire
-    // Vérifie si il y a un paramètre action = comment et postid
-    if ($action === 'comment')
-    {
-      ActionController::comment();
-    }
-
-    // Envoyer un message via le formulaire de contact
-    // Vérifie si il y a un paramètre action = contact
-    elseif($action === 'contact')
-    {
-      ActionController::contact();
-    }
-
-    else
-    {
-      throw new Exception("Cette action n'existe pas");
-    }
-
-  }
-
   else
   {
     throw new Exception("Cette page n'existe pas");
   }
-
 
 } catch (\Exception $e) {
   ViewController::error($e);

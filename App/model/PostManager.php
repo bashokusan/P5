@@ -51,8 +51,8 @@ class PostManager
       'id' => $param
     ]);
     $query->setFetchMode(PDO::FETCH_CLASS, Post::class);
-    $response = $query->fetch();
-    return $response;
+    $post= $query->fetch();
+    return $post;
 
     $query->closeCursor();
   }
