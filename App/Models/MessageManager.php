@@ -1,11 +1,14 @@
 <?php
 
 /**
- * []
+ * Send message
  */
 class MessageManager
 {
-
+  /**
+   * @param  Message $message Message object created from form post
+   * @return bool           True if message sent, false is not
+   */
   public function send(Message $message){
 
     $from = ['contact@monsite.fr' => 'Contact'];
@@ -14,7 +17,7 @@ class MessageManager
     $content = "Nouveau message de : " . $message->name() . " (" . $message->email() . ") : " . $message->message();
 
     $contentHtml = "
-      <p>Nouveau message de".$message->name()."(".$message->email().") : </p>
+      <p>Nouveau message de " . $message->name() . " (".$message->email().") : </p>
       <p>".$message->message()."</p>
     ";
 

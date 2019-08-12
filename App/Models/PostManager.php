@@ -1,6 +1,7 @@
 <?php
+
 /**
- * PostManager
+ * Manage post
  */
 class PostManager
 {
@@ -16,6 +17,12 @@ class PostManager
     $this->db = $db;
   }
 
+  /**
+   * Get all posts from database
+   * @param  int $limit  (see pagination in FrontendController blog())
+   * @param  int $offset (see pagination in FrontendController blog())
+   * @return Post
+   */
   public function getList($limit, $offset)
   {
     $sql = "SELECT * FROM articles ORDER BY id DESC LIMIT $limit OFFSET $offset";
@@ -27,6 +34,12 @@ class PostManager
     return $postList;
   }
 
+
+  /**
+   * Get one post
+   * @param  int $id Article id
+   * @return Post
+   */
   public function getUnique($id)
   {
     $sql = "SELECT * FROM articles WHERE id = :id";

@@ -1,7 +1,8 @@
 <?php
 
 /**
- *
+ * Class for comment object defining a comment
+ * Created when comment form is submitted
  */
 class Comment
 {
@@ -36,13 +37,19 @@ class Comment
     }
   }
 
-  //
+  /**
+   * Check if object is new
+   * @return bool true if new, false if not new
+   */
   public function isNew() :bool
   {
     return empty($this->id);
   }
 
-  //
+  /**
+   * Check if object is valid
+   * @return bool true if every item is not empty, false if at least one item is empty
+   */
   public function isValid() :bool
   {
     return !(empty($this->idArticle) || empty($this->author) || empty($this->content));
@@ -60,6 +67,10 @@ class Comment
     $this->idArticle = (int)$idArticle;
   }
 
+  /**
+   * Set author, is not a string or empty, new error.
+   * @param string $author Author of the comment from comment form post
+   */
   public function setAuthor($author)
   {
     if(!is_string($author) || empty($author))
@@ -72,6 +83,10 @@ class Comment
     }
   }
 
+  /**
+   * Set content, is not a string or empty, new error.
+   * @param string $content Content of the comment from comment form post
+   */
   public function setContent($content)
   {
     if(!is_string($content) || empty($content))
@@ -80,7 +95,7 @@ class Comment
     }
     else
     {
-      $this->content = $content;
+      $this->content = nl2br($content);
     }
   }
 

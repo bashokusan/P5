@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Load Classes from Controllers folder
+ */
 function autoloadController($classname)
 {
   if(file_exists($file = dirname(__DIR__) . DIRECTORY_SEPARATOR . "App" . DIRECTORY_SEPARATOR . "Controllers" . DIRECTORY_SEPARATOR . $classname . ".php")){
@@ -7,6 +10,9 @@ function autoloadController($classname)
   }
 }
 
+/**
+ * Load Classes from Models folder
+ */
 function autoload($classname)
 {
   if(file_exists($file = dirname(__DIR__) . DIRECTORY_SEPARATOR . "App" . DIRECTORY_SEPARATOR . "Models" . DIRECTORY_SEPARATOR . $classname . ".php")){

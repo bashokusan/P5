@@ -1,7 +1,7 @@
 <?php
 
 /**
- *
+ * Main controller, action to do when called by the router
  */
 class FrontendController
 {
@@ -9,11 +9,19 @@ class FrontendController
   private $viewPath;
   private $templatePath;
 
+
+  /**
+   * Set the viewPath and templatePath
+   * @param string $viewPath     Path to pages
+   * @param string $templatePath Path to template
+   */
   public function __construct($viewPath, $templatePath){
     $this->setViewPath($viewPath);
     $this->setTemplatePath($templatePath);
   }
 
+
+  // Setters
   public function setViewPath($viewPath){
     $this->viewPath = $viewPath;
   }
@@ -22,6 +30,7 @@ class FrontendController
     $this->templatePath = $templatePath;
   }
 
+  // Getters
   public function getViewPath(){
     return $this->viewPath;
   }
@@ -31,13 +40,21 @@ class FrontendController
   }
 
 
+  /**
+   * Actions when in home page :
+   *
+   * New object Message is created with data from contact form.
+   * Send function in MessageManager will send the object.
+   *
+   * Require content of the page.
+   */
   public function home(){
 
     if(isset($_POST['send'])){
       $data = [
-        'name' => $_POST['name'],
-        'email' => $_POST['email'],
-        'message' => $_POST['message'],
+        'name' => htmlentities($_POST['name']),
+        'email' => htmlentities($_POST['email']),
+        'message' => htmlentities($_POST['message']),
       ];
 
       $newMessage = new Message($data);
@@ -46,9 +63,9 @@ class FrontendController
         $messageManager = new MessageManager;
         ;
         if ($messageManager->send($newMessage)) {
-          $message = 'Message envoyé';
+          $message = 'Votre message a bien été envoyé.';
         }else {
-          $message = 'une erreur est survenue';
+          $message = 'Une erreur est survenue.';
         }
 
       }else {
@@ -57,13 +74,21 @@ class FrontendController
 
     }
 
-    $menu = Helpers::menu();
     ob_start();
     require_once $this->getViewPath().'home.php';
     $content = ob_get_clean();
     require $this->getTemplatePath();
   }
 
+  /**
+   * Actions when in blog page :
+   *
+   * Call PDO and create an object PostManager
+   * Handle pagination
+   * Call list of posts with getList function
+   *
+   * Require content of the page.
+   */
   public function blog(){
 
     $db = DBFactory::getPDO();
@@ -91,13 +116,23 @@ class FrontendController
 
     $postList = $postManager->getList($limit, $offset);
 
-    $menu = Helpers::menu();
     ob_start();
     require_once $this->getViewPath() .'blog.php';
     $content = ob_get_clean();
     require $this->getTemplatePath();
   }
 
+  /**
+   * Action when in post page :
+   *
+   * Get the post with id in param.
+   * Create object Comment with data from comment form.
+   * Check if data are valid to send the comment with CommentManager object.
+   *
+   * Require content of the page.
+   *
+   * @param  int $id article id from get
+   */
   public function post($id){
     $db = DBFactory::getPDO();
     $manager = new PostManager($db);
@@ -107,8 +142,8 @@ class FrontendController
     if(isset($_POST['add'])){
       $data = [
         'idArticle' => $id,
-        'author' => $_POST['author'],
-        'content' => $_POST['content'],
+        'author' => htmlentities($_POST['author']),
+        'content' => htmlentities($_POST['content']),
       ];
 
       $newComment = new Comment($data);
@@ -122,7 +157,8 @@ class FrontendController
 
     }
 
-    $menu = Helpers::menu();
+    $listofcomments = $commentManager->getListChecked($post->id());
+
     ob_start();
     require_once $this->getViewPath() .'post.php';
     $content = ob_get_clean();

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * [CommentManager]
+ * Manage comments
  */
 class CommentManager
 {
@@ -17,6 +17,12 @@ class CommentManager
     $this->db = $db;
   }
 
+  /**
+   * Last action before sending comment
+   * More to be added (switch case between add and update)
+   *
+   * @param  Comment $comment Validated comment object
+   */
   public function save(Comment $comment)
   {
 
@@ -24,6 +30,12 @@ class CommentManager
 
   }
 
+  /**
+   * Get list of checked comment only
+   * (Currently gets all comments for prod)
+   *
+   * @param  int $idArticle Article id
+   */
   public function getListChecked($idArticle)
   {
     $sql = "SELECT * FROM comments WHERE idArticle = :idArticle /*AND checked = 1*/ ORDER BY publishDate DESC";
@@ -38,6 +50,12 @@ class CommentManager
     return $commentList;
   }
 
+  /**
+   * Add new comment in the database
+   * Update comment counter for the article
+   *
+   * @param Comment $comment Comment object created after form submit
+   */
   public function add(Comment $comment)
   {
     $sql = "INSERT INTO comments(idArticle, author, content, publishDate)

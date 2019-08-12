@@ -1,7 +1,7 @@
 <?php
 
 /**
- *
+ * Class for post object defining a post
  */
 class Post
 {
@@ -29,6 +29,10 @@ class Post
     }
   }
 
+  /**
+   * Hydrate the object with data
+   * @param  array $data Usually from post form when add or update post
+   */
   public function hydrate($data)
   {
     foreach($data as $key => $value)
@@ -41,13 +45,19 @@ class Post
     }
   }
 
-  //
+  /**
+   * Check if object is new
+   * @return bool true if new, false if not new
+   */
   public function isNew() :bool
   {
     return empty($this->id);
   }
 
-  //
+  /**
+   * Check if object is valid
+   * @return bool true if every item is not empty, false if at least one item is empty
+   */
   public function isValid() :bool
   {
     return !(empty($this->author) || empty($this->title) || empty($this->kicker) || empty($this->content));
@@ -60,6 +70,10 @@ class Post
     $this->id = (int)$id;
   }
 
+  /**
+   * Set author, is not a string or empty, new error.
+   * @param string $author Author of the post
+   */
   public function setAuthor($author)
   {
     if(!is_string($author) || empty($author))
@@ -72,6 +86,10 @@ class Post
     }
   }
 
+  /**
+   * Set title, is not a string or empty, new error.
+   * @param string $title Title of the post
+   */
   public function setTitle($title)
   {
     if(!is_string($title) || empty($title))
@@ -84,6 +102,10 @@ class Post
     }
   }
 
+  /**
+   * Set Kicker, is not a string or empty, new error.
+   * @param string $kicker Kicker of the post
+   */
   public function setKicker($kicker)
   {
     if(!is_string($kicker) || empty($kicker))
@@ -96,6 +118,10 @@ class Post
     }
   }
 
+  /**
+   * Set content, is not a string or empty, new error.
+   * @param string $content Content of the post
+   */
   public function setContent($content)
   {
     if(!is_string($content) || empty($content))

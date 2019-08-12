@@ -1,7 +1,7 @@
 <?php
 
 /**
- *
+ * Class for messag object defining a message
  */
 class Message
 {
@@ -24,6 +24,10 @@ class Message
     }
   }
 
+  /**
+   * Hydrate the object with data
+   * @param  array $data From post form
+   */
   public function hydrate($data)
   {
     foreach($data as $key => $value)
@@ -36,7 +40,10 @@ class Message
     }
   }
 
-  //
+  /**
+   * Check if object is valid
+   * @return bool true if every item is not empty, false if at least one item is empty
+   */
   public function isValid() :bool
   {
     return !(empty($this->name) || empty($this->email) || empty($this->message));
@@ -76,7 +83,7 @@ class Message
     }
     else
     {
-      $this->message = $message;
+      $this->message = nl2br($message);
     }
   }
 
