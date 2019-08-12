@@ -5,7 +5,7 @@
   <nav>
     <ul>
       <div class="nav_menu">
-        <?= $menu ?>
+        <?= Helpers::menu(); ?>
       </div>
       <div class="nav_cta">
         <li><a href="?page=admin">Administration</a></li>

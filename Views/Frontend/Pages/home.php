@@ -23,24 +23,31 @@
 </div>
 
 <div class="contact_form">
-  <h2>Me contacter</h2>
-  <?= $message ?>
+<h2>Me contacter</h2>
+<?php if($message) echo "<p class='alert success'>" . $message . "</p>"?>
   <form class="" action="" method="post">
-      <div>
-        <fieldset>
-          <?php if(isset($errors) && in_array(Message::NAME_INVALID, $errors)) echo "nom invalide"; ?>
-          <label for="name">Votre nom</label>
-          <input type="text" name="name" id="name" value="" placeholder="exemple : John Doe">
-          <?php if(isset($errors) && in_array(Message::EMAIL_INVALID, $errors)) echo "email invalide"; ?>
-          <label for="email">Votre email</label>
-          <input type="email" name="email" id="email" value="" placeholder="exemple : johndoe@mail.com">
-        </fieldset>
-      </div>
-      <div>
-        <?php if(isset($errors) && in_array(Message::MESSAGE_INVALID, $errors)) echo "message invalide"; ?>
-        <label for="message">Votre message</label>
-        <textarea name="message" id="message" rows="8" cols="80" placeholder="exemple : Lorem Ipsum"></textarea>
-      </div>
-      <div><input type="submit" name="send" value="Envoyer"></div>
-    </form>
+    <div>
+      <fieldset>
+        <label for="name">Votre nom</label>
+
+        <?php if(isset($errors) && in_array(Message::NAME_INVALID, $errors)) echo "<p class='alert warning'>nom invalide</p>"; ?>
+
+        <input type="text" name="name" id="name" value="" placeholder="exemple : John Doe">
+
+        <?php if(isset($errors) && in_array(Message::EMAIL_INVALID, $errors)) echo "<p class='alert warning'>email invalide</p>"; ?>
+        <label for="email">Votre email</label>
+        <input type="email" name="email" id="email" value="" placeholder="exemple : johndoe@mail.com">
+      </fieldset>
+    </div>
+
+    <div>
+      <?php if(isset($errors) && in_array(Message::MESSAGE_INVALID, $errors)) echo "<p class='alert warning'>message invalide</p>"; ?>
+      <label for="message">Votre message</label>
+      <textarea name="message" id="message" rows="8" cols="80" placeholder="exemple : Lorem Ipsum"></textarea>
+    </div>
+
+    <div>
+      <input type="submit" name="send" value="Envoyer">
+    </div>
+  </form>
 </div>

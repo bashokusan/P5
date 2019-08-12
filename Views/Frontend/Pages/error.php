@@ -1,1 +1,2 @@
-<h1>Page 404</h1>
+<h1>Erreur 404 !!!!!!!!!</h1>
+<p><?= $errorMessage ?></p>
