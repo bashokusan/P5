@@ -1,7 +1,5 @@
 <?php
 
-namespace App;
-
 class Helpers
 {
   private function menuItem(string $page, string $title) :string
