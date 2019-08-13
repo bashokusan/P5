@@ -24,10 +24,16 @@ class Helpers
   /**
    * @return string Return all the <li> for the menu
    */
-  public static function menu() : string
+  public static function menuFront() : string
   {
     return static::menuItem('home', 'About')
         . static::menuItem('blog', 'Blog');
+  }
+
+  public static function menuBack() : string
+  {
+    return static::menuItem('comments', 'Comments')
+          .static::menuItem('logout', 'Logout');
   }
 
 }

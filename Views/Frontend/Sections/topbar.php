@@ -5,10 +5,10 @@
   <nav>
     <ul>
       <div class="nav_menu">
-        <?= Helpers::menu(); ?>
+        <?= Helpers::menuFront(); ?>
       </div>
       <div class="nav_cta">
-        <li><a href="?page=admin">Administration</a></li>
+        <li><a href="../Backoffice/index.php">Administration</a></li>
       </div>
     </ul>
   </nav>
