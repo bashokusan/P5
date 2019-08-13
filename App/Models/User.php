@@ -84,7 +84,7 @@ class User
    */
   public function setEmail($email)
   {
-    if(!is_string($email) || empty($email))
+    if(!is_string($email) || empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL))
     {
       $this->errors[] = self::EMAIL_INVALID;
     }

@@ -65,6 +65,8 @@ class BackendController
         'message' => htmlentities($_POST['message'])
       ];
 
+      $_SESSION['inputs'] = $_POST;
+
       $user = new User($data);
       $db = DBFactory::getPDO();
       $userManager = new UserManager($db);
@@ -73,6 +75,7 @@ class BackendController
       {
         $userManager->add($user);
         $message = "Votre demande a bien été envoyé";
+        $_SESSION['inputs'] = [];
       }
       else
       {
@@ -169,6 +172,9 @@ class BackendController
         'email' => htmlentities($_POST['email']),
         'password' => htmlentities($_POST['password'])
       ];
+
+      $_SESSION['inputs'] = $_POST;
+      
       $user = new User($data);
 
       if($user->isValid())
@@ -184,6 +190,7 @@ class BackendController
             session_start();
             $_SESSION['role'] = 'admin';
             $_SESSION['token'] = $loggingUser->token();
+            $_SESSION['inputs'] = [];
             header('Location: ?page=home');
           }
           else
