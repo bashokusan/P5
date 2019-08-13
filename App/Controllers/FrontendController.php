@@ -57,6 +57,8 @@ class FrontendController
         'message' => htmlentities($_POST['message']),
       ];
 
+      $_SESSION['inputs'] = $_POST;
+
       $newMessage = new Message($data);
 
       if($newMessage->isValid()){
@@ -64,6 +66,7 @@ class FrontendController
         ;
         if ($messageManager->send($newMessage)) {
           $message = 'Votre message a bien été envoyé.';
+          $_SESSION['inputs'] = [];
         }else {
           $message = 'Une erreur est survenue.';
         }
@@ -78,7 +81,10 @@ class FrontendController
     require_once $this->getViewPath().'home.php';
     $content = ob_get_clean();
     require $this->getTemplatePath();
+
+    $_SESSION['inputs'] = [];
   }
+
 
   /**
    * Actions when in blog page :
@@ -122,6 +128,7 @@ class FrontendController
     require $this->getTemplatePath();
   }
 
+
   /**
    * Action when in post page :
    *
@@ -146,10 +153,13 @@ class FrontendController
         'content' => htmlentities($_POST['content']),
       ];
 
+      $_SESSION['inputs'] = $_POST;
+
       $newComment = new Comment($data);
 
       if($newComment->isValid()){
         $commentManager->save($newComment);
+        $_SESSION['inputs'] = [];
         $message = "Votre commentaire à bien été envoyé. Il sera vérifié avant d'être mis en ligne";
       }else {
         $errors = $newComment->errors();
@@ -163,6 +173,8 @@ class FrontendController
     require_once $this->getViewPath() .'post.php';
     $content = ob_get_clean();
     require $this->getTemplatePath();
+
+    $_SESSION['inputs'] = [];
   }
 
 }

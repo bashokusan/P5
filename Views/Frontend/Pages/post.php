@@ -5,7 +5,7 @@
 
   <p><em>Publié le <?= $post->publishDate() ?><?= ($post->updateDate()) ? " - Modifié le " . $post->updateDate() : ""; ?></em></p>
 
-  <p>Par <?= $post->author() ?></p>
+  <?= ($post->author()) ? "<p>Par ".$post->author()."</p>" : "" ?>
 
   <h3><?= $post->kicker() ?></h3>
 
@@ -19,13 +19,13 @@
     <div>
       <?php if(isset($errors) && in_array(Comment::AUTHOR_INVALID, $errors)) echo "<p class='alert warning'>auteur invalide</p>"; ?>
       <label for="name">Votre nom</label>
-      <input type="text" name="author" id="name" value="" placeholder="votre nom">
+      <input type="text" name="author" id="name" value="<?= $_SESSION['inputs']['author'] ? $_SESSION['inputs']['author'] : "" ?>" placeholder="votre nom">
     </div>
 
     <div>
       <?php if(isset($errors) && in_array(Comment::CONTENT_INVALID, $errors)) echo "<p class='alert warning'>commentaire invalide</p>"; ?>
       <label for="content">Votre commentaire</label>
-      <textarea name="content" id="content" rows="4" cols="80" placeholder="votre commentaire"></textarea>
+      <textarea name="content" id="content" rows="4" cols="80" placeholder="votre commentaire"><?= $_SESSION['inputs']['content'] ? $_SESSION['inputs']['content'] : "" ?></textarea>
     </div>
 
     <div>
@@ -44,9 +44,6 @@
         </div>
         <div class="comment_content">
           <?= $comment->content() ?>
-        </div>
-        <div class="action">
-          <a href="?update=<?= $comment->id() ?>">Modifier</a> / <a href="delete=<?= $comment->id() ?>">Supprimer</a>
         </div>
       </div>
     <?php endforeach ?>

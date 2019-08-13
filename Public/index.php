@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 // Loadtime (see Views/Frontent/Sections/footer)
 define('LOADTIME', microtime(true));
@@ -12,6 +13,7 @@ require_once 'autoload.php';
 $whoops = new \Whoops\Run;
 $whoops->prependHandler(new \Whoops\Handler\PrettyPageHandler);
 $whoops->register();
+
 
 // Path to pages
 $viewPath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . 'Frontend' . DIRECTORY_SEPARATOR . 'Pages' . DIRECTORY_SEPARATOR;
@@ -36,8 +38,12 @@ try {
     $controller->blog();
   }
 
-  elseif ($_GET['page'] == 'article' && isset($_GET['id']))
+  elseif ($_GET['page'] == 'article' && !empty($_GET['id']))
   {
+    if(!filter_var($_GET['id'], FILTER_VALIDATE_INT))
+    {
+      throw new \Exception("Cette page n'existe pas");
+    }
     $controller->post((int)$_GET['id']);
   }
 

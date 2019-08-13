@@ -1,4 +1,3 @@
-<?php if(true) : ?>
 <footer>
   <a href="?page=admin">Administration</a>
   <ul class="social">
@@ -7,7 +6,7 @@
     <li><a href="https://www.instagram.com/pierre_bashoku/"><i class="fab fa-instagram fa-lg" aria-hidden=true></i></a></li>
   </ul>
   <p>Page chargée en <?= round((microtime(true) - LOADTIME) * 1000) ?>ms</p>
+  <p>Referer : <?= $_SERVER['HTTP_REFERER'] ?></p> 
 </footer>
-<?php endif ?>
 </body>
 </html>
