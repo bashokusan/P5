@@ -24,18 +24,44 @@ try {
 
   if($controller->loggedIn())
   {
-    if(!isset($_GET['page']) || $_GET['page'] == 'home')
+    if(!$_GET || $_GET['page'] == 'home')
     {
       $controller->home();
     }
-    if($_GET['page'] == 'logout')
+    elseif($_GET['page'] == 'adminrequest')
+    {
+      $controller->answerRequest();
+    }
+    elseif($_GET['acceptrequest'])
+    {
+      $controller->acceptRequest((int)$_GET['acceptrequest']);
+      header('Location: ?page=adminrequest');
+    }
+    elseif($_GET['page'] == 'logout')
     {
       $controller->logout();
+      header('Location: ?page=login');
+    }
+    else
+    {
+      throw new \Exception("Page introuvable");
     }
   }
-  elseif(!$controller->loggedIn() || $_GET['page'] == 'login')
+  
+  elseif(!$controller->loggedIn())
   {
-    $controller->login();
+    if(!$_GET['page'] || $_GET['page'] == 'login')
+    {
+      $controller->login();
+    }
+    elseif($_GET['page'] == 'request')
+    {
+      $controller->request();
+    }
+    else
+    {
+      throw new \Exception("Page introuvable");
+    }
   }
 
 } catch (\Exception $e) {

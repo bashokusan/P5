@@ -8,11 +8,19 @@ class User
 
   private $errors = [];
   private $id;
+  private $name;
   private $email;
   private $password;
+  private $message;
+  private $requestDate;
+  private $accept;
+  private $token;
+  private $confirm;
 
-  const EMAIL_INVALID = 1;
-  const PASSWORD_INVALID = 2;
+  const NAME_INVALID = 1;
+  const EMAIL_INVALID = 2;
+  const PASSWORD_INVALID = 3;
+  const MESSAGE_INVALID = 4;
 
   public function __construct(array $values = [])
   {
@@ -44,7 +52,7 @@ class User
    */
   public function isValid() :bool
   {
-    return !(empty($this->email) || empty($this->password));
+    return (empty($this->errors));
   }
 
   // Setters
@@ -52,6 +60,22 @@ class User
   public function setId($id)
   {
     $this->id = (int)$id;
+  }
+
+  /**
+   * Set email, is not a string or empty, new error.
+   * @param string $email Email of the user
+   */
+  public function setname($name)
+  {
+    if(!is_string($name) || empty($name))
+    {
+      $this->errors[] = self::NAME_INVALID;
+    }
+    else
+    {
+      $this->name = $name;
+    }
   }
 
   /**
@@ -86,6 +110,37 @@ class User
     }
   }
 
+  public function setMessage($message)
+  {
+    if(!is_string($message) || empty($message))
+    {
+      $this->errors[] = self::MESSAGE_INVALID;
+    }
+    else
+    {
+      $this->message = $message;
+    }
+  }
+
+  public function setRequestDate($requestDate)
+  {
+    $this->requestDate = $requestDate;
+  }
+
+  public function setAccept($accept)
+  {
+    $this->accept = $accept;
+  }
+
+  public function setToken($token)
+  {
+    $this->token = $token;
+  }
+
+  public function setConfirm($confirm)
+  {
+    $this->confirm = $confirm;
+  }
 
   // Getters
 
@@ -99,6 +154,11 @@ class User
     return $this->id;
   }
 
+  public function name()
+  {
+    return $this->name;
+  }
+
   public function email()
   {
     return $this->email;
@@ -107,6 +167,31 @@ class User
   public function password()
   {
     return $this->password;
+  }
+
+  public function message()
+  {
+    return nl2br($this->message);
+  }
+
+  public function requestDate()
+  {
+    return $this->requestDate;
+  }
+
+  public function accept()
+  {
+    return $this->accept;
+  }
+
+  public function token()
+  {
+    return $this->token;
+  }
+
+  public function confirm()
+  {
+    return $this->accept;
   }
 
 }
