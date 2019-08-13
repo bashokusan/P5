@@ -35,10 +35,26 @@ class CommentManager
    * (Currently gets all comments for prod)
    *
    * @param  int $idArticle Article id
+   * @param  string Type of comment (all -null-, checked, unchecked)
    */
-  public function getListChecked($idArticle)
+  public function getList($idArticle, $type = null)
   {
-    $sql = "SELECT * FROM comments WHERE idArticle = :idArticle /*AND checked = 1*/ ORDER BY publishDate DESC";
+
+    switch ($type) {
+      case 'checked':
+        $and = " AND checked = 1 ";
+        break;
+      case 'unchecked':
+        $and = " AND checked = 0 ";;
+        break;
+      default:
+        $and = " ";
+        break;
+    }
+
+    $sql = "SELECT * FROM comments WHERE idArticle = :idArticle";
+    $sql .= $and;
+    $sql .= "ORDER BY publishDate DESC";
     $query = $this->db->prepare($sql);
     $query->execute([
       'idArticle' => $idArticle
