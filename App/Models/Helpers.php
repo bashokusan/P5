@@ -32,15 +32,23 @@ class Helpers
 
   public static function menuBack() : string
   {
-    return static::menuItem('comments', 'Comments')
-          .static::menuItem('adminrequest', 'Requests')
-          .static::menuItem('logout', 'Logout');
+    return static::menuItem('login', 'Login')
+          .static::menuItem('request', 'Contribuer');
   }
 
   public static function menuBackGuest() : string
   {
-    return static::menuItem('login', 'Login')
-          .static::menuItem('request', 'Contribuer');
+    return static::menuItem('logout', 'Logout');
+  }
+
+  public static function menuBackAdmin() : string
+  {
+    return static::menuItem('posts', 'Articles')
+          .static::menuItem('edit', 'Nouveau')
+          .static::menuItem('comments', 'Commentaires')
+          .static::menuItem('adminrequest', 'Requests')
+          .static::menuItem('profile', 'Profil')
+          .static::menuItem('logout', 'Logout');
   }
 
 }

@@ -5,7 +5,13 @@
   <nav>
     <ul>
       <div class="nav_menu">
-        <?= isset($_SESSION['role']) && $_SESSION['role'] == "admin" ? Helpers::menuBack() : Helpers::menuBackGuest() ?>
+        <?php if(isset($_SESSION['role']) && $_SESSION['role'] == "admin") : ?>
+          <?= Helpers::menuBackAdmin()  ?>
+        <?php elseif(isset($_SESSION['role']) && $_SESSION['role'] == "guest") :?>
+          <?= Helpers::menuBackGuest()  ?>
+        <?php else : ?>
+          <?= Helpers::menuBack()  ?>
+        <?php endif ?>
       </div>
       <div class="nav_cta">
         <li><a href="../Public/index.php">Voir le site</a></li>

@@ -43,7 +43,7 @@ class BackendController
   /**
    * Call for home page
    */
-  public function home(){
+  public function homepage(){
     ob_start();
     require_once $this->getViewPath().'home.php';
     $content = ob_get_clean();
@@ -51,11 +51,51 @@ class BackendController
 
   }
 
+
+  /**
+   * Call for posts page
+   */
+  public function postspage(){
+    $db = DBFactory::getPDO();
+    $postManager = new PostManager($db);
+    $postList = $postManager->getList();
+
+    ob_start();
+    require_once $this->getViewPath().'posts.php';
+    $content = ob_get_clean();
+    require $this->getTemplatePath();
+  }
+
+
+  /**
+   * Call for edit page
+   */
+  public function editpage(){
+    ob_start();
+    require_once $this->getViewPath().'edit.php';
+    $content = ob_get_clean();
+    require $this->getTemplatePath();
+
+  }
+
+
+  /**
+   * Call for comments page
+   */
+  public function commentspage(){
+    ob_start();
+    require_once $this->getViewPath().'comments.php';
+    $content = ob_get_clean();
+    require $this->getTemplatePath();
+
+  }
+
+
   /**
    * Page to request admin role
    * Save email and message from request form into the database
    */
-  public function request(){
+  public function requestpage(){
 
     if($_POST['request'])
     {
@@ -92,7 +132,7 @@ class BackendController
   /**
    * Call in requests page
    */
-  public function answerRequest(){
+  public function adminrequestpage(){
 
     $db = DBFactory::getPDO();
     $userManager = new UserManager($db);
@@ -160,6 +200,19 @@ class BackendController
     return $result;
   }
 
+
+  /**
+   * Call for posts page
+   */
+  public function profilepage(){
+    ob_start();
+    require_once $this->getViewPath().'profile.php';
+    $content = ob_get_clean();
+    require $this->getTemplatePath();
+
+  }
+
+
   /**
   * Call for login page
   * Check if user infos are valid and create session
@@ -174,7 +227,7 @@ class BackendController
       ];
 
       $_SESSION['inputs'] = $_POST;
-      
+
       $user = new User($data);
 
       if($user->isValid())
@@ -183,15 +236,30 @@ class BackendController
         $userManager = new UserManager($db);
 
         $loggingUser = $userManager->getUserByMail($user->email());
-        if($loggingUser){
+
+        if($loggingUser)
+        {
           $passwordCheck = password_verify($user->password(), $loggingUser->password());
           if($passwordCheck)
           {
-            session_start();
-            $_SESSION['role'] = 'admin';
-            $_SESSION['token'] = $loggingUser->token();
-            $_SESSION['inputs'] = [];
-            header('Location: ?page=home');
+            if($loggingUser->confirm() == 1)
+            {
+              session_start();
+              $_SESSION['role'] = 'admin';
+              $_SESSION['id'] = $loggingUser->id();
+              $_SESSION['token'] = $loggingUser->token();
+              $_SESSION['inputs'] = [];
+              header('Location: ?page=home');
+            }
+            elseif($loggingUser->confirm() == 0)
+            {
+              session_start();
+              $_SESSION['role'] = 'guest';
+              $_SESSION['id'] = $loggingUser->id();
+              $_SESSION['token'] = $loggingUser->token();
+              $_SESSION['inputs'] = [];
+              header('Location: ?page=newpass');
+            }
           }
           else
           {
@@ -216,6 +284,24 @@ class BackendController
 
   }
 
+
+  public function newpasspage(){
+    $db = DBFactory::getPDO();
+    $userManager = new UserManager($db);
+
+    $user = $userManager->getUser($_SESSION['id']);
+
+    if($_POST['updatemdp']){
+        print_r($user);
+    }
+
+    ob_start();
+    require_once $this->getViewPath().'newpass.php';
+    $content = ob_get_clean();
+    require $this->getTemplatePath();
+  }
+
+
   /**
    * Destroy session when logout
    */
@@ -229,8 +315,9 @@ class BackendController
    * Check if user connected or not
    * @return bool True if var session
    */
-  public function loggedIn(){
-    if(isset($_SESSION['role']) && $_SESSION['role'] == "admin"){
+  public function loggedIn($role = null){
+    if(isset($_SESSION['role']) && $_SESSION['role'] == $role)
+    {
       return true;
     }else {
       return false;

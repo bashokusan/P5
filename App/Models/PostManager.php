@@ -23,9 +23,12 @@ class PostManager
    * @param  int $offset (see pagination in FrontendController blog())
    * @return Post
    */
-  public function getList($limit, $offset)
+  public function getList($limit = null, $offset = null)
   {
-    $sql = "SELECT * FROM articles ORDER BY id DESC LIMIT $limit OFFSET $offset";
+    $sql = "SELECT * FROM articles ORDER BY id DESC ";
+    if(isset($limit) && isset($offset)){
+      $sql .= "LIMIT $limit OFFSET $offset";
+    }
     $query = $this->db->query($sql);
     $query->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Post::class);
     $postList= $query->fetchAll();

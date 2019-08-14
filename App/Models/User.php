@@ -129,7 +129,7 @@ class User
 
   public function setAccept($accept)
   {
-    $this->accept = $accept;
+    $this->accept = (int)$accept;
   }
 
   public function setToken($token)
@@ -139,7 +139,7 @@ class User
 
   public function setConfirm($confirm)
   {
-    $this->confirm = $confirm;
+    $this->confirm = (int)$confirm;
   }
 
   // Getters
@@ -191,7 +191,7 @@ class User
 
   public function confirm()
   {
-    return $this->accept;
+    return $this->confirm;
   }
 
 }

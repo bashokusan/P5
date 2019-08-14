@@ -80,7 +80,7 @@ class UserManager
 
   public function getUserByMail($email)
   {
-    $sql = "SELECT * FROM users WHERE email = :email";
+    $sql = "SELECT * FROM users WHERE email = :email AND accept = 1";
     $query = $this->db->prepare($sql);
     $query->execute([
       'email' => $email,

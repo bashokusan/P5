@@ -22,45 +22,88 @@ $controller = new BackendController($viewPath, $templatePath);
 
 try {
 
-  if($controller->loggedIn())
+  if($controller->loggedIn('admin'))
   {
     if(!$_GET || $_GET['page'] == 'home')
     {
-      $controller->home();
+      $controller->homepage();
     }
+
+    elseif($_GET['page'] == 'posts')
+    {
+      $controller->postspage();
+    }
+
+    elseif($_GET['page'] == 'edit')
+    {
+      $controller->editpage();
+    }
+
+    elseif($_GET['page'] == 'comments')
+    {
+      $controller->commentspage();
+    }
+
     elseif($_GET['page'] == 'adminrequest')
     {
-      $controller->answerRequest();
+      $controller->adminrequestpage();
     }
-    elseif($_GET['acceptrequest'])
+      elseif($_GET['acceptrequest'])
+      {
+        $controller->acceptRequest((int)$_GET['acceptrequest']);
+        header('Location: ?page=adminrequest');
+      }
+
+    elseif($_GET['page'] == 'profile')
     {
-      $controller->acceptRequest((int)$_GET['acceptrequest']);
-      header('Location: ?page=adminrequest');
+      $controller->profilepage();
     }
+
+    elseif($_GET['page'] == 'newpass')
+    {
+      $controller->newpasspage();
+    }
+
     elseif($_GET['page'] == 'logout')
+    {
+      $controller->logout();
+      header('Location: ?page=login');
+    }
+
+    else
+    {
+      throw new \Exception("Page introuvable");
+    }
+  }
+
+  elseif($controller->loggedIn('guest'))
+  {
+    if($_GET['page'] == 'logout')
     {
       $controller->logout();
       header('Location: ?page=login');
     }
     else
     {
-      throw new \Exception("Page introuvable");
+      $controller->newpasspage();
     }
   }
-  
+
   elseif(!$controller->loggedIn())
   {
-    if(!$_GET['page'] || $_GET['page'] == 'login')
+    if(!$_GET['page'] || $_GET['page'] == 'login' || isset($_GET['guest']))
     {
       $controller->login();
     }
+
     elseif($_GET['page'] == 'request')
     {
-      $controller->request();
+      $controller->requestpage();
     }
+
     else
     {
-      throw new \Exception("Page introuvable");
+      $controller->login();
     }
   }
 
