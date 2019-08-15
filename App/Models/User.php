@@ -14,7 +14,6 @@ class User
   private $message;
   private $requestDate;
   private $accept;
-  private $token;
   private $confirm;
 
   const NAME_INVALID = 1;
@@ -132,11 +131,6 @@ class User
     $this->accept = (int)$accept;
   }
 
-  public function setToken($token)
-  {
-    $this->token = $token;
-  }
-
   public function setConfirm($confirm)
   {
     $this->confirm = (int)$confirm;
@@ -171,7 +165,7 @@ class User
 
   public function message()
   {
-    return nl2br($this->message);
+    return $this->message;
   }
 
   public function requestDate()
@@ -182,11 +176,6 @@ class User
   public function accept()
   {
     return $this->accept;
-  }
-
-  public function token()
-  {
-    return $this->token;
   }
 
   public function confirm()

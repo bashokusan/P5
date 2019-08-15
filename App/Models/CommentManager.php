@@ -82,11 +82,6 @@ class CommentManager
       'author' => $comment->author(),
       'content' => $comment->content()
     ]);
-
-    $query = $this->db->prepare("UPDATE articles SET countComment = countComment + 1 WHERE id = :id");
-    $query->execute([
-                'id' => $comment->idArticle(),
-              ]);
   }
 
 

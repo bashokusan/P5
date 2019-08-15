@@ -41,7 +41,8 @@ class BackendController
 
 
   /**
-   * Call for home page
+   * Home page
+   * Main dashboard with number of posts, comments and unchecked comments list
    */
   public function homepage(){
     ob_start();
@@ -53,7 +54,8 @@ class BackendController
 
 
   /**
-   * Call for posts page
+   * Posts page
+   * Displays all posts
    */
   public function postspage(){
     $db = DBFactory::getPDO();
@@ -68,7 +70,8 @@ class BackendController
 
 
   /**
-   * Call for edit page
+   * Edit page
+   * Update or create new post
    */
   public function editpage(){
     ob_start();
@@ -80,7 +83,8 @@ class BackendController
 
 
   /**
-   * Call for comments page
+   * Comments page
+   * Displays all comments ordered by posts
    */
   public function commentspage(){
     ob_start();
@@ -114,7 +118,7 @@ class BackendController
       if($user->isValid())
       {
         $userManager->add($user);
-        $message = "Votre demande a bien été envoyé";
+        $message = "Votre demande a bien été envoyé, vous recevrez un mail si elle est acceptée";
         $_SESSION['inputs'] = [];
       }
       else
@@ -130,7 +134,8 @@ class BackendController
   }
 
   /**
-   * Call in requests page
+   * Requests page
+   * Displays standing by requests and accepted request
    */
   public function adminrequestpage(){
 
@@ -146,10 +151,9 @@ class BackendController
   }
 
   /**
-   * Call when accept link on requests page
+   * Call when accept link clicked on requests page
    */
   public function acceptRequest($id){
-    $token = bin2hex(random_bytes(64));
     $pass = rand(10000, 99999);
     $hashPass = password_hash($pass, PASSWORD_DEFAULT);
 
@@ -157,9 +161,9 @@ class BackendController
     $userManager = new UserManager($db);
     $user = $userManager->getUser($id);
 
-    $userManager->acceptRequest($id, $hashPass, $token);
+    $userManager->acceptRequest($id, $hashPass);
 
-    $this->sendAnswer($user->name(), $user->email(), $pass, $token);
+    $this->sendAnswer($user->name(), $user->email(), $pass);
   }
 
   /**
@@ -167,16 +171,15 @@ class BackendController
    * @param  string $userName
    * @param  string $userMail
    * @param  string $pass
-   * @param  string $token
    * @return bool
    */
-  public function sendAnswer($userName, $userMail, $pass, $token){
+  public function sendAnswer($userName, $userMail, $pass){
     $from = ['contact@monsite.fr' => 'Contact'];
     $to = $userMail;
 
-    $content = "Bonjour ".$userName.", voici votre mot de passe temporaire : ".$pass." Le lien d'accès : http://localhost/P5/Backoffice/index.php?guest=".$token." A bientôt.";
+    $content = "Bonjour ".$userName.", voici votre mot de passe temporaire : ".$pass." Le lien d'accès : http://localhost/P5/Backoffice/index.php A bientôt.";
 
-    $contentHtml = "<p>Bonjour ".$userName."</p><p>Votre mot de passe temporaire : ".$pass."</p><p><a href='http://localhost/P5/Backoffice/index.php?guest=".$token."'>Lien d'accès</a></p>";
+    $contentHtml = "<p>Bonjour ".$userName."</p><p>Votre mot de passe temporaire : ".$pass."</p><p><a href='http://localhost/P5/Backoffice/index.php'>Lien d'accès</a></p>";
 
     // Create the Transport
     $transport = (new Swift_SmtpTransport('smtp.mailtrap.io', 2525))
@@ -202,7 +205,7 @@ class BackendController
 
 
   /**
-   * Call for posts page
+   * Profile page
    */
   public function profilepage(){
     ob_start();
@@ -225,55 +228,67 @@ class BackendController
         'email' => htmlentities($_POST['email']),
         'password' => htmlentities($_POST['password'])
       ];
-
+      // Save inputs in session
       $_SESSION['inputs'] = $_POST;
 
+      $db = DBFactory::getPDO();
       $user = new User($data);
+      $userManager = new UserManager($db);
 
-      if($user->isValid())
+      // Use Ip
+      $ip = $_SERVER['REMOTE_ADDR'];
+      $connect = $userManager->connect($ip);
+
+      if($connect < 3)
       {
-        $db = DBFactory::getPDO();
-        $userManager = new UserManager($db);
-
-        $loggingUser = $userManager->getUserByMail($user->email());
-
-        if($loggingUser)
+        if($user->isValid())
         {
-          $passwordCheck = password_verify($user->password(), $loggingUser->password());
-          if($passwordCheck)
+          // get user from database with email from form
+          $loggingUser = $userManager->getUserByMail($user->email());
+
+          if($loggingUser)
           {
-            if($loggingUser->confirm() == 1)
+            $passwordCheck = password_verify($user->password(), $loggingUser->password());
+            if($passwordCheck)
             {
-              session_start();
-              $_SESSION['role'] = 'admin';
-              $_SESSION['id'] = $loggingUser->id();
-              $_SESSION['token'] = $loggingUser->token();
-              $_SESSION['inputs'] = [];
-              header('Location: ?page=home');
+              // If user is confirmed (has changed his password once)
+              if($loggingUser->confirm() == 1)
+              {
+                session_start();
+                $_SESSION['role'] = 'admin';
+                $_SESSION['id'] = $loggingUser->id();
+                $_SESSION['inputs'] = [];
+                header('Location: ?page=home');
+              }
+              // If user is new and has not changed his password yet
+              elseif($loggingUser->confirm() == 0)
+              {
+                session_start();
+                $_SESSION['role'] = 'guest';
+                $_SESSION['id'] = $loggingUser->id();
+                $_SESSION['inputs'] = [];
+                header('Location: ?page=newpass');
+              }
             }
-            elseif($loggingUser->confirm() == 0)
+            else
             {
-              session_start();
-              $_SESSION['role'] = 'guest';
-              $_SESSION['id'] = $loggingUser->id();
-              $_SESSION['token'] = $loggingUser->token();
-              $_SESSION['inputs'] = [];
-              header('Location: ?page=newpass');
+              $prohib = "Informations de connection éronées (mdp)";
+              $failconnect = $userManager->failconnect($ip, $loggingUser->id());
             }
           }
           else
           {
-            $prohib = "Informations de connection éronées (mdp)";
+            $prohib = "Informations de connection éronées";
           }
         }
         else
         {
-          $prohib = "Informations de connection éronées";
+          $errors = $user->errors();
         }
       }
       else
       {
-        $errors = $user->errors();
+        throw new \Exception("Votre accès est bloqué. Contactez l'administrateur.");
       }
     }
 
@@ -285,6 +300,9 @@ class BackendController
   }
 
 
+  /**
+   * Page to create new password
+   */
   public function newpasspage(){
     $db = DBFactory::getPDO();
     $userManager = new UserManager($db);
@@ -306,14 +324,13 @@ class BackendController
    * Destroy session when logout
    */
   public function logout(){
-    $_SESSION['role'] = "";
-    $_SESSION['token'] = "";
+    $_SESSION = [];
     session_destroy();
   }
 
   /**
    * Check if user connected or not
-   * @return bool True if var session
+   * @return bool True if there is a role session var
    */
   public function loggedIn($role = null){
     if(isset($_SESSION['role']) && $_SESSION['role'] == $role)

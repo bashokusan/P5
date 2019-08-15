@@ -170,7 +170,7 @@ class FrontendController
      * Call for getList function in CommentManager
      * Params for function : id article, type of comment (null for all, checked for 'checked' comments only, 'unchecked' for unchecked comments only)
      */
-    $listofcomments = $commentManager->getList($post->id());
+    $listofcomments = $commentManager->getList($post->id(), 'checked');
 
     ob_start();
     require_once $this->getViewPath() .'post.php';

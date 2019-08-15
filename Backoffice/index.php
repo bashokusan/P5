@@ -1,6 +1,24 @@
 <?php
 session_start();
 
+// Session highjacking defense
+$token = bin2hex(random_bytes(64));
+setcookie('t_user', $token, time() + (60 * 20));
+$_SESSION['t_user'] = $token;
+
+if (isset($_COOKIE['t_user']) && isset($_SESSION['t_user']) && ($_COOKIE['ticket'] == $_SESSION['ticket']))
+{
+  $token = bin2hex(random_bytes(64));
+  setcookie('t_user', $token, time() + (60 * 20));
+  $_SESSION['t_user'] = $token;
+}
+else
+{
+	$_SESSION = [];
+	session_destroy();
+	header('location:index.php');
+}
+
 // Loadtime (see Views/Backend/Sections/footer)
 define('LOADTIME', microtime(true));
 
@@ -22,6 +40,7 @@ $controller = new BackendController($viewPath, $templatePath);
 
 try {
 
+  // If user is logged in as admin
   if($controller->loggedIn('admin'))
   {
     if(!$_GET || $_GET['page'] == 'home')
@@ -76,6 +95,7 @@ try {
     }
   }
 
+  // If user is logged in as guest (unconfirmed admin)
   elseif($controller->loggedIn('guest'))
   {
     if($_GET['page'] == 'logout')
@@ -89,6 +109,7 @@ try {
     }
   }
 
+  // If user is not logged in
   elseif(!$controller->loggedIn())
   {
     if(!$_GET['page'] || $_GET['page'] == 'login' || isset($_GET['guest']))

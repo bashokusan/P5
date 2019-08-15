@@ -92,17 +92,31 @@ class UserManager
     return $user;
   }
 
-  public function acceptRequest($id, $pass, $token)
+  public function acceptRequest($id, $pass)
   {
-    $sql = "UPDATE users SET password = :password, accept = 1, token = :token
+    $sql = "UPDATE users SET password = :password, accept = 1
             WHERE id = :id";
     $query = $this->db->prepare($sql);
     $query->execute([
       'id' => $id,
       'password' => $pass,
-      'token' => $token
     ]);
 
+  }
+
+  public function connect($ip){
+    $query = $this->db->prepare('SELECT COUNT(*) FROM connect where ip = :ip');
+    $query->execute(['ip' => $ip,]);
+    $connect = $query->fetchColumn();
+
+    $query->closeCursor();
+    return $connect;
+  }
+
+  public function failconnect($ip, $iduser){
+    $query = $this->db->prepare("INSERT INTO connect(ip, iduser, dateconnect) VALUES(:ip, :iduser, NOW())");
+    $query->execute(['ip' => $ip, 'iduser' => $iduser
+  ]);
   }
 
 }
