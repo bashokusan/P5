@@ -15,6 +15,7 @@
 
 <h3>Commentaires</h3>
 <div class="comment_form">
+  <?php if($message) echo "<p class='alert info'>" . $message . "</p>"?>
   <form class="" action="" method="post">
     <div>
       <?php if(isset($errors) && in_array(Comment::AUTHOR_INVALID, $errors)) echo "<p class='alert warning'>auteur invalide</p>"; ?>

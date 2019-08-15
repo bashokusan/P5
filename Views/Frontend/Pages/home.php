@@ -25,7 +25,6 @@
   </div>
 
   <div class="hero">
-    <img src="Content/doom.svg" alt="hero image" class="heroimg">
   </div>
 
 </div>
