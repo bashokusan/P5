@@ -1,24 +1,6 @@
 <?php
 session_start();
 
-// Session highjacking defense
-$token = bin2hex(random_bytes(64));
-setcookie('t_user', $token, time() + (60 * 20));
-$_SESSION['t_user'] = $token;
-
-if (isset($_COOKIE['t_user']) && isset($_SESSION['t_user']) && ($_COOKIE['ticket'] == $_SESSION['ticket']))
-{
-  $token = bin2hex(random_bytes(64));
-  setcookie('t_user', $token, time() + (60 * 20));
-  $_SESSION['t_user'] = $token;
-}
-else
-{
-	$_SESSION = [];
-	session_destroy();
-	header('location:index.php');
-}
-
 // Loadtime (see Views/Backend/Sections/footer)
 define('LOADTIME', microtime(true));
 
@@ -37,6 +19,9 @@ $templatePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Views/Backend/Layout/t
  * @var BackendController
  */
 $controller = new BackendController($viewPath, $templatePath);
+
+// Hack Protect
+$controller->defense($token);
 
 try {
 

@@ -104,6 +104,9 @@ class UserManager
 
   }
 
+  /**
+   * Count failed connection from same ip
+   */
   public function connect($ip){
     $query = $this->db->prepare('SELECT COUNT(*) FROM connect where ip = :ip');
     $query->execute(['ip' => $ip,]);
@@ -113,6 +116,9 @@ class UserManager
     return $connect;
   }
 
+  /**
+   * Insert into connect everytime there is a failed connection from same ip
+   */
   public function failconnect($ip, $iduser){
     $query = $this->db->prepare("INSERT INTO connect(ip, iduser, dateconnect) VALUES(:ip, :iduser, NOW())");
     $query->execute(['ip' => $ip, 'iduser' => $iduser

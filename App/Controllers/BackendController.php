@@ -8,12 +8,14 @@ class BackendController
 
   private $viewPath;
   private $templatePath;
+  private $token;
 
 
   /**
    * Set the viewPath and templatePath
    * @param string $viewPath     Path to pages
    * @param string $templatePath Path to template
+   * @param string $token Token
    */
   public function __construct($viewPath, $templatePath){
     $this->setViewPath($viewPath);
@@ -30,6 +32,10 @@ class BackendController
     $this->templatePath = $templatePath;
   }
 
+  public function setToken($token){
+    $this->token = $token;
+  }
+
   // Getters
   public function getViewPath(){
     return $this->viewPath;
@@ -37,6 +43,48 @@ class BackendController
 
   public function getTemplatePath(){
     return $this->templatePath;
+  }
+
+  public function getToken(){
+    return $this->token;
+  }
+
+
+  /**
+   * Session hijacking and CSRF defense
+   * @param  string $token
+   */
+  public function defense($token){
+    // Token
+    $token = bin2hex(random_bytes(64));
+    $this->setToken($token);
+
+    // Create a cookie and session with token
+    setcookie('t_user', $this->getToken(), time() + (60 * 20));
+    $_SESSION['t_user'] = $this->getToken();
+
+    if(isset($_SESSION['u_user']) && isset($_COOKIE['t_user']) && !empty($_SESSION['u_user']) && !empty($_COOKIE['t_user']))
+    {
+      // If sesion token different from cookie token, session is destroyed
+      if($_SESSION['u_user'] != $_COOKIE['t_user'])
+      {
+        $_SESSION = [];
+        session_destroy();
+        header('location:index.php');
+      }
+    }
+
+    if(isset($_GET['token']) && !empty($_GET['token']))
+    {
+      // If token in url is different from token in session and cookie, session is destroyed
+      if($_GET['token'] != $this->getToken())
+      {
+        $_SESSION = [];
+        session_destroy();
+        header('location:index.php');
+      }
+    }
+
   }
 
 
@@ -48,6 +96,7 @@ class BackendController
     $db = DBFactory::getPDO();
     $postManager = new PostManager($db);
     $commentManager = new CommentManager($db);
+    $token = $this->getToken($token);
 
     $postsCount = $postManager->count();
     $commentCount = $commentManager->count();
@@ -256,10 +305,11 @@ class BackendController
       $user = new User($data);
       $userManager = new UserManager($db);
 
-      // Use Ip
+      // Use Ip (see connect method for brute force attack defense)
       $ip = $_SERVER['REMOTE_ADDR'];
       $connect = $userManager->connect($ip);
 
+      // User will be ban is there are more than 3 failed connections.
       if($connect < 3)
       {
         if($user->isValid())
@@ -294,6 +344,7 @@ class BackendController
             else
             {
               $prohib = "Informations de connection éronées (mdp)";
+              // Save the failed connection into dabatase
               $failconnect = $userManager->failconnect($ip, $loggingUser->id());
             }
           }

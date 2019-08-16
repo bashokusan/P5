@@ -24,8 +24,8 @@
       <td><?= $comment->content() ?></td>
       <td><?= $comment->publishDate() ?></td>
       <td>
-        <a href="?check=<?= $comment->id() ?>&post=<?= $comment->idArticle() ?>">Valider</a> /
-        <a href="?flag=<?= $comment->id() ?>&post=<?= $comment->idArticle() ?>">Modérer</a>
+        <a href="?check=<?= $comment->id() ?>&post=<?= $comment->idArticle() ?>&token=<?= $token ?>">Valider</a> /
+        <a href="?flag=<?= $comment->id() ?>&post=<?= $comment->idArticle() ?>&token=<?= $token ?>">Modérer</a>
       </td>
     </tr>
   <?php endforeach ?>
