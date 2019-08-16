@@ -13,7 +13,7 @@
         <p>Message :</p>
         <p><?= $user->message() ?></p>
       </div>
-      <a href="?acceptrequest=<?= $user->id() ?>">Accepter</a>
+      <a href="?acceptrequest=<?= $user->id() ?>&token=<?= $token ?>">Accepter</a>
     <?php endforeach ?>
   <?php endif ?>
 </div>

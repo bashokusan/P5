@@ -51,40 +51,30 @@ class BackendController
 
 
   /**
-   * Session hijacking and CSRF defense
-   * @param  string $token
+   * Session hijacking defense function
    */
-  public function defense($token){
-    // Token
-    $token = bin2hex(random_bytes(64));
-    $this->setToken($token);
+  public function sessionHijack(){
+    $token = bin2hex(random_bytes(32));
+    setcookie('u_log', $token, time() + (60 * 20));
+    $_SESSION['u_log'] = $token;
+  }
 
-    // Create a cookie and session with token
-    setcookie('t_user', $this->getToken(), time() + (60 * 20));
-    $_SESSION['t_user'] = $this->getToken();
 
-    if(isset($_SESSION['u_user']) && isset($_COOKIE['t_user']) && !empty($_SESSION['u_user']) && !empty($_COOKIE['t_user']))
-    {
-      // If sesion token different from cookie token, session is destroyed
-      if($_SESSION['u_user'] != $_COOKIE['t_user'])
-      {
-        $_SESSION = [];
-        session_destroy();
-        header('location:index.php');
-      }
-    }
-
+  /**
+   * CSRF defense function
+   * If token in url different from token in session, logout user
+   */
+  public function csrf(){
     if(isset($_GET['token']) && !empty($_GET['token']))
     {
       // If token in url is different from token in session and cookie, session is destroyed
-      if($_GET['token'] != $this->getToken())
+      if($_GET['token'] != $_SESSION['t_user'])
       {
         $_SESSION = [];
         session_destroy();
         header('location:index.php');
       }
     }
-
   }
 
 
@@ -96,7 +86,7 @@ class BackendController
     $db = DBFactory::getPDO();
     $postManager = new PostManager($db);
     $commentManager = new CommentManager($db);
-    $token = $this->getToken($token);
+    $token = $_SESSION['t_user'];
 
     $postsCount = $postManager->count();
     $commentCount = $commentManager->count();
@@ -120,6 +110,7 @@ class BackendController
     $db = DBFactory::getPDO();
     $postManager = new PostManager($db);
     $postList = $postManager->getList();
+    $token = $_SESSION['t_user'];
 
     ob_start();
     require_once $this->getViewPath().'posts.php';
@@ -278,6 +269,13 @@ class BackendController
    * Profile page
    */
   public function profilepage(){
+    $id = $_SESSION['id'];
+    $token = $_SESSION['t_user'];
+
+    $db = DBFactory::getPDO();
+    $userManager = new UserManager($db);
+    $user = $userManager->getUser($id);
+    
     ob_start();
     require_once $this->getViewPath().'profile.php';
     $content = ob_get_clean();
@@ -326,6 +324,8 @@ class BackendController
               if($loggingUser->confirm() == 1)
               {
                 session_start();
+                $token = bin2hex(random_bytes(32));
+                $_SESSION['t_user'] = $token;
                 $_SESSION['role'] = 'admin';
                 $_SESSION['id'] = $loggingUser->id();
                 $_SESSION['inputs'] = [];
@@ -335,6 +335,8 @@ class BackendController
               elseif($loggingUser->confirm() == 0)
               {
                 session_start();
+                $token = bin2hex(random_bytes(32));
+                $_SESSION['t_user'] = $token;
                 $_SESSION['role'] = 'guest';
                 $_SESSION['id'] = $loggingUser->id();
                 $_SESSION['inputs'] = [];
@@ -441,5 +443,17 @@ class BackendController
     header('Location: ?page=home');
   }
 
+
+  /**
+   * Deletion of post and its comments
+   * @param  int $id Post id
+   */
+  public function deletePost($id){
+    $db = DBFactory::getPDO();
+    $postManager = new PostManager($db);
+    $postManager->delete($id);
+
+    header('Location: ?page=posts');
+  }
 
 }

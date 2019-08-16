@@ -1,6 +1,8 @@
 <? $title = "Backoffice | Articles"; ?>
 
 <h2>Liste des articles</h2>
+<?php if($message) echo "<p class='alert success'>" . $message . "</p>"?>
+
 <div class="posts_container">
   <?php foreach($postList as $post) : ?>
     <hr>
@@ -18,7 +20,7 @@
       </div>
       <div class="post_actions">
           <p>Modifier</p>
-          <p>Supprimer</p>
+          <p><a href="?delete=<?= $post->id() ?>&token=<?= $token ?>">Supprimer</a></p>
       </div>
     </div>
   <?php endforeach ?>

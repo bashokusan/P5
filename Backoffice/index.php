@@ -20,8 +20,12 @@ $templatePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Views/Backend/Layout/t
  */
 $controller = new BackendController($viewPath, $templatePath);
 
-// Hack Protect
-$controller->defense($token);
+
+// Session hijacking defense
+$controller->sessionHijack(); 
+
+// CSRF defense
+$controller->csrf();
 
 try {
 
@@ -46,6 +50,11 @@ try {
     elseif($_GET['page'] == 'posts')
     {
       $controller->postspage();
+    }
+
+    elseif(!empty($_GET['delete']))
+    {
+      $controller->deletePost((int)$_GET['delete']);
     }
 
     elseif($_GET['page'] == 'edit')
