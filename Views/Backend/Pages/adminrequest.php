@@ -25,9 +25,7 @@
       <div class="user">
         <p>Nom : <?= $acceptedUser->name() ?></p>
         <p>Email : <?= $acceptedUser->email() ?></p>
-        <p>Message :</p>
-        <p><?= $acceptedUser->message() ?></p>
-        <p><strong><?= $acceptedUser->confirm() == 0 ? "L'utilisateur n'a pas encore confirmé" : "Administrateur confirmé" ?></strong></p>
+        <p><strong><?= $acceptedUser->confirm() == 0 ? "L'utilisateur n'a pas encore confirmé" : "Ce contributeur a confirmé" ?></strong></p>
         <hr>
       </div>
     <?php endforeach ?>

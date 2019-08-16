@@ -32,6 +32,28 @@ class UserManager
     ]);
   }
 
+
+  /**
+   * [update description]
+   * @param  int $id       [description]
+   * @param  string $password [description]
+   * @param  string $confirm  [description]
+   */
+  public function update($id, $password, $confirm = null){
+    if($confirm === "confirm"){
+      $sql = "UPDATE users SET password = :password, confirm = 1
+              WHERE id = :id";
+    }else {
+      $sql = "UPDATE users SET password = :password, accept = 1
+              WHERE id = :id";
+    }
+    $query = $this->db->prepare($sql);
+    $query->execute([
+      'id' => $id,
+      'password' => $password,
+    ]);
+  }
+
   /**
    * [getList description]
    * @param  [type] $idArticle [description]

@@ -16,7 +16,7 @@
     <?php if(isset($errors) && in_array(User::MESSAGE_INVALID, $errors)) echo "<p class='alert warning'>Message invalide</p>"; ?>
     <textarea name="message" rows="4" cols="80" placeholder="Ecrivez un message pour vous présenter et expliquer pourquoi vous souhaitez être administrateur"><?= $_SESSION['inputs']['message'] ? $_SESSION['inputs']['message'] : "" ?></textarea>
 
-    <input type="submit" name="request" value="Se connecter">
+    <input type="submit" name="request" value="Envoyer la demande">
 
   </form>
   <p>Nous répondrons à votre demande dès que possible</p>

@@ -275,7 +275,7 @@ class BackendController
     $db = DBFactory::getPDO();
     $userManager = new UserManager($db);
     $user = $userManager->getUser($id);
-    
+
     ob_start();
     require_once $this->getViewPath().'profile.php';
     $content = ob_get_clean();
@@ -383,8 +383,48 @@ class BackendController
 
     $user = $userManager->getUser($_SESSION['id']);
 
-    if($_POST['updatemdp']){
-        print_r($user);
+    $token = $_SESSION['t_user'];
+
+    if($_POST['updatemdp'])
+    {
+      if (!empty($_POST['password'] && !empty($_POST['passwordbis'])))
+      {
+        if (isset($_POST['t_user']) && !empty($_POST['t_user']))
+        {
+          if ($_POST['t_user'] === $_SESSION['t_user'])
+          {
+            $id = $user->id();
+            $password = $_POST['password'];
+            $passwordConfirm = $_POST['passwordbis'];
+
+            if($password === $passwordConfirm){
+              if($user->confirm() == 0){
+                $passhash = password_hash($password, PASSWORD_DEFAULT);
+                $userManager->update($id, $passhash, 'confirm');
+                $this->logout();
+                header('Location: ?page=login');
+              }else {
+                $passhash = password_hash($password, PASSWORD_DEFAULT);
+                $userManager->update($id, $passhash);
+                $this->logout();
+                header('Location: ?page=login');
+              }
+            }
+            else
+            {
+              $error = "les mots de passe ne correspondent pas.";
+            }
+          }
+        }
+        else
+        {
+          $error = "Problème didentifications, vos clés ne correspondent pas.";
+        }
+      }
+      else
+      {
+        $error = "Veuillez remplir les champs";
+      }
     }
 
     ob_start();
