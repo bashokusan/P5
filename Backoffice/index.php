@@ -48,6 +48,16 @@ try {
       $controller->homepage();
     }
 
+    elseif(!empty($_GET['check']) && !empty($_GET['post']))
+    {
+      $controller->updateComment((int)$_GET['check'], (int)$_GET['post']);
+    }
+
+    elseif(!empty($_GET['flag']) && !empty($_GET['post']))
+    {
+      $controller->flagComment((int)$_GET['flag'], (int)$_GET['post']);
+    }
+
     elseif($_GET['page'] == 'posts')
     {
       $controller->postspage();

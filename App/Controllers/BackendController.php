@@ -45,6 +45,16 @@ class BackendController
    * Main dashboard with number of posts, comments and unchecked comments list
    */
   public function homepage(){
+    $db = DBFactory::getPDO();
+    $postManager = new PostManager($db);
+    $commentManager = new CommentManager($db);
+
+    $postsCount = $postManager->count();
+    $commentCount = $commentManager->count();
+
+    $uncheckedCount = $commentManager->count('unchecked');
+    $uncheckedComment = $commentManager->getListNoId('unchecked');
+
     ob_start();
     require_once $this->getViewPath().'home.php';
     $content = ob_get_clean();
@@ -87,6 +97,17 @@ class BackendController
    * Displays all comments ordered by posts
    */
   public function commentspage(){
+    $db = DBFactory::getPDO();
+    $commentManager = new CommentManager($db);
+    $flagComments = $commentManager->getListNoId('flag');
+    $flagCommentsCount = $commentManager->count('flag');
+
+    $checkedComment = $commentManager->getListNoId('checked');
+    $checkedCommentsCount = $commentManager->count('checked');
+
+    $commentsList = $commentManager->getListNoId();
+    $CommentsCount = $commentManager->count();
+
     ob_start();
     require_once $this->getViewPath().'comments.php';
     $content = ob_get_clean();
@@ -340,5 +361,34 @@ class BackendController
       return false;
     }
   }
+
+
+  /**
+   * Update comment for checked
+   * @param  int $idcomment [description]
+   * @param  int $idpost    [description]
+   */
+  public function updateComment($idcomment, $idpost){
+    $db = DBFactory::getPDO();
+    $commentManager = new CommentManager($db);
+    $commentManager->updateCheck($idcomment, $idpost, 1);
+
+    header('Location: ?page=home');
+  }
+
+
+  /**
+   * Update comment for flag
+   * @param  int $idcomment [description]
+   * @param  int $idpost    [description]
+   */
+  public function flagComment($idcomment, $idpost){
+    $db = DBFactory::getPDO();
+    $commentManager = new CommentManager($db);
+    $commentManager->updateCheck($idcomment, $idpost, 2);
+
+    header('Location: ?page=home');
+  }
+
 
 }
