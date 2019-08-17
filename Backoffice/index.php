@@ -22,7 +22,7 @@ $controller = new BackendController($viewPath, $templatePath);
 
 
 // Session hijacking defense
-$controller->sessionHijack(); 
+$controller->sessionHijack();
 
 // CSRF defense
 $controller->csrf();
@@ -119,6 +119,25 @@ try {
     if(!$_GET['page'] || $_GET['page'] == 'login' || isset($_GET['guest']))
     {
       $controller->login();
+    }
+
+    elseif($_GET['page'] == 'resetpass')
+    {
+      $controller->resetpasspage();
+    }
+
+    elseif($_GET['page'] == 'reset')
+    {
+      // In url from the email sent after reset request
+      if(isset($_GET['restoken']) && isset($_GET['validator'] )&& !empty($_GET['restoken']) && !empty($_GET['validator'])){
+        if(ctype_xdigit($_GET['restoken']) && ctype_xdigit($_GET['validator'])){
+          $controller->newpasspage();
+        }
+      }
+      else{
+        $controller->login();
+      }
+
     }
 
     elseif($_GET['page'] == 'request')

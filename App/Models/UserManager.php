@@ -147,4 +147,75 @@ class UserManager
   ]);
   }
 
+  /**
+   * Delete failed connection
+   */
+  public function restoreconnect($ip, $iduser){
+    $sql = "DELETE FROM connect WHERE ip = :ip AND iduser = :iduser";
+    $query = $this->db->prepare($sql);
+    $query->execute([
+      'ip' => $ip,
+      'iduser' => $iduser,
+    ]);
+  }
+
+  /**
+   * Delete current line from the table and create a new one
+   * @param [type] $email    Email of the user
+   * @param [type] $selector Selector
+   * @param [type] $token    Token to be hashed before insert
+   * @param [type] $expire   Expire date of the request
+   */
+  public function resetPass($email, $selector, $token, $expire){
+    $sql = "DELETE FROM passreset WHERE email = :email";
+    $query = $this->db->prepare($sql);
+    $query->execute([
+      'email' => $email,
+    ]);
+
+    $hashtoken = password_hash($token, PASSWORD_DEFAULT);
+
+    $sql = "INSERT INTO passreset(email, selector, token, expire)
+    VALUES(:email, :selector, :token, :expire)";
+    $query = $this->db->prepare($sql);
+    $query->execute([
+      'email' => $email,
+      'selector' => $selector,
+      'token' => $hashtoken,
+      'expire' => $expire,
+    ]);
+
+    $query->closeCursor();
+  }
+
+  /**
+   * Check for pending reset request with exprire date after current date
+   * @param [type] $selector Selector
+   * @param [type] $date     Current date
+   */
+  public function getResetPass($selector, $date){
+    $sql = "SELECT * FROM passreset WHERE selector = :selector AND expire >= :current";
+    $query = $this->db->prepare($sql);
+    $query->execute([
+      'selector' => $selector,
+      'current' => $date,
+    ]);
+    $query->setFetchMode(PDO::FETCH_ASSOC);
+    $getresetpass = $query->fetch();
+
+    $query->closeCursor();
+    return $getresetpass;
+  }
+
+  /**
+   * Delete line from passreset table for user with selector in param
+   */
+  public function deletePassReset($selector){
+    $sql = "DELETE FROM passreset WHERE selector = :selector";
+    $query = $this->db->prepare($sql);
+    $query->execute([
+      'selector' => $selector,
+    ]);
+  }
+
 }

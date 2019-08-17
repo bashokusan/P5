@@ -50,10 +50,19 @@ class BackendController
   }
 
 
+//------------------------------------------------------------------------------
+// METHODS
+//------------------------------------------------------------------------------
+
+
+//------------------------------------------------------------------------------
+// Hack Defense Methods
+//------------------------------------------------------------------------------
   /**
    * Session hijacking defense function
    */
-  public function sessionHijack(){
+  public function sessionHijack()
+  {
     $token = bin2hex(random_bytes(32));
     setcookie('u_log', $token, time() + (60 * 20));
     $_SESSION['u_log'] = $token;
@@ -64,7 +73,8 @@ class BackendController
    * CSRF defense function
    * If token in url different from token in session, logout user
    */
-  public function csrf(){
+  public function csrf()
+  {
     if(isset($_GET['token']) && !empty($_GET['token']))
     {
       // If token in url is different from token in session and cookie, session is destroyed
@@ -78,11 +88,15 @@ class BackendController
   }
 
 
+//------------------------------------------------------------------------------
+// Home Page Methods
+//------------------------------------------------------------------------------
   /**
    * Home page
    * Main dashboard with number of posts, comments and unchecked comments list
    */
-  public function homepage(){
+  public function homepage()
+  {
     $db = DBFactory::getPDO();
     $postManager = new PostManager($db);
     $commentManager = new CommentManager($db);
@@ -102,11 +116,15 @@ class BackendController
   }
 
 
+//------------------------------------------------------------------------------
+// Posts Page Methods
+//------------------------------------------------------------------------------
   /**
    * Posts page
    * Displays all posts
    */
-  public function postspage(){
+  public function postspage()
+  {
     $db = DBFactory::getPDO();
     $postManager = new PostManager($db);
     $postList = $postManager->getList();
@@ -120,10 +138,28 @@ class BackendController
 
 
   /**
+   * Deletion of post and its comments
+   * @param  int $id Post id
+   */
+  public function deletePost($id)
+  {
+    $db = DBFactory::getPDO();
+    $postManager = new PostManager($db);
+    $postManager->delete($id);
+
+    header('Location: ?page=posts');
+  }
+
+
+//------------------------------------------------------------------------------
+// Edit Page Methods
+//------------------------------------------------------------------------------
+  /**
    * Edit page
    * Update or create new post
    */
-  public function editpage(){
+  public function editpage()
+  {
     $db = DBFactory::getPDO();
     $postManager = new PostManager($db);
     $token = $_SESSION['t_user'];
@@ -173,11 +209,15 @@ class BackendController
   }
 
 
+//------------------------------------------------------------------------------
+// Comments Page Methods
+//------------------------------------------------------------------------------
   /**
    * Comments page
    * Displays all comments ordered by posts
    */
-  public function commentspage(){
+  public function commentspage()
+  {
     $db = DBFactory::getPDO();
     $commentManager = new CommentManager($db);
     $flagComments = $commentManager->getListNoId('flag');
@@ -193,53 +233,48 @@ class BackendController
     require_once $this->getViewPath().'comments.php';
     $content = ob_get_clean();
     require $this->getTemplatePath();
-
   }
 
 
   /**
-   * Page to request admin role
-   * Save email and message from request form into the database
+   * Update comment for checked
+   * @param  int $idcomment [description]
+   * @param  int $idpost    [description]
    */
-  public function requestpage(){
+  public function updateComment($idcomment, $idpost)
+  {
+    $db = DBFactory::getPDO();
+    $commentManager = new CommentManager($db);
+    $commentManager->updateCheck($idcomment, $idpost, 1);
 
-    if($_POST['request'])
-    {
-      $data = [
-        'name' => htmlentities($_POST['name']),
-        'email' => htmlentities($_POST['email']),
-        'message' => htmlentities($_POST['message'])
-      ];
-
-      $_SESSION['inputs'] = $_POST;
-
-      $user = new User($data);
-      $db = DBFactory::getPDO();
-      $userManager = new UserManager($db);
-
-      if($user->isValid())
-      {
-        $userManager->add($user);
-        $message = "Votre demande a bien été envoyé, vous recevrez un mail si elle est acceptée";
-        $_SESSION['inputs'] = [];
-      }
-      else
-      {
-        $errors = $user->errors();
-      }
-    }
-
-    ob_start();
-    require_once $this->getViewPath().'request.php';
-    $content = ob_get_clean();
-    require $this->getTemplatePath();
+    header('Location: ?page=home');
   }
 
+
+  /**
+   * Update comment for flag
+   * @param  int $idcomment [description]
+   * @param  int $idpost    [description]
+   */
+  public function flagComment($idcomment, $idpost)
+  {
+    $db = DBFactory::getPDO();
+    $commentManager = new CommentManager($db);
+    $commentManager->updateCheck($idcomment, $idpost, 2);
+
+    header('Location: ?page=home');
+  }
+
+
+//------------------------------------------------------------------------------
+// Requests Page Methods (Admin)
+//------------------------------------------------------------------------------
   /**
    * Requests page
    * Displays standing by requests and accepted request
    */
-  public function adminrequestpage(){
+  public function adminrequestpage()
+  {
 
     $db = DBFactory::getPDO();
     $userManager = new UserManager($db);
@@ -255,8 +290,9 @@ class BackendController
   /**
    * Call when accept link clicked on requests page
    */
-  public function acceptRequest($id){
-    $pass = rand(10000, 99999);
+  public function acceptRequest($id)
+  {
+    $pass = rand(10000000, 99999999);
     $hashPass = password_hash($pass, PASSWORD_DEFAULT);
 
     $db = DBFactory::getPDO();
@@ -265,51 +301,24 @@ class BackendController
 
     $userManager->acceptRequest($id, $hashPass);
 
-    $this->sendAnswer($user->name(), $user->email(), $pass);
-  }
+    $mailContentText = "Bonjour ".$user->name().", voici votre mot de passe temporaire : ".$pass." Le lien d'accès : http://localhost/P5/Backoffice/index.php A bientôt.";
 
-  /**
-   * Send email to new user (see above)
-   * @param  string $userName
-   * @param  string $userMail
-   * @param  string $pass
-   * @return bool
-   */
-  public function sendAnswer($userName, $userMail, $pass){
-    $from = ['contact@monsite.fr' => 'Contact'];
-    $to = $userMail;
+    $mailContentHtml = "<p>Bonjour ".$user->name()."</p><p>Votre mot de passe temporaire : ".$pass."</p><p><a href='http://localhost/P5/Backoffice/index.php'>Lien d'accès</a></p>";
 
-    $content = "Bonjour ".$userName.", voici votre mot de passe temporaire : ".$pass." Le lien d'accès : http://localhost/P5/Backoffice/index.php A bientôt.";
+    $mailTopic = "Bienvenue parmis nous";
 
-    $contentHtml = "<p>Bonjour ".$userName."</p><p>Votre mot de passe temporaire : ".$pass."</p><p><a href='http://localhost/P5/Backoffice/index.php'>Lien d'accès</a></p>";
-
-    // Create the Transport
-    $transport = (new Swift_SmtpTransport('smtp.mailtrap.io', 2525))
-        ->setUsername('d481f137380620')
-        ->setPassword('8282c28192de76')
-    ;
-
-    // Create the Mailer using your created Transport
-    $mailer = new Swift_Mailer($transport);
-
-    // Create a message
-    $message = (new Swift_Message('Bienvenue parmis nous'))
-      ->setFrom($from)
-      ->setTo($to)
-      ->setBody($content, 'text/plain')
-      ->addPart($contentHtml, 'text/html');
-
-    // Send the message
-    $result = $mailer->send($message);
-
-    return $result;
+    $this->sendMail($user->email(), $mailContentText, $mailContentHtml, $mailTopic);
   }
 
 
+//------------------------------------------------------------------------------
+// Profile Page Methods
+//------------------------------------------------------------------------------
   /**
    * Profile page
    */
-  public function profilepage(){
+  public function profilepage()
+  {
     $id = $_SESSION['id'];
     $token = $_SESSION['t_user'];
 
@@ -325,12 +334,144 @@ class BackendController
   }
 
 
+//------------------------------------------------------------------------------
+// Change or Reset Password Page Methods
+//------------------------------------------------------------------------------
+  /**
+   * Page to create new password
+   * Also used when reset password
+   */
+  public function newpasspage()
+  {
+    if($_POST['updatemdp'])
+    {
+      if (!empty($_POST['password'] && !empty($_POST['passwordbis'])))
+      {
+        $password = $_POST['password'];
+        $passwordConfirm = $_POST['passwordbis'];
+
+        if($password === $passwordConfirm)
+        {
+          $db = DBFactory::getPDO();
+          $userManager = new UserManager($db);
+
+          // For user who reset password
+          if(isset($_POST['selector']) && isset($_POST['validator'] ) && !empty($_POST['selector']) && !empty($_POST['validator']))
+          {
+            $currentDateTime = date('U');
+
+            // Check if there is a pending request with selector in form
+            $resetpass = $userManager->getResetPass($_POST['selector'], $currentDateTime);
+
+            // Compare token in Databse with token in form
+            $tokenBin = hex2bin($_POST['validator']);
+            $tokenCheck = password_verify($tokenBin, $resetpass['token']);
+
+            if($tokenCheck){
+              $user = $userManager->getUserByMail($resetpass['email']);
+              $id = $user->id();
+
+              $passhash = password_hash($password, PASSWORD_DEFAULT);
+              $userManager->update($id, $passhash);
+              $userManager->deletePassReset($_POST['selector']);
+              $this->logout();
+              header('Location: ?page=login');
+
+            }else {
+              $error = "Une erreur est survenue. Veuillez soumettre une nouvelle réinitialisation.";
+            }
+          }
+          // For users who change password
+          elseif (isset($_POST['t_user']) && !empty($_POST['t_user']))
+          {
+            if ($_POST['t_user'] === $_SESSION['t_user'])
+            {
+              $user = $userManager->getUser($_SESSION['id']);
+              $id = $user->id();
+              // If not confirmed (ie first login and has not changed pass yet)
+              if($user->confirm() == 0)
+              {
+                $passhash = password_hash($password, PASSWORD_DEFAULT);
+                $userManager->update($id, $passhash, 'confirm');
+                $this->logout();
+                header('Location: ?page=login');
+              }
+              // If confirmed admin
+              else
+              {
+                $passhash = password_hash($password, PASSWORD_DEFAULT);
+                $userManager->update($id, $passhash);
+                $this->logout();
+                header('Location: ?page=login');
+              }
+            }
+            else
+            {
+              $error = "Problème didentifications, vos clés ne correspondent pas.";
+            }
+          }
+          else
+          {
+            $error = "Erreur d'identification";
+          }
+        }
+        else
+        {
+          $error = "les mots de passe ne correspondent pas.";
+        }
+      }
+      else
+      {
+        $error = "Veuillez remplir les champs";
+      }
+    }
+
+    ob_start();
+    require_once $this->getViewPath().'newpass.php';
+    $content = ob_get_clean();
+    require $this->getTemplatePath();
+  }
+
+
+//------------------------------------------------------------------------------
+// Log Out Page Methods
+//------------------------------------------------------------------------------
+  /**
+   * Destroy session when logout
+   */
+  public function logout()
+  {
+    $_SESSION = [];
+    session_destroy();
+  }
+
+  /**
+   * Check if user connected or not
+   * @return bool True if there is a role session var
+   */
+  public function loggedIn($role = null)
+  {
+    if(isset($_SESSION['role']) && $_SESSION['role'] == $role)
+    {
+      return true;
+    }else {
+      return false;
+    }
+  }
+
+
+//------------------------------------------------------------------------------
+// Not logged in User Methods
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+// Login Page Methods
+//------------------------------------------------------------------------------
   /**
   * Call for login page
   * Check if user infos are valid and create session
   */
-  public function login(){
-
+  public function login()
+  {
     if(isset($_POST['login']))
     {
       $data = [
@@ -349,8 +490,12 @@ class BackendController
       $connect = $userManager->connect($ip);
 
       // User will be ban is there are more than 3 failed connections.
-      if($connect < 3)
+      if($connect <= 3)
       {
+        if($connect == 3){
+          $warning = "Attention, il vous reste un seul essai. <a href='?page=resetpass'>Mot de passe oublié ?</a>";
+        }
+
         if($user->isValid())
         {
           // get user from database with email from form
@@ -361,6 +506,11 @@ class BackendController
             $passwordCheck = password_verify($user->password(), $loggingUser->password());
             if($passwordCheck)
             {
+              // Restore failed connection to 0
+              if($connect){
+                $userManager->restoreconnect($ip, $loggingUser->id());
+              }
+
               // If user is confirmed (has changed his password once)
               if($loggingUser->confirm() == 1)
               {
@@ -411,130 +561,158 @@ class BackendController
     require_once $this->getViewPath().'login.php';
     $content = ob_get_clean();
     require $this->getTemplatePath();
-
   }
 
 
+//------------------------------------------------------------------------------
+// Reset Password Page Methods
+//------------------------------------------------------------------------------
   /**
-   * Page to create new password
+   * Reset Pass
    */
-  public function newpasspage(){
-    $db = DBFactory::getPDO();
-    $userManager = new UserManager($db);
-
-    $user = $userManager->getUser($_SESSION['id']);
-
-    $token = $_SESSION['t_user'];
-
-    if($_POST['updatemdp'])
+  public function resetpasspage()
+  {
+    if(isset($_POST['resetpass']))
     {
-      if (!empty($_POST['password'] && !empty($_POST['passwordbis'])))
+      if(!empty($_POST['email']))
       {
-        if (isset($_POST['t_user']) && !empty($_POST['t_user']))
-        {
-          if ($_POST['t_user'] === $_SESSION['t_user'])
-          {
-            $id = $user->id();
-            $password = $_POST['password'];
-            $passwordConfirm = $_POST['passwordbis'];
+        $email = htmlentities($_POST['email']);
 
-            if($password === $passwordConfirm){
-              if($user->confirm() == 0){
-                $passhash = password_hash($password, PASSWORD_DEFAULT);
-                $userManager->update($id, $passhash, 'confirm');
-                $this->logout();
-                header('Location: ?page=login');
-              }else {
-                $passhash = password_hash($password, PASSWORD_DEFAULT);
-                $userManager->update($id, $passhash);
-                $this->logout();
-                header('Location: ?page=login');
-              }
-            }
-            else
-            {
-              $error = "les mots de passe ne correspondent pas.";
-            }
+        if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+          $db = DBFactory::getPDO();
+          $userManager = new UserManager($db);
+
+          // get user from database with email from form
+          $loggingUser = $userManager->getUserByMail($email);
+
+          if($loggingUser)
+          {
+            $selector = bin2hex(random_bytes(8));
+            // not encrypted token to be inserted in the databse
+            $token = random_bytes(32);
+            // encrypted token inserted in the url
+            $cryptoken = bin2hex($token);
+
+            $expire = date('U') + 3600;
+
+            // Create a new line for this user in resetpass table
+            $userManager->resetPass($loggingUser->email(), $selector, $token, $expire);
+
+            $mailContentText = "Bonjour ".$loggingUser->name().". Une demande de réinitialisation de votre mot de passe a été faite. Réinitialisez votre mot en passe en cliquant sur le lien suivant : http://localhost/P5/Backoffice/index.php?page=reset&restoken=$selector&validator=$cryptoken Attention, le lien est actif pendant une heure. Si la demande ne vient pas de vous, ignorez ce message.";
+
+            $mailContentHtml =
+            "<p>Bonjour ".$loggingUser->name()."</p>
+            <p>Une demande de réinitialisation de votre mot de passe a été faite.</p>
+            <p>Réinitialisez votre mot en passe en cliquant sur le lien suivant : <a href='http://localhost/P5/Backoffice/index.php?page=reset&restoken=$selector&validator=$cryptoken'>Réinitialiser</a></p>
+            <p>Attention, le lien est actif pendant une heure.</p>
+            <p>Si la demande ne vient pas de vous, ignorez ce message</p>";
+
+            $mailTopic = "Réinitialisation de votre mot de passe";
+
+            $this->sendMail($loggingUser->email(), $mailContentText, $mailContentHtml, $mailTopic);
+
+            $info = "Un email contenant un lien de réinitialisation vous a été envoyé";
+          }
+          else{
+            $warning = "Erreur. Veuillez réessayer";
           }
         }
         else
         {
-          $error = "Problème didentifications, vos clés ne correspondent pas.";
+          $warning = "L'email est invalide";
         }
       }
       else
       {
-        $error = "Veuillez remplir les champs";
+        $warning = "Le champ doit être rempli";
       }
     }
 
     ob_start();
-    require_once $this->getViewPath().'newpass.php';
+    require_once $this->getViewPath().'resetpass.php';
     $content = ob_get_clean();
     require $this->getTemplatePath();
   }
 
 
+//------------------------------------------------------------------------------
+// Contribute Page Methods (Not logged in user)
+//------------------------------------------------------------------------------
   /**
-   * Destroy session when logout
+   * Page to request admin role
+   * Save email and message from request form into the database
    */
-  public function logout(){
-    $_SESSION = [];
-    session_destroy();
-  }
-
-  /**
-   * Check if user connected or not
-   * @return bool True if there is a role session var
-   */
-  public function loggedIn($role = null){
-    if(isset($_SESSION['role']) && $_SESSION['role'] == $role)
+  public function requestpage()
+  {
+    if($_POST['request'])
     {
-      return true;
-    }else {
-      return false;
+      $data = [
+        'name' => htmlentities($_POST['name']),
+        'email' => htmlentities($_POST['email']),
+        'message' => htmlentities($_POST['message'])
+      ];
+
+      $_SESSION['inputs'] = $_POST;
+
+      $user = new User($data);
+      $db = DBFactory::getPDO();
+      $userManager = new UserManager($db);
+
+      if($user->isValid())
+      {
+        $userManager->add($user);
+        $message = "Votre demande a bien été envoyé, vous recevrez un mail si elle est acceptée";
+        $_SESSION['inputs'] = [];
+      }
+      else
+      {
+        $errors = $user->errors();
+      }
     }
+
+    ob_start();
+    require_once $this->getViewPath().'request.php';
+    $content = ob_get_clean();
+    require $this->getTemplatePath();
   }
 
 
+//------------------------------------------------------------------------------
+// Send Mail Methods
+//------------------------------------------------------------------------------
   /**
-   * Update comment for checked
-   * @param  int $idcomment [description]
-   * @param  int $idpost    [description]
+   * Send email to user (see above)
+   * @return bool
    */
-  public function updateComment($idcomment, $idpost){
-    $db = DBFactory::getPDO();
-    $commentManager = new CommentManager($db);
-    $commentManager->updateCheck($idcomment, $idpost, 1);
+  public function sendMail($userMail, $contentText, $contentHtml, $topic)
+  {
+    $from = ['contact@monsite.fr' => 'Contact'];
+    $to = $userMail;
 
-    header('Location: ?page=home');
-  }
+    $content = $contentText;
 
+    $contentHtml = $contentHtml;
 
-  /**
-   * Update comment for flag
-   * @param  int $idcomment [description]
-   * @param  int $idpost    [description]
-   */
-  public function flagComment($idcomment, $idpost){
-    $db = DBFactory::getPDO();
-    $commentManager = new CommentManager($db);
-    $commentManager->updateCheck($idcomment, $idpost, 2);
+    // Create the Transport
+    $transport = (new Swift_SmtpTransport('smtp.mailtrap.io', 2525))
+        ->setUsername('d481f137380620')
+        ->setPassword('8282c28192de76')
+    ;
 
-    header('Location: ?page=home');
-  }
+    // Create the Mailer using your created Transport
+    $mailer = new Swift_Mailer($transport);
 
+    // Create a message
+    $message = (new Swift_Message($topic))
+      ->setFrom($from)
+      ->setTo($to)
+      ->setBody($content, 'text/plain')
+      ->addPart($contentHtml, 'text/html');
 
-  /**
-   * Deletion of post and its comments
-   * @param  int $id Post id
-   */
-  public function deletePost($id){
-    $db = DBFactory::getPDO();
-    $postManager = new PostManager($db);
-    $postManager->delete($id);
+    // Send the message
+    $result = $mailer->send($message);
 
-    header('Location: ?page=posts');
+    return $result;
   }
 
 }
