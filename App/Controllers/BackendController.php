@@ -124,6 +124,47 @@ class BackendController
    * Update or create new post
    */
   public function editpage(){
+    $db = DBFactory::getPDO();
+    $postManager = new PostManager($db);
+    $token = $_SESSION['t_user'];
+
+    if(isset($_GET['postid']) && !empty($_GET['postid']))
+    {
+      $id = (int)$_GET['postid'];
+      $post = $postManager->getUnique($id);
+    }
+    if (isset($_POST['t_user']) && !empty($_POST['t_user']))
+    {
+      if ($_POST['t_user'] === $_SESSION['t_user'])
+      {
+        if(isset($_POST['author']))
+        {
+          $data = [
+            'author' => $_POST['author'],
+            'title' => $_POST['title'],
+            'kicker' => $_POST['kicker'],
+            'content' => $_POST['content']
+          ];
+
+          $newPost = new Post($data);
+
+          if(isset($_GET['postid']) && !empty($_GET['postid']))
+          {
+          $newPost->setId($_POST['id']);
+          }
+
+          if($newPost->isValid()){
+            $postManager->save($newPost);
+
+            header('Location: ?page=posts');
+          }
+          else {
+            $errors = $newPost->errors();
+          }
+        }
+      }
+    }
+
     ob_start();
     require_once $this->getViewPath().'edit.php';
     $content = ob_get_clean();

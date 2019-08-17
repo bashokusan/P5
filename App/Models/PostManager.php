@@ -17,6 +17,64 @@ class PostManager
     $this->db = $db;
   }
 
+
+
+  /**
+   * Last action before sending post
+   *
+   * @param  Post $post Validated post object
+   */
+  public function save(Post $post)
+  {
+    if($post->isNew())
+    {
+      $this->add($post);
+    }
+    else
+    {
+      $this->update($post);
+    }
+  }
+
+
+
+  /**
+   * Add new post in the database
+   * @param post $post Post object created after form submit
+   */
+  public function add(Post $post)
+  {
+    $sql = "INSERT INTO articles(author, title, kicker, content, publishDate)
+            VALUES(:author, :title, :kicker, :content, NOW())";
+    $query = $this->db->prepare($sql);
+    $query->execute([
+      'author' => $post->author(),
+      'title' => $post->title(),
+      'kicker' => $post->kicker(),
+      'content' => $post->content()
+    ]);
+  }
+
+
+  /**
+   * [update description]
+   * @param  Post   $post [description]
+   */
+  public function update(Post $post)
+  {
+    $sql = "UPDATE articles SET author = :author, title = :title, kicker = :kicker, content = :content, updateDate = NOW()
+            WHERE id = :id";
+    $query = $this->db->prepare($sql);
+    $query->execute([
+      'author' => $post->author(),
+      'title' => $post->title(),
+      'kicker' => $post->kicker(),
+      'content' => $post->content(),
+      'id' => $post->id()
+    ]);
+  }
+
+
   /**
    * Get all posts from database
    * @param  int $limit  (see pagination in FrontendController blog())

@@ -19,7 +19,7 @@
         <?php endif ?>
       </div>
       <div class="post_actions">
-          <p>Modifier</p>
+          <p><a href="?page=edit&postid=<?= $post->id() ?>">Modifier</a></p>
           <p><a href="?delete=<?= $post->id() ?>&token=<?= $token ?>">Supprimer</a></p>
       </div>
     </div>
