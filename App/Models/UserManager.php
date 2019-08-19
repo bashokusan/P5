@@ -80,7 +80,7 @@ class UserManager
 
     $sql = "SELECT * FROM users";
     $sql .= $and;
-    $sql .= "ORDER BY requestDate DESC";
+    $sql .= "ORDER BY id ASC";
     $query = $this->db->query($sql);
     $query->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, User::class);
     $userList = $query->fetchAll();

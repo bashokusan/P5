@@ -7,7 +7,7 @@
 
       <p><em>Publié le <?= $post->publishDate() ?><?= ($post->updateDate()) ? " - Modifié le " . $post->updateDate() : ""; ?></em></p>
 
-      <?= ($post->author()) ? "<p>Par ".$post->author()."</p>" : "" ?>
+      <?= ($post->name()) ? "<p>Par ".$post->name()."</p>" : "" ?>
 
       <h4><?= $post->kicker() ?></h4>
 

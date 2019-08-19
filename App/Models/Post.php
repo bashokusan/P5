@@ -8,7 +8,8 @@ class Post
 
   private $errors = [];
   private $id;
-  private $author;
+  private $name;
+  private $idauthor;
   private $title;
   private $kicker;
   private $content;
@@ -16,7 +17,7 @@ class Post
   private $updateDate;
   private $countComment;
 
-  const AUTHOR_INVALID = 1;
+  const IDAUTHOR_INVALID = 1;
   const TITLE_INVALID = 2;
   const KICKER_INVALID = 3;
   const CONTENT_INVALID = 4;
@@ -60,7 +61,7 @@ class Post
    */
   public function isValid() :bool
   {
-    return !(empty($this->author) || empty($this->title) || empty($this->kicker) || empty($this->content));
+    return !(empty($this->idauthor) || empty($this->title) || empty($this->kicker) || empty($this->content));
   }
 
   // Setters
@@ -71,18 +72,28 @@ class Post
   }
 
   /**
-   * Set author, is not a string or empty, new error.
-   * @param string $author Author of the post
+   * Set name, is not a string or empty, new error.
+   * @param string $name name of the post
    */
-  public function setAuthor($author)
+  public function setname($name)
   {
-    if(!is_string($author) || empty($author))
+      $this->name = $name;
+  }
+
+
+  /**
+   * Set name, is not a string or empty, new error.
+   * @param string $name name of the post
+   */
+  public function setIdAuthor($idauthor)
+  {
+    if(!is_int(($idauthor)) || empty($idauthor))
     {
-      $this->errors[] = self::AUTHOR_INVALID;
+      $this->errors[] = self::IDAUTHOR_INVALID;
     }
     else
     {
-      $this->author = $author;
+      $this->idauthor = $idauthor;
     }
   }
 
@@ -167,9 +178,14 @@ class Post
     return $this->title;
   }
 
-  public function author() :?string
+  public function name() :?string
   {
-    return $this->author;
+    return $this->name;
+  }
+
+  public function idauthor() :int
+  {
+    return $this->idauthor;
   }
 
   public function kicker()

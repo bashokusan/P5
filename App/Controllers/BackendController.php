@@ -116,6 +116,36 @@ class BackendController
   }
 
 
+  /**
+   * Update comment for checked
+   * @param  int $idcomment [description]
+   * @param  int $idpost    [description]
+   */
+  public function updateComment($idcomment, $idpost)
+  {
+    $db = DBFactory::getPDO();
+    $commentManager = new CommentManager($db);
+    $commentManager->updateCheck($idcomment, $idpost, 1);
+
+    header('Location: ?page=home');
+  }
+
+
+  /**
+   * Update comment for flag
+   * @param  int $idcomment [description]
+   * @param  int $idpost    [description]
+   */
+  public function flagComment($idcomment, $idpost)
+  {
+    $db = DBFactory::getPDO();
+    $commentManager = new CommentManager($db);
+    $commentManager->updateCheck($idcomment, $idpost, 2);
+
+    header('Location: ?page=home');
+  }
+
+
 //------------------------------------------------------------------------------
 // Posts Page Methods
 //------------------------------------------------------------------------------
@@ -162,6 +192,10 @@ class BackendController
   {
     $db = DBFactory::getPDO();
     $postManager = new PostManager($db);
+    $userManager = new UserManager($db);
+    $users = $userManager->getList('confirmed');
+    $loggedinUser = $userManager->getUser((int)$_SESSION['id']);
+
     $token = $_SESSION['t_user'];
 
     if(isset($_GET['postid']) && !empty($_GET['postid']))
@@ -173,10 +207,10 @@ class BackendController
     {
       if ($_POST['t_user'] === $_SESSION['t_user'])
       {
-        if(isset($_POST['author']))
+        if(isset($_POST['idauthor']))
         {
           $data = [
-            'author' => $_POST['author'],
+            'idauthor' => (int)$_POST['idauthor'],
             'title' => $_POST['title'],
             'kicker' => $_POST['kicker'],
             'content' => $_POST['content']
@@ -186,9 +220,9 @@ class BackendController
 
           if(isset($_GET['postid']) && !empty($_GET['postid']))
           {
-          $newPost->setId($_POST['id']);
+            $newPost->setId($_POST['id']);
           }
-
+          
           if($newPost->isValid()){
             $postManager->save($newPost);
 
@@ -235,35 +269,6 @@ class BackendController
     require $this->getTemplatePath();
   }
 
-
-  /**
-   * Update comment for checked
-   * @param  int $idcomment [description]
-   * @param  int $idpost    [description]
-   */
-  public function updateComment($idcomment, $idpost)
-  {
-    $db = DBFactory::getPDO();
-    $commentManager = new CommentManager($db);
-    $commentManager->updateCheck($idcomment, $idpost, 1);
-
-    header('Location: ?page=home');
-  }
-
-
-  /**
-   * Update comment for flag
-   * @param  int $idcomment [description]
-   * @param  int $idpost    [description]
-   */
-  public function flagComment($idcomment, $idpost)
-  {
-    $db = DBFactory::getPDO();
-    $commentManager = new CommentManager($db);
-    $commentManager->updateCheck($idcomment, $idpost, 2);
-
-    header('Location: ?page=home');
-  }
 
 
 //------------------------------------------------------------------------------
@@ -362,6 +367,10 @@ class BackendController
 
             // Check if there is a pending request with selector in form
             $resetpass = $userManager->getResetPass($_POST['selector'], $currentDateTime);
+            if (!$resetpass)
+            {
+              $error = "Une erreur est survenue. Veuillez soumettre une nouvelle réinitialisation.";
+            }
 
             // Compare token in Databse with token in form
             $tokenBin = hex2bin($_POST['validator']);

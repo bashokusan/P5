@@ -10,7 +10,7 @@
       <div class="post_card">
         <h3><?= $post->id() ?> | <?= $post->title() ?></h3>
 
-        <p>Par <?=$post->author()?> <em>Publié le <?= $post->publishDate() ?><?= ($post->updateDate()) ? " - Modifié le " . $post->updateDate() : ""; ?></em></p>
+        <p>Par <?=$post->name()?> <em>Publié le <?= $post->publishDate() ?><?= ($post->updateDate()) ? " - Modifié le " . $post->updateDate() : ""; ?></em></p>
 
         <h4><?= $post->kicker() ?></h4>
 
