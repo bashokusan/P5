@@ -3,42 +3,8 @@
 /**
  * Main controller, action to do when called by the router
  */
-class FrontendController
+class FrontendController extends Controller
 {
-
-  private $viewPath;
-  private $templatePath;
-
-
-  /**
-   * Set the viewPath and templatePath
-   * @param string $viewPath     Path to pages
-   * @param string $templatePath Path to template
-   */
-  public function __construct($viewPath, $templatePath){
-    $this->setViewPath($viewPath);
-    $this->setTemplatePath($templatePath);
-  }
-
-
-  // Setters
-  public function setViewPath($viewPath){
-    $this->viewPath = $viewPath;
-  }
-
-  public function setTemplatePath($templatePath){
-    $this->templatePath = $templatePath;
-  }
-
-  // Getters
-  public function getViewPath(){
-    return $this->viewPath;
-  }
-
-  public function getTemplatePath(){
-    return $this->templatePath;
-  }
-
 
 //------------------------------------------------------------------------------
 // METHODS
