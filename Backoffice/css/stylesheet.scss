@@ -204,6 +204,7 @@ nav{
 
 // Form section
 form{
+
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -357,8 +358,12 @@ footer{
 	}
 
 	// Form section
+	.reset_form, .login_form, .newpass_form, .request_form{
+		width: 40%;
+	}
+
 	form{
-		
+
 		div:nth-child(1){
 			display: flex;
 	    flex-direction: column;
@@ -379,6 +384,9 @@ footer{
 			margin-bottom: 0;
 		}
 
+		input[type='submit']{
+			max-width: 200px;
+		}
 	}
 
 	// Post section

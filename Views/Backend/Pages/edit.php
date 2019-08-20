@@ -2,7 +2,7 @@
 
 <div class="post_edit">
   <h2>Edition d'un article</h2>
-  <form class="" action="" method="post">
+  <form class="edit_form" action="" method="post">
     <p><input type="hidden" name="t_user" value="<?= $token ?>"> </p>
 
     <?php if(isset($errors) && in_array(Post::IDAUTHOR_INVALID, $errors)) echo "<p class='alert warning'>auteur invalide</p>"; ?>
@@ -15,7 +15,7 @@
             <?php
               if($post && ($post->name() == $user->name())){
                 echo "selected";
-              }elseif($user->name() == $loggedinUser){
+              }elseif($user->name() == $loggedinUser->name()){
                 echo "selected";
               }
             ?>><?= $user->name() ?></option>

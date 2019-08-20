@@ -5,7 +5,7 @@
   <?php if($message) echo "<p class='alert success'>" . $message . "</p>"?>
   <p>Envoyez le formulaire ci-dessous pour demander à être administrateur</p>
 
-  <form class="login_form" action="" method="post">
+  <form class="request_form" action="" method="post">
 
     <?php if(isset($errors) && in_array(User::NAME_INVALID, $errors)) echo "<p class='alert warning'>Nom invalide</p>"; ?>
     <input type="name" name="name" placeholder="Nom" value="<?= $_SESSION['inputs']['name'] ? $_SESSION['inputs']['name'] : "" ?>">

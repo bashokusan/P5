@@ -5,7 +5,7 @@
 
   <?php if($error) echo "<p class='alert warning'>" . $error . "</p>"?>
 
-  <form class="login_form" action="" method="post">
+  <form class="newpass_form" action="" method="post">
 
     <?php if(isset($errors) && in_array(User::PASSWORD_INVALID, $errors)) echo "<p class='alert warning'>Email invalide</p>"; ?>
     <input type="password" name="password" placeholder="Mot de passe" value="">
