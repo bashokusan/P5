@@ -24,7 +24,8 @@
     </div>
 
     <div>
-      <?php if(isset($errors) && in_array(Comment::CONTENT_INVALID, $errors)) echo "<p class='alert warning'>commentaire invalide</p>"; ?>
+      <?php if(isset($errors) && in_array(Comment::CONTENT_INVALID, $errors)) echo "<p class='alert warning'>Commentaire invalide</p>"; ?>
+      <?php if(isset($errors) && in_array(Comment::CONTENT_LENGHT, $errors)) echo "<p class='alert warning'>Le commentaire doit faire entre 2 et 500 caractères</p>"; ?>
       <label for="content">Votre commentaire</label>
       <textarea name="content" id="content" rows="4" cols="80" placeholder="votre commentaire"><?= $_SESSION['inputs']['content'] ? $_SESSION['inputs']['content'] : "" ?></textarea>
     </div>

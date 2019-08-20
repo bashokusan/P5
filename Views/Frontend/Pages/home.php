@@ -49,6 +49,7 @@
 
     <div>
       <?php if(isset($errors) && in_array(Message::MESSAGE_INVALID, $errors)) echo "<p class='alert warning'>message invalide</p>"; ?>
+      <?php if(isset($errors) && in_array(Message::MESSAGE_LENGHT, $errors)) echo "<p class='alert warning'>Le message doit faire entre 10 et 500 caractères</p>"; ?>
       <label for="message">Votre message</label>
       <textarea name="message" id="message" rows="8" cols="80" placeholder="exemple : Lorem Ipsum"><?= $_SESSION['inputs']['message'] ? $_SESSION['inputs']['message'] : "" ?></textarea>
     </div>

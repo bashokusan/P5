@@ -20,6 +20,7 @@ class User
   const EMAIL_INVALID = 2;
   const PASSWORD_INVALID = 3;
   const MESSAGE_INVALID = 4;
+  const CONTENT_LENGHT = 5;
 
   public function __construct(array $values = [])
   {
@@ -114,6 +115,9 @@ class User
     if(!is_string($message) || empty($message))
     {
       $this->errors[] = self::MESSAGE_INVALID;
+    }
+    elseif (!empty($message) && (strlen($message) < 10 || strlen($message) > 500 )) {
+      $this->errors[] = self::CONTENT_LENGHT;
     }
     else
     {

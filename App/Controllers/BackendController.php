@@ -153,12 +153,15 @@ class BackendController extends Controller
     $loggedinUser = $userManager->getUser((int)$_SESSION['id']);
 
     $token = $_SESSION['t_user'];
+    
+    $_SESSION['inputs'] = $_POST;
 
     if(isset($_GET['postid']) && !empty($_GET['postid']))
     {
       $id = (int)$_GET['postid'];
       $post = $postManager->getUnique($id);
     }
+
     if (isset($_POST['t_user']) && !empty($_POST['t_user']))
     {
       if ($_POST['t_user'] === $_SESSION['t_user'])

@@ -16,6 +16,7 @@ class Comment
 
   const AUTHOR_INVALID = 1;
   const CONTENT_INVALID = 2;
+  const CONTENT_LENGHT = 3;
 
   public function __construct(array $values = [])
   {
@@ -92,6 +93,9 @@ class Comment
     if(!is_string($content) || empty($content))
     {
       $this->errors[] = self::CONTENT_INVALID;
+    }
+    elseif (!empty($content) && (strlen($content) < 2 || strlen($content) > 500 )) {
+      $this->errors[] = self::CONTENT_LENGHT;
     }
     else
     {

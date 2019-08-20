@@ -14,6 +14,7 @@
     <input type="email" name="email" placeholder="Email" value="<?= $_SESSION['inputs']['email'] ? $_SESSION['inputs']['email'] : "" ?>">
 
     <?php if(isset($errors) && in_array(User::MESSAGE_INVALID, $errors)) echo "<p class='alert warning'>Message invalide</p>"; ?>
+    <?php if(isset($errors) && in_array(User::CONTENT_LENGHT, $errors)) echo "<p class='alert warning'>Le message doit faire entre 10 et 500 caractères</p>"; ?>
     <textarea name="message" rows="4" cols="80" placeholder="Ecrivez un message pour vous présenter et expliquer pourquoi vous souhaitez être administrateur"><?= $_SESSION['inputs']['message'] ? $_SESSION['inputs']['message'] : "" ?></textarea>
 
     <input type="submit" name="request" value="Envoyer la demande">

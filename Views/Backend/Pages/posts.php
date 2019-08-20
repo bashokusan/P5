@@ -13,10 +13,6 @@
         <p>Par <?=$post->name()?> <em>Publié le <?= $post->publishDate() ?><?= ($post->updateDate()) ? " - Modifié le " . $post->updateDate() : ""; ?></em></p>
 
         <h4><?= $post->kicker() ?></h4>
-
-        <?php if($post->countComment()) :?>
-        <p><em><?= $post->countComment() ?> <?= $post->countComment() == 1 ? "commentaire" : "commentaires" ?></em></p>
-        <?php endif ?>
       </div>
       <div class="post_actions">
           <p><a href="?page=edit&postid=<?= $post->id() ?>">Modifier</a></p>

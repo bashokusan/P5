@@ -21,6 +21,9 @@ class Post
   const TITLE_INVALID = 2;
   const KICKER_INVALID = 3;
   const CONTENT_INVALID = 4;
+  const CONTENT_LENGHT = 5;
+  const KICKER_LENGHT = 6;
+  const TITLE_LENGHT = 7;
 
   public function __construct(array $values = [])
   {
@@ -107,6 +110,9 @@ class Post
     {
       $this->errors[] = self::TITLE_INVALID;
     }
+    elseif (!empty($title) && (strlen($title) < 10 || strlen($title) > 500 )) {
+      $this->errors[] = self::TITLE_LENGHT;
+    }
     else
     {
       $this->title = $title;
@@ -123,6 +129,9 @@ class Post
     {
       $this->errors[] = self::KICKER_INVALID;
     }
+    elseif (!empty($kicker) && (strlen($kicker) < 10 || strlen($kicker) > 500 )) {
+      $this->errors[] = self::KICKER_LENGHT;
+    }
     else
     {
       $this->kicker = $kicker;
@@ -138,6 +147,9 @@ class Post
     if(!is_string($content) || empty($content))
     {
       $this->errors[] = self::CONTENT_INVALID;
+    }
+    elseif (!empty($content) && (strlen($content) < 10 || strlen($content) > 50000 )) {
+      $this->errors[] = self::CONTENT_LENGHT;
     }
     else
     {
