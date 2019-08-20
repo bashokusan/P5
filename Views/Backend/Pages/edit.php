@@ -2,7 +2,7 @@
 
 <div class="post_edit">
   <h2>Edition d'un article</h2>
-  <form class="edit_form" action="" method="post">
+  <form class="edit_form" action="" method="post" enctype="multipart/form-data">
     <p><input type="hidden" name="t_user" value="<?= $token ?>"> </p>
 
     <?php if(isset($errors) && in_array(Post::IDAUTHOR_INVALID, $errors)) echo "<p class='alert warning'>auteur invalide</p>"; ?>
@@ -23,6 +23,14 @@
         <?php endif ?>
         </select>
     </p>
+
+    <?= $imgerrors ?>
+
+    <p>
+      <label>Image</label>
+      <input type="file" name="image" />
+    </p>
+
 
     <?php if(isset($errors) && in_array(Post::TITLE_INVALID, $errors)) echo "<p class='alert warning'>titre invalide</p>"; ?>
     <?php if(isset($errors) && in_array(Post::TITLE_LENGHT, $errors)) echo "<p class='alert warning'>Le titre doit faire au moins 10 caractères</p>"; ?>

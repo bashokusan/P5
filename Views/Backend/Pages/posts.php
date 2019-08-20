@@ -17,6 +17,7 @@
       <div class="post_actions">
           <p><a href="?page=edit&postid=<?= $post->id() ?>">Modifier</a></p>
           <p><a href="?delete=<?= $post->id() ?>&token=<?= $token ?>">Supprimer</a></p>
+          <p><a href="../Public/index.php?page=article&id=<?= $post->id() ?>">Voir l'article</a></p>
       </div>
     </div>
   <?php endforeach ?>

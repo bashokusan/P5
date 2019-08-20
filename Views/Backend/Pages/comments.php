@@ -2,58 +2,64 @@
 
 <h2>Commentaires</h2>
 
-<h3>Commentaires modérés</h3>
-<p><?= $flagCommentsCount ?> commentaires modérés</p>
-
-  <table border='1'>
-    <tr>
-      <th>ID Commentaire</th>
-      <th>ID Article</th>
-      <th>Auteur</th>
-      <th>Commentaire</th>
-      <th>Date de publication</th>
-    </tr>
-
-    <?php foreach($flagComments as $comment) : ?>
+<?php if($flagCommentsCount): ?>
+  <h3>Commentaires modérés</h3>
+  <p><?= $flagCommentsCount ?> commentaires modérés</p>
+  <div class="table">
+    <table>
       <tr>
-        <td><?= $comment->id() ?></td>
-        <td><?= $comment->idArticle() ?></td>
-        <td><?= $comment->author() ?></td>
-        <td><?= $comment->content() ?></td>
-        <td><?= $comment->publishDate() ?></td>
+        <th>ID Commentaire</th>
+        <th>ID Article</th>
+        <th>Auteur</th>
+        <th>Commentaire</th>
+        <th>Date de publication</th>
       </tr>
-    <?php endforeach ?>
 
-  </table>
+      <?php foreach($flagComments as $comment) : ?>
+        <tr>
+          <td><?= $comment->id() ?></td>
+          <td><a href="../Public/index.php?page=article&id=<?= $comment->idArticle() ?>"><?= $comment->idArticle() ?></a></td>
+          <td><?= $comment->author() ?></td>
+          <td><?= $comment->content() ?></td>
+          <td><?= $comment->publishDate() ?></td>
+        </tr>
+      <?php endforeach ?>
 
-<h3>Commentaires vérifiés</h3>
-<p><?= $checkedCommentsCount ?> commentaires vérifiés</p>
+    </table>
+  </div>
+<?php endif ?>
 
-  <table border='1'>
-    <tr>
-      <th>ID Commentaire</th>
-      <th>ID Article</th>
-      <th>Auteur</th>
-      <th>Commentaire</th>
-      <th>Date de publication</th>
-    </tr>
-
-    <?php foreach($checkedComment as $comment) : ?>
+<?php if($checkedCommentsCount): ?>
+  <h3>Commentaires vérifiés</h3>
+  <p><?= $checkedCommentsCount ?> commentaires vérifiés</p>
+  <div class="table">
+    <table>
       <tr>
-        <td><?= $comment->id() ?></td>
-        <td><?= $comment->idArticle() ?></td>
-        <td><?= $comment->author() ?></td>
-        <td><?= $comment->content() ?></td>
-        <td><?= $comment->publishDate() ?></td>
+        <th>ID Commentaire</th>
+        <th>ID Article</th>
+        <th>Auteur</th>
+        <th>Commentaire</th>
+        <th>Date de publication</th>
       </tr>
-    <?php endforeach ?>
 
-  </table>
+      <?php foreach($checkedComment as $comment) : ?>
+        <tr>
+          <td><?= $comment->id() ?></td>
+          <td><a href="../Public/index.php?page=article&id=<?= $comment->idArticle() ?>"><?= $comment->idArticle() ?></a></td>
+          <td><?= $comment->author() ?></td>
+          <td><?= $comment->content() ?></td>
+          <td><?= $comment->publishDate() ?></td>
+        </tr>
+      <?php endforeach ?>
+
+    </table>
+  </div>
+<?php endif ?>
 
 <h3>Tous les commentaires</h3>
 <p><?= $CommentsCount ?> commentaires</p>
-
-  <table border='1'>
+<div class="table">
+  <table>
     <tr>
       <th>ID Commentaire</th>
       <th>ID Article</th>
@@ -65,7 +71,7 @@
     <?php foreach($commentsList as $comment) : ?>
       <tr>
         <td><?= $comment->id() ?></td>
-        <td><?= $comment->idArticle() ?></td>
+        <td><a href="../Public/index.php?page=article&id=<?= $comment->idArticle() ?>"><?= $comment->idArticle() ?></a></td>
         <td><?= $comment->author() ?></td>
         <td><?= $comment->content() ?></td>
         <td><?= $comment->publishDate() ?></td>
@@ -73,3 +79,4 @@
     <?php endforeach ?>
 
   </table>
+</div>
