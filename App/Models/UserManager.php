@@ -54,6 +54,18 @@ class UserManager
     ]);
   }
 
+
+  public function updateinfos(User $user){
+    $sql = "UPDATE users SET name = :name, email = :email WHERE id = :id";
+    $query = $this->db->prepare($sql);
+    $query->execute([
+      'name' => $user->name(),
+      'email' => $user->email(),
+      'id' => $user->id(),
+    ]);
+  }
+
+
   /**
    * [getList description]
    * @param  [type] $idArticle [description]

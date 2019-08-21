@@ -7,9 +7,11 @@
   <?php foreach($postList as $post) : ?>
     <hr>
     <div class="post">
-      <div class="post_img">
-        <img src="../Public/Content/Post-<?= $post->id() ?>/<?= $post->image() ?>" alt="">
-      </div>
+      <?php if($post->image()) : ?>
+        <div class="post_img">
+          <img src="../Public/Content/Post-<?= $post->id() ?>/<?= $post->image() ?>" alt="">
+        </div>
+      <?php endif ?>
       <div class="post_card">
         <h3><?= $post->id() ?> | <?= $post->title() ?></h3>
 

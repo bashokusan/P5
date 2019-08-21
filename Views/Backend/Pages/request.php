@@ -1,7 +1,7 @@
-<? $title = "Backoffice | Devenir administrateur"; ?>
+<? $title = "Backoffice | Contribuer"; ?>
 
 <div class="request">
-  <h2>Devenir administrateur</h2>
+  <h2>Contribuer au site</h2>
   <?php if($message) echo "<p class='alert success'>" . $message . "</p>"?>
   <p>Envoyez le formulaire ci-dessous pour demander à être administrateur</p>
 

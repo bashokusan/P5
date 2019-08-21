@@ -322,6 +322,27 @@ class BackendController extends Controller
     $userManager = new UserManager($db);
     $user = $userManager->getUser($id);
 
+    if(isset($_POST['updateprofile']))
+    {
+      $data = [
+        'id' => (int)$_POST['userid'],
+        'name' => htmlentities($_POST['name']),
+        'email' => htmlentities($_POST['email']),
+      ];
+
+      $updateuser = new User($data);
+
+      if($updateuser->isValid())
+      {
+        $userManager->updateinfos($updateuser);
+        $message = "Vos informations ont été modifiées.";
+      }
+      else
+      {
+        $errors = $updateuser->errors();
+      }
+    }
+
     ob_start();
     require_once $this->getViewPath().'profile.php';
     $content = ob_get_clean();
