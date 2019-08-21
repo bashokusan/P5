@@ -44,11 +44,12 @@ class PostManager
    */
   public function add(Post $post)
   {
-    $sql = "INSERT INTO articles(idauthor, title, kicker, content, publishDate)
-            VALUES(:idauthor, :title, :kicker, :content, NOW())";
+    $sql = "INSERT INTO articles(idauthor, image, title, kicker, content, publishDate)
+            VALUES(:idauthor, image, :title, :kicker, :content, NOW())";
     $query = $this->db->prepare($sql);
     $query->execute([
       'idauthor' => $post->idauthor(),
+      'image' => $post->image(),
       'title' => $post->title(),
       'kicker' => $post->kicker(),
       'content' => $post->content()
@@ -62,11 +63,12 @@ class PostManager
    */
   public function update(Post $post)
   {
-    $sql = "UPDATE articles SET idauthor = :idauthor, title = :title, kicker = :kicker, content = :content, updateDate = NOW()
+    $sql = "UPDATE articles SET idauthor = :idauthor, image = :image, title = :title, kicker = :kicker, content = :content, updateDate = NOW()
             WHERE id = :id";
     $query = $this->db->prepare($sql);
     $query->execute([
       'idauthor' => $post->idauthor(),
+      'image' => $post->image(),
       'title' => $post->title(),
       'kicker' => $post->kicker(),
       'content' => $post->content(),
@@ -83,7 +85,7 @@ class PostManager
    */
   public function getList($limit = null, $offset = null)
   {
-    $sql = "SELECT articles.id, articles.title, articles.kicker, articles.content, articles.publishDate, articles.updateDate, articles.countComment, users.name FROM articles JOIN users ON articles.idauthor = users.id ORDER BY articles.id DESC ";
+    $sql = "SELECT articles.id, articles.image, articles.title, articles.kicker, articles.content, articles.publishDate, articles.updateDate, articles.countComment, users.name FROM articles JOIN users ON articles.idauthor = users.id ORDER BY articles.id DESC ";
     if(isset($limit) && isset($offset)){
       $sql .= "LIMIT $limit OFFSET $offset";
     }
@@ -103,7 +105,7 @@ class PostManager
    */
   public function getUnique($id)
   {
-    $sql = "SELECT articles.id, articles.title, articles.kicker, articles.content, articles.publishDate, articles.updateDate, articles.countComment, users.name FROM articles JOIN users ON articles.idauthor = users.id WHERE articles.id = :id";
+    $sql = "SELECT articles.id, articles.image, articles.title, articles.kicker, articles.content, articles.publishDate, articles.updateDate, articles.countComment, users.name FROM articles JOIN users ON articles.idauthor = users.id WHERE articles.id = :id";
     $query = $this->db->prepare($sql);
     $query->execute([
       'id' => $id

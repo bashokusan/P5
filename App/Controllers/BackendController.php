@@ -153,7 +153,7 @@ class BackendController extends Controller
     $loggedinUser = $userManager->getUser((int)$_SESSION['id']);
 
     $token = $_SESSION['t_user'];
-    
+
     $_SESSION['inputs'] = $_POST;
 
     if(isset($_GET['postid']) && !empty($_GET['postid']))
@@ -161,15 +161,35 @@ class BackendController extends Controller
       $id = (int)$_GET['postid'];
       $post = $postManager->getUnique($id);
     }
-
     if (isset($_POST['t_user']) && !empty($_POST['t_user']))
     {
       if ($_POST['t_user'] === $_SESSION['t_user'])
       {
         if(isset($_POST['idauthor']))
         {
+          if (isset($_FILES['image']) && !empty($_FILES['image']['name']) && $_FILES['image']['error'] === 0)
+          {
+              $extensions_autorisees = array('jpg', 'jpeg', 'gif', 'png');
+              $infosfichier = pathinfo($_FILES['image']['name']);
+              $extension_upload = strtolower($infosfichier['extension']);
+              if (in_array($extension_upload, $extensions_autorisees))
+              {
+                  if ($_FILES['image']['size'] > 0 && $_FILES['image']['size'] <= 1000000)
+                  {
+                      $fileName = uniqid(). "." .$infosfichier['extension'];
+                  } else {
+                      $imgerrors = "Le fichier doit faire moins de 1mo";
+                  }
+              } else {
+                  $imgerrors = "Le fichier n'est pas au bon format";
+              }
+          }else {
+              $imgerrors = "Le fichier est trop volumineux";
+          }
+
           $data = [
             'idauthor' => (int)$_POST['idauthor'],
+            'image' => $fileName,
             'title' => $_POST['title'],
             'kicker' => $_POST['kicker'],
             'content' => $_POST['content']
@@ -182,12 +202,24 @@ class BackendController extends Controller
             $newPost->setId($_POST['id']);
           }
 
-          if($newPost->isValid()){
-            $postManager->save($newPost);
+          if($newPost->isValid())
+          {
+            if($fileName)
+            {
+              $path = '../Public/Content/post-'.$newPost->id();
+              if(!file_exists($path)){
+                mkdir($path,0777, true);
+              }
+              move_uploaded_file($_FILES['image']['tmp_name'], $path . DIRECTORY_SEPARATOR . $fileName);
+            }
 
-            header('Location: ?page=posts');
+          $postManager->save($newPost);
+
+          header('Location: ?page=posts');
+
           }
-          else {
+          else
+          {
             $errors = $newPost->errors();
           }
         }

@@ -49,4 +49,12 @@ abstract class Controller
     return $this->token;
   }
 
+
+  public function require($page){
+    ob_start();
+    require_once $this->getViewPath().$page.'.php';
+    $content = ob_get_clean();
+    require $this->getTemplatePath();
+  }
+
 }

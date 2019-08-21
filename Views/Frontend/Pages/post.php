@@ -3,6 +3,8 @@
 <div class="post_card">
   <h2><?= $post->title() ?></h2>
 
+  <img src="../Public/Content/Post-<?= $post->id() ?>/<?= $post->image() ?>" alt="">
+
   <p><em>Publié le <?= $post->publishDate() ?><?= ($post->updateDate()) ? " - Modifié le " . $post->updateDate() : ""; ?></em></p>
 
   <?= ($post->name()) ? "<p>Par ".$post->name()."</p>" : "" ?>

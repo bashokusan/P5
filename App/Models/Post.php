@@ -9,6 +9,7 @@ class Post
   private $errors = [];
   private $id;
   private $name;
+  private $image;
   private $idauthor;
   private $title;
   private $kicker;
@@ -81,6 +82,16 @@ class Post
   public function setname($name)
   {
       $this->name = $name;
+  }
+
+
+  /**
+   * Set image, is not a string or empty, new error.
+   * @param string $image Image of the post
+   */
+  public function setimage($image)
+  {
+    $this->image = $image;
   }
 
 
@@ -188,6 +199,11 @@ class Post
   public function title()
   {
     return $this->title;
+  }
+
+  public function image()
+  {
+    return $this->image;
   }
 
   public function name() :?string

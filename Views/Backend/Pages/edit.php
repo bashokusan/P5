@@ -24,8 +24,7 @@
         </select>
     </p>
 
-    <?= $imgerrors ?>
-
+    <?= $imgerrors ? "<p class='alert warning'>".$imgerrors ."</p>" : ""?>
     <p>
       <label>Image</label>
       <input type="file" name="image" />
