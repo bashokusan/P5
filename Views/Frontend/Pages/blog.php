@@ -5,9 +5,11 @@
     <div class="post_card">
       <h3><?= $post->id() ?> | <?= $post->title() ?></h3>
 
-      <img src="../Public/Content/Post-<?= $post->id() ?>/<?= $post->image() ?>" alt="">
+      <?php if($post->image()) : ?>
+        <img src="../Public/Content/Post-<?= $post->id() ?>/<?= $post->image() ?>" alt="">
+      <?php endif ?>
 
-      <p><em>Publié le <?= $post->publishDate() ?><?= ($post->updateDate()) ? " - Modifié le " . $post->updateDate() : ""; ?></em></p>
+      <p><em>Publié le <?= $post->publishDate()->format('d/m/Y à H\hi') ?><?= ($post->updateDate()) ? " - Modifié le " . $post->updateDate()->format('d/m/Y à H\hi') : ""; ?></em></p>
 
       <?= ($post->name()) ? "<p>Par ".$post->name()."</p>" : "" ?>
 

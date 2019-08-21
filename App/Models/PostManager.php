@@ -45,7 +45,7 @@ class PostManager
   public function add(Post $post)
   {
     $sql = "INSERT INTO articles(idauthor, image, title, kicker, content, publishDate)
-            VALUES(:idauthor, image, :title, :kicker, :content, NOW())";
+            VALUES(:idauthor, :image, :title, :kicker, :content, NOW())";
     $query = $this->db->prepare($sql);
     $query->execute([
       'idauthor' => $post->idauthor(),
@@ -93,6 +93,13 @@ class PostManager
     $query->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Post::class);
     $postList= $query->fetchAll();
 
+    foreach($postList as $post){
+      $post->setPublishDate(new DateTime($post->publishDate()));
+      if($post->updateDate()){
+        $post->setUpdatDate(new DateTime($post->updateDate()));
+      }
+    }
+
     $query->closeCursor();
     return $postList;
   }
@@ -112,6 +119,11 @@ class PostManager
     ]);
     $query->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Post::class);
     $post = $query->fetch();
+
+    $post->setPublishDate(new DateTime($post->publishDate()));
+    if($post->updateDate()){
+      $post->setUpdatDate(new DateTime($post->updateDate()));
+    }  
 
     return $post;
   }

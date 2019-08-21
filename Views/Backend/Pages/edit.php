@@ -24,9 +24,13 @@
         </select>
     </p>
 
+    <?php if($post && $post->image()) : ?>
+      <p><img width="200" src="../Public/Content/Post-<?= $post->id() ?>/<?= $post->image() ?>" alt=""></p>
+    <?php endif ?>
+
     <?= $imgerrors ? "<p class='alert warning'>".$imgerrors ."</p>" : ""?>
     <p>
-      <label>Image</label>
+      <label>Changer l'image</label>
       <input type="file" name="image" />
     </p>
 
@@ -59,6 +63,9 @@
     </p>
 
     <?php if($post) : ?>
+      <p>
+        <input type="hidden" name="currentimg" value="<?= $post->image() ?>">
+      </p>
       <p>
         <input type="hidden" name="id" value="<?= $post->id() ?>">
       </p>

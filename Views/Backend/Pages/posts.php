@@ -15,7 +15,7 @@
       <div class="post_card">
         <h3><?= $post->id() ?> | <?= $post->title() ?></h3>
 
-        <p>Par <?=$post->name()?> <em>Publié le <?= $post->publishDate() ?><?= ($post->updateDate()) ? " - Modifié le " . $post->updateDate() : ""; ?></em></p>
+        <p>Par <?=$post->name()?> <em>Publié le <?= $post->publishDate()->format('d/m/Y à H\hi') ?><?= ($post->updateDate()) ? " - Modifié le " . $post->updateDate()->format('d/m/Y à H\hi') : ""; ?></em></p>
 
         <h4><?= $post->kicker() ?></h4>
       </div>

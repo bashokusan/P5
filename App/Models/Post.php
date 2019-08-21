@@ -168,12 +168,12 @@ class Post
     }
   }
 
-  public function setPublishDate($publishDate)
+  public function setPublishDate(DateTime $publishDate)
   {
     $this->publishDate = $publishDate;
   }
 
-  public function setUpdatDate($updateDate)
+  public function setUpdatDate(DateTime $updateDate)
   {
     $this->updateDate = $updateDate;
   }
@@ -231,7 +231,7 @@ class Post
     return $this->publishDate;
   }
 
-  public function updateDate() :?string
+  public function updateDate()
   {
     return $this->updateDate;
   }

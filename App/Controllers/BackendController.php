@@ -153,46 +153,61 @@ class BackendController extends Controller
     $loggedinUser = $userManager->getUser((int)$_SESSION['id']);
 
     $token = $_SESSION['t_user'];
-
-    $_SESSION['inputs'] = $_POST;
+    $_SESSION['inputs'] = [];
 
     if(isset($_GET['postid']) && !empty($_GET['postid']))
     {
       $id = (int)$_GET['postid'];
       $post = $postManager->getUnique($id);
     }
+
     if (isset($_POST['t_user']) && !empty($_POST['t_user']))
     {
       if ($_POST['t_user'] === $_SESSION['t_user'])
       {
         if(isset($_POST['idauthor']))
         {
-          if (isset($_FILES['image']) && !empty($_FILES['image']['name']) && $_FILES['image']['error'] === 0)
+          $_SESSION['inputs'] = $_POST;
+
+          if (isset($_FILES['image']) && !empty($_FILES['image']['name']))
           {
+            if($_FILES['image']['error'] === 0)
+            {
               $extensions_autorisees = array('jpg', 'jpeg', 'gif', 'png');
               $infosfichier = pathinfo($_FILES['image']['name']);
               $extension_upload = strtolower($infosfichier['extension']);
               if (in_array($extension_upload, $extensions_autorisees))
               {
-                  if ($_FILES['image']['size'] > 0 && $_FILES['image']['size'] <= 1000000)
-                  {
-                      $fileName = uniqid(). "." .$infosfichier['extension'];
-                  } else {
-                      $imgerrors = "Le fichier doit faire moins de 1mo";
-                  }
-              } else {
-                  $imgerrors = "Le fichier n'est pas au bon format";
+                if ($_FILES['image']['size'] > 0 && $_FILES['image']['size'] <= 2000000)
+                {
+                  $fileName = uniqid(). "." .$infosfichier['extension'];
+                }
+                else
+                {
+                  $imgerrors = "Le fichier doit faire moins de 2mo";
+                }
               }
-          }else {
-              $imgerrors = "Le fichier est trop volumineux";
+              else
+              {
+                $imgerrors = "Le fichier n'est pas au bon format";
+              }
+            }
+            else
+            {
+              $imgerrors = "Le fichier est invalide";
+            }
           }
+          /*elseif(isset($_POST['currentimg']) && !empty($_POST['currentimg']))
+          {
+            $fileName = htmlentities($_POST['currentimg']);
+          }*/
 
           $data = [
             'idauthor' => (int)$_POST['idauthor'],
             'image' => $fileName,
-            'title' => $_POST['title'],
-            'kicker' => $_POST['kicker'],
-            'content' => $_POST['content']
+            'title' => htmlentities($_POST['title']),
+            'kicker' => htmlentities($_POST['kicker']),
+            'content' => htmlentities($_POST['content'])
           ];
 
           $newPost = new Post($data);
@@ -202,20 +217,26 @@ class BackendController extends Controller
             $newPost->setId($_POST['id']);
           }
 
-          if($newPost->isValid())
+          if($newPost->isValid() && empty($imgerrors))
           {
+            $postManager->save($newPost);
+
+            if($newPost->id()){
+              $id = $newPost->id();
+            }else{
+              $id = $db->lastInsertId();
+            }
+
             if($fileName)
             {
-              $path = '../Public/Content/post-'.$newPost->id();
+              $path = '../Public/Content/post-'.$id;
               if(!file_exists($path)){
                 mkdir($path,0777, true);
               }
               move_uploaded_file($_FILES['image']['tmp_name'], $path . DIRECTORY_SEPARATOR . $fileName);
             }
 
-          $postManager->save($newPost);
-
-          header('Location: ?page=posts');
+            header('Location: ?page=posts');
 
           }
           else
@@ -321,28 +342,32 @@ class BackendController extends Controller
     $db = DBFactory::getPDO();
     $userManager = new UserManager($db);
     $user = $userManager->getUser($id);
-
-    if(isset($_POST['updateprofile']))
+    if (isset($_POST['t_user']) && !empty($_POST['t_user']))
     {
-      $data = [
-        'id' => (int)$_POST['userid'],
-        'name' => htmlentities($_POST['name']),
-        'email' => htmlentities($_POST['email']),
-      ];
-
-      $updateuser = new User($data);
-
-      if($updateuser->isValid())
+      if ($_POST['t_user'] === $_SESSION['t_user'])
       {
-        $userManager->updateinfos($updateuser);
-        $message = "Vos informations ont été modifiées.";
-      }
-      else
-      {
-        $errors = $updateuser->errors();
+        if(isset($_POST['updateprofile']))
+        {
+          $data = [
+            'id' => (int)$_POST['userid'],
+            'name' => htmlentities($_POST['name']),
+            'email' => htmlentities($_POST['email']),
+          ];
+
+          $updateuser = new User($data);
+
+          if($updateuser->isValid())
+          {
+            $userManager->updateinfos($updateuser);
+            $message = "Vos informations ont été modifiées.";
+          }
+          else
+          {
+            $errors = $updateuser->errors();
+          }
+        }
       }
     }
-
     ob_start();
     require_once $this->getViewPath().'profile.php';
     $content = ob_get_clean();

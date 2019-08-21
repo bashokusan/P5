@@ -5,7 +5,8 @@
   <?php if($message) echo "<p class='alert success'>" . $message . "</p>"?>
 
   <form class="update_form" action="" method="post">
-
+    <input type="hidden" name="t_user" value="<?= $token ?>">
+    
     <label for="name">Nom</label>
     <?php if(isset($errors) && in_array(User::NAME_INVALID, $errors)) echo "<p class='alert warning'>Le nom est invalide</p>"; ?>
     <input type="text" name="name" placeholder="" value="<?= $updateuser ? $updateuser->name() : $user->name() ?>">

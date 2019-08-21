@@ -3,15 +3,17 @@
 <div class="post_card">
   <h2><?= $post->title() ?></h2>
 
-  <img src="../Public/Content/Post-<?= $post->id() ?>/<?= $post->image() ?>" alt="">
+  <?php if($post->image()) : ?>
+    <img src="../Public/Content/Post-<?= $post->id() ?>/<?= $post->image() ?>" alt="">
+  <?php endif ?>
 
-  <p><em>Publié le <?= $post->publishDate() ?><?= ($post->updateDate()) ? " - Modifié le " . $post->updateDate() : ""; ?></em></p>
+  <p><em>Publié le <?= $post->publishDate()->format('d/m/Y à H\hi') ?><?= ($post->updateDate()) ? " - Modifié le " . $post->updateDate()->format('d/m/Y à H\hi') : ""; ?></em></p>
 
   <?= ($post->name()) ? "<p>Par ".$post->name()."</p>" : "" ?>
 
-  <h3><?= $post->kicker() ?></h3>
+  <h3><?= nl2br($post->kicker()) ?></h3>
 
-  <p><?= $post->content() ?></p>
+  <p><?= nl2br($post->content()) ?></p>
 </div>
 <div class="comment_section">
 
