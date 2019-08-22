@@ -166,9 +166,9 @@ class BackendController extends Controller
         $fileName = htmlentities($currentimg);
       }
 
-      $title = filter_var($_POST['title'], FILTER_SANITIZE_STRING);
-      $kicker = filter_var($_POST['kicker'], FILTER_SANITIZE_STRING);
-      $content = filter_var($_POST['content'], FILTER_SANITIZE_STRING);
+      $title = htmlspecialchars($_POST['title']);
+      $kicker = htmlspecialchars($_POST['kicker']);
+      $content = htmlspecialchars($_POST['content']);
 
       $data = [
         'idauthor' => (int)$_POST['idauthor'],

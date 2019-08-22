@@ -25,9 +25,9 @@ class FrontendController extends Controller
 
     if(isset($_POST['send'])){
 
-      $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
-      $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-      $message = filter_var($_POST['message'], FILTER_SANITIZE_STRING);
+      $name = htmlspecialchars($_POST['name']);
+      $email = htmlspecialchars($_POST['email']);
+      $message = htmlspecialchars($_POST['message']);
 
       $data = [
         'name' => htmlentities($name),
@@ -134,8 +134,8 @@ class FrontendController extends Controller
     $commentManager = new CommentManager($db);
 
     if(isset($_POST['add'])){
-      $author = filter_var($_POST['author'], FILTER_SANITIZE_STRING);
-      $content = filter_var($_POST['content'], FILTER_SANITIZE_STRING);
+      $author = htmlspecialchars($_POST['author']);
+      $content = htmlspecialchars($_POST['content']);
       $data = [
         'idArticle' => $id,
         'author' => htmlentities($author),
