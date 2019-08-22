@@ -161,20 +161,26 @@ class BackendController extends Controller
       }
       elseif(isset($_POST['currentimg']) && !empty($_POST['currentimg']))
       {
-        $fileName = htmlentities($_POST['currentimg']);
+        $currentimg = $_POST['currentimg'];
+        $currentimg = filter_var($currentimg, FILTER_SANITIZE_STRING);
+        $fileName = htmlentities($currentimg);
       }
+
+      $title = filter_var($_POST['title'], FILTER_SANITIZE_STRING);
+      $kicker = filter_var($_POST['kicker'], FILTER_SANITIZE_STRING);
+      $content = filter_var($_POST['content'], FILTER_SANITIZE_STRING);
 
       $data = [
         'idauthor' => (int)$_POST['idauthor'],
         'image' => $fileName,
-        'title' => htmlentities($_POST['title']),
-        'kicker' => htmlentities($_POST['kicker']),
-        'content' => htmlentities($_POST['content'])
+        'title' => htmlentities($title),
+        'kicker' => htmlentities($kicker),
+        'content' => htmlentities($content)
       ];
 
       $newPost = new Post($data);
 
-      if(isset($_GET['postid']) && !empty($_GET['postid']))
+      if(isset($_POST['id']) && isset($_GET['postid']) && !empty($_GET['postid']))
       {
         $id = (int)$_POST['id'];
         $newPost->setId($id);
@@ -306,7 +312,7 @@ class BackendController extends Controller
     $userManager = new UserManager($db);
     $user = $userManager->getUser($id);
 
-    if(isset($_POST['updateprofile']))
+    if(isset($_POST['updateprofile']) && isset($_POST['userid']))
     {
       $data = [
         'id' => (int)$_POST['userid'],
@@ -344,7 +350,7 @@ class BackendController extends Controller
    */
   public function newPassPage()
   {
-    if($_POST['updatemdp'])
+    if(isset($_POST['updatemdp']))
     {
       if (!empty($_POST['password'] && !empty($_POST['passwordbis'])))
       {

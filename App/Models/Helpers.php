@@ -15,7 +15,7 @@ class Helpers
   private function menuItem(string $page, string $name) :string
   {
     $class = "";
-    if($_GET['page'] === $page){
+    if(isset($_GET['page']) &&  $_GET['page'] === $page){
         $class = "class='active'";
     };
     return "<li><a href='?page=".$page."'".$class.">".$name."</a></li>";

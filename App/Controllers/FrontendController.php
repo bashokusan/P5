@@ -24,10 +24,15 @@ class FrontendController extends Controller
   public function home(){
 
     if(isset($_POST['send'])){
+
+      $name = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
+      $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+      $message = filter_var($_POST['message'], FILTER_SANITIZE_STRING);
+
       $data = [
-        'name' => htmlentities($_POST['name']),
-        'email' => htmlentities($_POST['email']),
-        'message' => htmlentities($_POST['message']),
+        'name' => htmlentities($name),
+        'email' => htmlentities($email),
+        'message' => htmlentities($message),
       ];
 
       $_SESSION['inputs'] = $_POST;
@@ -76,7 +81,10 @@ class FrontendController extends Controller
     $db = DBFactory::getPDO();
     $postManager = new PostManager($db);
 
-    $currentNbr = (int)$_GET['p'] ?? 1;
+    if(isset($_GET['p'])){
+      $currentNbr = (int)$_GET['p'] ?? 1;
+    }
+
     if(!filter_var($currentNbr, FILTER_VALIDATE_INT))
     {
       throw new \Exception("Cette page n'existe pas");
@@ -126,10 +134,12 @@ class FrontendController extends Controller
     $commentManager = new CommentManager($db);
 
     if(isset($_POST['add'])){
+      $author = filter_var($_POST['author'], FILTER_SANITIZE_STRING);
+      $content = filter_var($_POST['content'], FILTER_SANITIZE_STRING);
       $data = [
         'idArticle' => $id,
-        'author' => htmlentities($_POST['author']),
-        'content' => htmlentities($_POST['content']),
+        'author' => htmlentities($author),
+        'content' => htmlentities($content),
       ];
 
       $_SESSION['inputs'] = $_POST;
