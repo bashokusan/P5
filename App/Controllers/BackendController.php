@@ -12,49 +12,6 @@ class BackendController extends Controller
 
 
 //------------------------------------------------------------------------------
-// Hack Defense Methods
-//------------------------------------------------------------------------------
-  /**
-   * Session hijacking defense function
-   */
-  public function sessionHijack()
-  {
-    $token = bin2hex(random_bytes(32));
-    setcookie('u_log', $token, time() + (60 * 20));
-    $_SESSION['u_log'] = $token;
-  }
-
-
-  /**
-   * CSRF defense function
-   * If token in url different from token in session, logout user
-   */
-  public function csrf()
-  {
-    if(isset($_GET['token']) && !empty($_GET['token']))
-    {
-      // If token in url is different from token in session and cookie, session is destroyed
-      if($_GET['token'] != $_SESSION['t_user'])
-      {
-        $_SESSION = [];
-        session_destroy();
-        header('location:index.php');
-      }
-    }
-
-    if (isset($_POST['t_user']) && !empty($_POST['t_user']))
-    {
-      if ($_POST['t_user'] != $_SESSION['t_user'])
-      {
-        $_SESSION = [];
-        session_destroy();
-        header('location:index.php');
-      }
-    }
-  }
-
-
-//------------------------------------------------------------------------------
 // Home Page Methods
 //------------------------------------------------------------------------------
   /**
@@ -255,7 +212,7 @@ class BackendController extends Controller
     ob_start();
     require_once $this->getViewPath().'edit.php';
     $content = ob_get_clean();
-    require $this->getTemplatePath();
+    require_once $this->getTemplatePath();
 
   }
 
@@ -372,7 +329,7 @@ class BackendController extends Controller
     ob_start();
     require_once $this->getViewPath().'profile.php';
     $content = ob_get_clean();
-    require $this->getTemplatePath();
+    require_once $this->getTemplatePath();
 
   }
 
@@ -462,7 +419,7 @@ class BackendController extends Controller
     ob_start();
     require_once $this->getViewPath().'newpass.php';
     $content = ob_get_clean();
-    require $this->getTemplatePath();
+    require_once $this->getTemplatePath();
   }
 
 
@@ -593,7 +550,7 @@ class BackendController extends Controller
     ob_start();
     require_once $this->getViewPath().'login.php';
     $content = ob_get_clean();
-    require $this->getTemplatePath();
+    require_once $this->getTemplatePath();
   }
 
 
@@ -664,7 +621,7 @@ class BackendController extends Controller
     ob_start();
     require_once $this->getViewPath().'resetpass.php';
     $content = ob_get_clean();
-    require $this->getTemplatePath();
+    require_once $this->getTemplatePath();
   }
 
 
@@ -706,7 +663,7 @@ class BackendController extends Controller
     ob_start();
     require_once $this->getViewPath().'request.php';
     $content = ob_get_clean();
-    require $this->getTemplatePath();
+    require_once $this->getTemplatePath();
   }
 
 

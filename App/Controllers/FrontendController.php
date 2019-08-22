@@ -53,7 +53,7 @@ class FrontendController extends Controller
     ob_start();
     require_once $this->getViewPath().'home.php';
     $content = ob_get_clean();
-    require $this->getTemplatePath();
+    require_once $this->getTemplatePath();
 
     $_SESSION['inputs'] = [];
   }
@@ -101,7 +101,7 @@ class FrontendController extends Controller
     ob_start();
     require_once $this->getViewPath() .'blog.php';
     $content = ob_get_clean();
-    require $this->getTemplatePath();
+    require_once $this->getTemplatePath();
   }
 
 
@@ -154,7 +154,7 @@ class FrontendController extends Controller
     ob_start();
     require_once $this->getViewPath() .'post.php';
     $content = ob_get_clean();
-    require $this->getTemplatePath();
+    require_once $this->getTemplatePath();
 
     $_SESSION['inputs'] = [];
   }
