@@ -156,7 +156,7 @@ class UserManager
   /**
    * Insert into connect everytime there is a failed connection from same ip
    */
-  public function failconnect($ip, $iduser){
+  public function failConnect($ip, $iduser){
     $query = $this->db->prepare("INSERT INTO connect(ip, iduser, dateconnect) VALUES(:ip, :iduser, NOW())");
     $query->execute(['ip' => $ip, 'iduser' => $iduser
   ]);
@@ -165,7 +165,7 @@ class UserManager
   /**
    * Delete failed connection
    */
-  public function restoreconnect($ip, $iduser){
+  public function restoreConnect($ip, $iduser){
     $sql = "DELETE FROM connect WHERE ip = :ip AND iduser = :iduser";
     $query = $this->db->prepare($sql);
     $query->execute([

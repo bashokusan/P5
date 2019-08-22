@@ -49,7 +49,7 @@ try {
 
     elseif($_GET['page'] == 'posts')
     {
-      $controller->postspage();
+      $controller->postsPage();
     }
 
     elseif(!empty($_GET['delete']))
@@ -59,17 +59,17 @@ try {
 
     elseif($_GET['page'] == 'edit')
     {
-      $controller->editpage();
+      $controller->editPage();
     }
 
     elseif($_GET['page'] == 'comments')
     {
-      $controller->commentspage();
+      $controller->commentsPage();
     }
 
     elseif($_GET['page'] == 'adminrequest')
     {
-      $controller->adminrequestpage();
+      $controller->adminRequestPage();
     }
       elseif($_GET['acceptrequest'])
       {
@@ -79,12 +79,12 @@ try {
 
     elseif($_GET['page'] == 'profile')
     {
-      $controller->profilepage();
+      $controller->profilePage();
     }
 
     elseif($_GET['page'] == 'newpass')
     {
-      $controller->newpasspage();
+      $controller->newPassPage();
     }
 
     elseif($_GET['page'] == 'logout')
@@ -109,7 +109,7 @@ try {
     }
     else
     {
-      $controller->newpasspage();
+      $controller->newPassPage();
     }
   }
 
@@ -123,7 +123,7 @@ try {
 
     elseif($_GET['page'] == 'resetpass')
     {
-      $controller->resetpasspage();
+      $controller->resetPassPage();
     }
 
     elseif($_GET['page'] == 'reset')
@@ -131,7 +131,7 @@ try {
       // In url from the email sent after reset request
       if(isset($_GET['restoken']) && isset($_GET['validator'] )&& !empty($_GET['restoken']) && !empty($_GET['validator'])){
         if(ctype_xdigit($_GET['restoken']) && ctype_xdigit($_GET['validator'])){
-          $controller->newpasspage();
+          $controller->newPassPage();
         }
       }
       else{
@@ -142,7 +142,7 @@ try {
 
     elseif($_GET['page'] == 'request')
     {
-      $controller->requestpage();
+      $controller->requestPage();
     }
 
     else
