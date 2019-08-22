@@ -103,8 +103,11 @@ class UserManager
 
   public function getUser($id)
   {
-    $sql = "SELECT * FROM users WHERE id = $id";
-    $query = $this->db->query($sql);
+    $sql = "SELECT * FROM users WHERE id = :id";
+    $query = $this->db->prepare($sql);
+    $query->execute([
+      'id' => $id,
+    ]);
     $query->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, User::class);
     $user = $query->fetch();
 
