@@ -3,7 +3,7 @@
 <div class="posts_container">
   <?php foreach($postList as $post) : ?>
     <div class="post_card">
-      <h3><?= $post->id() ?> | <?= $post->title() ?></h3>
+      <h3><?= $post->title() ?></h3>
 
       <?php if($post->image()) : ?>
         <img src="../Public/Content/Post-<?= $post->id() ?>/<?= $post->image() ?>" alt="">

@@ -44,12 +44,11 @@ class PostManager
    */
   public function add(Post $post)
   {
-    $sql = "INSERT INTO articles(idauthor, image, title, kicker, content, publishDate)
-            VALUES(:idauthor, :image, :title, :kicker, :content, NOW())";
+    $sql = "INSERT INTO articles(idauthor, title, kicker, content, publishDate)
+            VALUES(:idauthor, :title, :kicker, :content, NOW())";
     $query = $this->db->prepare($sql);
     $query->execute([
       'idauthor' => $post->idauthor(),
-      'image' => $post->image(),
       'title' => $post->title(),
       'kicker' => $post->kicker(),
       'content' => $post->content()
@@ -63,16 +62,32 @@ class PostManager
    */
   public function update(Post $post)
   {
-    $sql = "UPDATE articles SET idauthor = :idauthor, image = :image, title = :title, kicker = :kicker, content = :content, updateDate = NOW()
+    $sql = "UPDATE articles SET idauthor = :idauthor, title = :title, kicker = :kicker, content = :content, updateDate = NOW()
             WHERE id = :id";
     $query = $this->db->prepare($sql);
     $query->execute([
       'idauthor' => $post->idauthor(),
-      'image' => $post->image(),
       'title' => $post->title(),
       'kicker' => $post->kicker(),
       'content' => $post->content(),
       'id' => $post->id()
+    ]);
+  }
+
+
+  /**
+   * Upload image in images table
+   * @param  string $fileName Name of image
+   * @param  int $id       Id of post
+   */
+  public function uploadimg($fileName, $id)
+  {
+    $sql = "INSERT INTO images(idarticle, src)
+            VALUES(:idarticle, :src)";
+    $query = $this->db->prepare($sql);
+    $query->execute([
+      'idarticle' => $id,
+      'src' => $fileName,
     ]);
   }
 
@@ -85,7 +100,7 @@ class PostManager
    */
   public function getList($limit = null, $offset = null)
   {
-    $sql = "SELECT articles.id, articles.image, articles.title, articles.kicker, articles.content, articles.publishDate, articles.updateDate, articles.countComment, users.name FROM articles JOIN users ON articles.idauthor = users.id ORDER BY articles.id DESC ";
+    $sql = "SELECT articles.id, articles.title, articles.kicker, articles.content, articles.publishDate, articles.updateDate, articles.countComment, users.name FROM articles JOIN users ON articles.idauthor = users.id ORDER BY articles.id DESC ";
     if(isset($limit) && isset($offset)){
       $sql .= "LIMIT $limit OFFSET $offset";
     }
@@ -94,6 +109,9 @@ class PostManager
     $postList= $query->fetchAll();
 
     foreach($postList as $post){
+      $src = $this->db->query("SELECT src FROM images WHERE idarticle = ".$post->id()." ORDER BY id DESC")->fetch();
+
+      $post->setImage($src[0]);
       $post->setPublishDate(new DateTime($post->publishDate()));
       if($post->updateDate()){
         $post->setUpdatDate(new DateTime($post->updateDate()));
@@ -112,7 +130,7 @@ class PostManager
    */
   public function getUnique($id)
   {
-    $sql = "SELECT articles.id, articles.image, articles.title, articles.kicker, articles.content, articles.publishDate, articles.updateDate, articles.countComment, users.name FROM articles JOIN users ON articles.idauthor = users.id WHERE articles.id = :id";
+    $sql = "SELECT articles.id, articles.title, articles.kicker, articles.content, articles.publishDate, articles.updateDate, articles.countComment, users.name FROM articles JOIN users ON articles.idauthor = users.id WHERE articles.id = :id";
     $query = $this->db->prepare($sql);
     $query->execute([
       'id' => $id
@@ -120,11 +138,15 @@ class PostManager
     $query->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Post::class);
     $post = $query->fetch();
 
+    $src = $this->db->query("SELECT src FROM images WHERE idarticle = ".(int)$id." ORDER BY id DESC")->fetch();
+
+    $post->setImage($src[0]);
     $post->setPublishDate(new DateTime($post->publishDate()));
     if($post->updateDate()){
       $post->setUpdatDate(new DateTime($post->updateDate()));
-    }  
+    }
 
+    $query->closeCursor();
     return $post;
   }
 
@@ -136,6 +158,9 @@ class PostManager
   public function delete ($id)
   {
     $sql = "DELETE FROM comments WHERE idArticle =".(int)$id;
+    $this->db->exec($sql);
+
+    $sql = "DELETE FROM images WHERE idarticle =".(int)$id;
     $this->db->exec($sql);
 
     $sql = "DELETE FROM articles WHERE id=".(int)$id;

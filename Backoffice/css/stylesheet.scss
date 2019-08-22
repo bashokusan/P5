@@ -371,6 +371,11 @@ footer{
 	.posts_container{
 		flex-direction: column;
 
+		.post_content{
+			display: flex;
+			flex-direction: row;
+		}
+
 		.post{
 			display: flex;
 			justify-content: space-between;

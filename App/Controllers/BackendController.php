@@ -41,6 +41,16 @@ class BackendController extends Controller
         header('location:index.php');
       }
     }
+
+    if (isset($_POST['t_user']) && !empty($_POST['t_user']))
+    {
+      if ($_POST['t_user'] != $_SESSION['t_user'])
+      {
+        $_SESSION = [];
+        session_destroy();
+        header('location:index.php');
+      }
+    }
   }
 
 
@@ -161,89 +171,85 @@ class BackendController extends Controller
       $post = $postManager->getUnique($id);
     }
 
-    if (isset($_POST['t_user']) && !empty($_POST['t_user']))
+    if(isset($_POST['idauthor']))
     {
-      if ($_POST['t_user'] === $_SESSION['t_user'])
-      {
-        if(isset($_POST['idauthor']))
-        {
-          $_SESSION['inputs'] = $_POST;
+      $_SESSION['inputs'] = $_POST;
 
-          if (isset($_FILES['image']) && !empty($_FILES['image']['name']))
+      if (isset($_FILES['image']) && !empty($_FILES['image']['name']))
+      {
+        if($_FILES['image']['error'] === 0)
+        {
+          $extensions_autorisees = array('jpg', 'jpeg', 'gif', 'png');
+          $infosfichier = pathinfo($_FILES['image']['name']);
+          $extension_upload = strtolower($infosfichier['extension']);
+          if (in_array($extension_upload, $extensions_autorisees))
           {
-            if($_FILES['image']['error'] === 0)
+            if ($_FILES['image']['size'] > 0 && $_FILES['image']['size'] <= 2000000)
             {
-              $extensions_autorisees = array('jpg', 'jpeg', 'gif', 'png');
-              $infosfichier = pathinfo($_FILES['image']['name']);
-              $extension_upload = strtolower($infosfichier['extension']);
-              if (in_array($extension_upload, $extensions_autorisees))
-              {
-                if ($_FILES['image']['size'] > 0 && $_FILES['image']['size'] <= 2000000)
-                {
-                  $fileName = uniqid(). "." .$infosfichier['extension'];
-                }
-                else
-                {
-                  $imgerrors = "Le fichier doit faire moins de 2mo";
-                }
-              }
-              else
-              {
-                $imgerrors = "Le fichier n'est pas au bon format";
-              }
+              $fileName = uniqid(). "." .$infosfichier['extension'];
             }
             else
             {
-              $imgerrors = "Le fichier est invalide";
+              $imgerrors = "Le fichier doit faire moins de 2mo";
             }
-          }
-          /*elseif(isset($_POST['currentimg']) && !empty($_POST['currentimg']))
-          {
-            $fileName = htmlentities($_POST['currentimg']);
-          }*/
-
-          $data = [
-            'idauthor' => (int)$_POST['idauthor'],
-            'image' => $fileName,
-            'title' => htmlentities($_POST['title']),
-            'kicker' => htmlentities($_POST['kicker']),
-            'content' => htmlentities($_POST['content'])
-          ];
-
-          $newPost = new Post($data);
-
-          if(isset($_GET['postid']) && !empty($_GET['postid']))
-          {
-            $newPost->setId($_POST['id']);
-          }
-
-          if($newPost->isValid() && empty($imgerrors))
-          {
-            $postManager->save($newPost);
-
-            if($newPost->id()){
-              $id = $newPost->id();
-            }else{
-              $id = $db->lastInsertId();
-            }
-
-            if($fileName)
-            {
-              $path = '../Public/Content/post-'.$id;
-              if(!file_exists($path)){
-                mkdir($path,0777, true);
-              }
-              move_uploaded_file($_FILES['image']['tmp_name'], $path . DIRECTORY_SEPARATOR . $fileName);
-            }
-
-            header('Location: ?page=posts');
-
           }
           else
           {
-            $errors = $newPost->errors();
+            $imgerrors = "Le fichier n'est pas au bon format";
           }
         }
+        else
+        {
+          $imgerrors = "Le fichier est invalide";
+        }
+      }
+      elseif(isset($_POST['currentimg']) && !empty($_POST['currentimg']))
+      {
+        $fileName = htmlentities($_POST['currentimg']);
+      }
+
+      $data = [
+        'idauthor' => (int)$_POST['idauthor'],
+        'image' => $fileName,
+        'title' => htmlentities($_POST['title']),
+        'kicker' => htmlentities($_POST['kicker']),
+        'content' => htmlentities($_POST['content'])
+      ];
+
+      $newPost = new Post($data);
+
+      if(isset($_GET['postid']) && !empty($_GET['postid']))
+      {
+        $newPost->setId($_POST['id']);
+      }
+
+      if($newPost->isValid() && empty($imgerrors))
+      {
+        $postManager->save($newPost);
+
+        if($newPost->id()){
+          $id = $newPost->id();
+        }else{
+          $id = $db->lastInsertId();
+        }
+
+        if($fileName)
+        {
+          $path = '../Public/Content/post-'.$id;
+          if(!file_exists($path)){
+            mkdir($path,0777, true);
+          }
+          move_uploaded_file($_FILES['image']['tmp_name'], $path . DIRECTORY_SEPARATOR . $fileName);
+
+          $postManager->uploadimg($fileName, (int)$id);
+        }
+
+        header('Location: ?page=posts');
+
+      }
+      else
+      {
+        $errors = $newPost->errors();
       }
     }
 
@@ -342,32 +348,28 @@ class BackendController extends Controller
     $db = DBFactory::getPDO();
     $userManager = new UserManager($db);
     $user = $userManager->getUser($id);
-    if (isset($_POST['t_user']) && !empty($_POST['t_user']))
+
+    if(isset($_POST['updateprofile']))
     {
-      if ($_POST['t_user'] === $_SESSION['t_user'])
+      $data = [
+        'id' => (int)$_POST['userid'],
+        'name' => htmlentities($_POST['name']),
+        'email' => htmlentities($_POST['email']),
+      ];
+
+      $updateuser = new User($data);
+
+      if($updateuser->isValid())
       {
-        if(isset($_POST['updateprofile']))
-        {
-          $data = [
-            'id' => (int)$_POST['userid'],
-            'name' => htmlentities($_POST['name']),
-            'email' => htmlentities($_POST['email']),
-          ];
-
-          $updateuser = new User($data);
-
-          if($updateuser->isValid())
-          {
-            $userManager->updateinfos($updateuser);
-            $message = "Vos informations ont été modifiées.";
-          }
-          else
-          {
-            $errors = $updateuser->errors();
-          }
-        }
+        $userManager->updateinfos($updateuser);
+        $message = "Vos informations ont été modifiées.";
+      }
+      else
+      {
+        $errors = $updateuser->errors();
       }
     }
+
     ob_start();
     require_once $this->getViewPath().'profile.php';
     $content = ob_get_clean();
@@ -428,37 +430,23 @@ class BackendController extends Controller
             }
           }
           // For users who change password
-          elseif (isset($_POST['t_user']) && !empty($_POST['t_user']))
+          $user = $userManager->getUser($_SESSION['id']);
+          $id = $user->id();
+          // If not confirmed (ie first login and has not changed pass yet)
+          if($user->confirm() == 0)
           {
-            if ($_POST['t_user'] === $_SESSION['t_user'])
-            {
-              $user = $userManager->getUser($_SESSION['id']);
-              $id = $user->id();
-              // If not confirmed (ie first login and has not changed pass yet)
-              if($user->confirm() == 0)
-              {
-                $passhash = password_hash($password, PASSWORD_DEFAULT);
-                $userManager->update($id, $passhash, 'confirm');
-                $this->logout();
-                header('Location: ?page=login');
-              }
-              // If confirmed admin
-              else
-              {
-                $passhash = password_hash($password, PASSWORD_DEFAULT);
-                $userManager->update($id, $passhash);
-                $this->logout();
-                header('Location: ?page=login');
-              }
-            }
-            else
-            {
-              $error = "Problème didentifications, vos clés ne correspondent pas.";
-            }
+            $passhash = password_hash($password, PASSWORD_DEFAULT);
+            $userManager->update($id, $passhash, 'confirm');
+            $this->logout();
+            header('Location: ?page=login');
           }
+          // If confirmed admin
           else
           {
-            $error = "Erreur d'identification";
+            $passhash = password_hash($password, PASSWORD_DEFAULT);
+            $userManager->update($id, $passhash);
+            $this->logout();
+            header('Location: ?page=login');
           }
         }
         else
