@@ -109,8 +109,11 @@ class PostManager
     $postList= $query->fetchAll();
 
     foreach($postList as $post){
-      $src = $this->db->query("SELECT src FROM images WHERE idarticle = ".$post->id()." ORDER BY id DESC")->fetch();
-
+      $query = $this->db->prepare("SELECT src FROM images WHERE idarticle = :id ORDER BY id DESC");
+      $query->execute([
+        'id' => $post->id()
+      ]);
+      $src = $query->fetch();
       $post->setImage($src[0]);
       $post->setPublishDate(new DateTime($post->publishDate()));
       if($post->updateDate()){
@@ -138,8 +141,11 @@ class PostManager
     $query->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Post::class);
     $post = $query->fetch();
 
-    $src = $this->db->query("SELECT src FROM images WHERE idarticle = ".(int)$id." ORDER BY id DESC")->fetch();
-
+    $query = $this->db->prepare("SELECT src FROM images WHERE idarticle = :id ORDER BY id DESC");
+    $query->execute([
+      'id' => (int)$id
+    ]);
+    $src = $query->fetch();
     $post->setImage($src[0]);
     $post->setPublishDate(new DateTime($post->publishDate()));
     if($post->updateDate()){
@@ -157,14 +163,22 @@ class PostManager
 
   public function delete ($id)
   {
-    $sql = "DELETE FROM comments WHERE idArticle =".(int)$id;
-    $this->db->exec($sql);
+    $sql = "DELETE FROM comments WHERE idArticle = :id";
+    $query = $this->db->prepare($sql);
+    $query->execute([
+      'id' => (int)$id
+    ]);
 
-    $sql = "DELETE FROM images WHERE idarticle =".(int)$id;
-    $this->db->exec($sql);
-
-    $sql = "DELETE FROM articles WHERE id=".(int)$id;
-    $this->db->exec($sql);
-  }
+    $sql = "DELETE FROM images WHERE idarticle = :id";
+    $query = $this->db->prepare($sql);
+    $query->execute([
+      'id' => (int)$id
+    ]);
+    
+    $sql = "DELETE FROM articles WHERE id= :id";
+    $query = $this->db->prepare($sql);
+    $query->execute([
+      'id' => (int)$id
+    ]);  }
 
 }
