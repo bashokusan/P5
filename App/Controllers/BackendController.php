@@ -117,7 +117,7 @@ class BackendController extends Controller
    * Posts page
    * Displays all posts
    */
-  public function postspage()
+  public function postsPage()
   {
     $db = DBFactory::getPDO();
     $postManager = new PostManager($db);
@@ -153,7 +153,7 @@ class BackendController extends Controller
    * Edit page
    * Update or create new post
    */
-  public function editpage()
+  public function editPage()
   {
     $db = DBFactory::getPDO();
     $postManager = new PostManager($db);
@@ -240,7 +240,7 @@ class BackendController extends Controller
           }
           move_uploaded_file($_FILES['image']['tmp_name'], $path . DIRECTORY_SEPARATOR . $fileName);
 
-          $postManager->uploadimg($fileName, (int)$id);
+          $postManager->uploadImg($fileName, (int)$id);
         }
 
         header('Location: ?page=posts');
@@ -267,7 +267,7 @@ class BackendController extends Controller
    * Comments page
    * Displays all comments ordered by posts
    */
-  public function commentspage()
+  public function commentsPage()
   {
     $db = DBFactory::getPDO();
     $commentManager = new CommentManager($db);
@@ -294,7 +294,7 @@ class BackendController extends Controller
    * Requests page
    * Displays standing by requests and accepted request
    */
-  public function adminrequestpage()
+  public function adminRequestPage()
   {
 
     $db = DBFactory::getPDO();
@@ -339,7 +339,7 @@ class BackendController extends Controller
   /**
    * Profile page
    */
-  public function profilepage()
+  public function profilePage()
   {
     $id = $_SESSION['id'];
     $token = $_SESSION['t_user'];
@@ -384,7 +384,7 @@ class BackendController extends Controller
    * Page to create new password
    * Also used when reset password
    */
-  public function newpasspage()
+  public function newPassPage()
   {
     if($_POST['updatemdp'])
     {
@@ -541,7 +541,7 @@ class BackendController extends Controller
             {
               // Restore failed connection to 0
               if($connect){
-                $userManager->restoreconnect($ip, $loggingUser->id());
+                $userManager->restoreConnect($ip, $loggingUser->id());
               }
 
               // If user is confirmed (has changed his password once)
@@ -571,7 +571,7 @@ class BackendController extends Controller
             {
               $prohib = "Informations de connection éronées (mdp)";
               // Save the failed connection into dabatase
-              $failconnect = $userManager->failconnect($ip, $loggingUser->id());
+              $failconnect = $userManager->failConnect($ip, $loggingUser->id());
             }
           }
           else
@@ -603,7 +603,7 @@ class BackendController extends Controller
   /**
    * Reset Pass
    */
-  public function resetpasspage()
+  public function resetPassPage()
   {
     if(isset($_POST['resetpass']))
     {
@@ -675,7 +675,7 @@ class BackendController extends Controller
    * Page to request admin role
    * Save email and message from request form into the database
    */
-  public function requestpage()
+  public function requestPage()
   {
     if($_POST['request'])
     {

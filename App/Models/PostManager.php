@@ -80,7 +80,7 @@ class PostManager
    * @param  string $fileName Name of image
    * @param  int $id       Id of post
    */
-  public function uploadimg($fileName, $id)
+  public function uploadImg($fileName, $id)
   {
     $sql = "INSERT INTO images(idarticle, src)
             VALUES(:idarticle, :src)";
@@ -174,7 +174,7 @@ class PostManager
     $query->execute([
       'id' => (int)$id
     ]);
-    
+
     $sql = "DELETE FROM articles WHERE id= :id";
     $query = $this->db->prepare($sql);
     $query->execute([
