@@ -66,19 +66,17 @@ class BackendController extends Controller
     $db = DBFactory::getPDO();
     $postManager = new PostManager($db);
     $commentManager = new CommentManager($db);
-    $token = $_SESSION['t_user'];
 
-    $postsCount = $postManager->count();
-    $commentCount = $commentManager->count();
+    $data =
+    [
+      'token' => $_SESSION['t_user'],
+      'postsCount' => $postManager->count(),
+      'commentCount' => $commentManager->count(),
+      'uncheckedCount' => $commentManager->count('unchecked'),
+      'uncheckedComment' => $commentManager->getListNoId('unchecked')
+    ];
 
-    $uncheckedCount = $commentManager->count('unchecked');
-    $uncheckedComment = $commentManager->getListNoId('unchecked');
-
-    ob_start();
-    require_once $this->getViewPath().'home.php';
-    $content = ob_get_clean();
-    require $this->getTemplatePath();
-
+    $this->render('home', $data);
   }
 
 
@@ -123,13 +121,14 @@ class BackendController extends Controller
   {
     $db = DBFactory::getPDO();
     $postManager = new PostManager($db);
-    $postList = $postManager->getList();
-    $token = $_SESSION['t_user'];
 
-    ob_start();
-    require_once $this->getViewPath().'posts.php';
-    $content = ob_get_clean();
-    require $this->getTemplatePath();
+    $data =
+    [
+      'token' => $_SESSION['t_user'],
+      'postList' => $postManager->getList()
+    ];
+
+    $this->render('posts', $data);
   }
 
 
@@ -272,19 +271,18 @@ class BackendController extends Controller
   {
     $db = DBFactory::getPDO();
     $commentManager = new CommentManager($db);
-    $flagComments = $commentManager->getListNoId('flag');
-    $flagCommentsCount = $commentManager->count('flag');
 
-    $checkedComment = $commentManager->getListNoId('checked');
-    $checkedCommentsCount = $commentManager->count('checked');
+    $data =
+    [
+      'flagComments' => $commentManager->getListNoId('flag'),
+      'flagCommentsCount' => $commentManager->count('flag'),
+      'checkedComment' => $commentManager->getListNoId('checked'),
+      'checkedCommentsCount' => $commentManager->count('checked'),
+      'commentsList' => $commentManager->getListNoId(),
+      'CommentsCount' => $commentManager->count()
+    ];
 
-    $commentsList = $commentManager->getListNoId();
-    $CommentsCount = $commentManager->count();
-
-    ob_start();
-    require_once $this->getViewPath().'comments.php';
-    $content = ob_get_clean();
-    require $this->getTemplatePath();
+    $this->render('comments', $data);
   }
 
 
@@ -301,13 +299,14 @@ class BackendController extends Controller
 
     $db = DBFactory::getPDO();
     $userManager = new UserManager($db);
-    $userList = $userManager->getList('new');
-    $acceptedUserList = $userManager->getList('accepted');
 
-    ob_start();
-    require_once $this->getViewPath().'adminrequest.php';
-    $content = ob_get_clean();
-    require $this->getTemplatePath();
+    $data =
+    [
+      'userList' => $userManager->getList('new'),
+      'acceptedUserList' => $userManager->getList('accepted'),
+    ];
+
+    $this->render('adminrequest', $data);
   }
 
   /**

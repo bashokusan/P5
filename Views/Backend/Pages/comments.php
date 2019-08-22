@@ -30,8 +30,8 @@
 <?php endif ?>
 
 <?php if($checkedCommentsCount): ?>
-  <h3>Commentaires vérifiés</h3>
-  <p><?= $checkedCommentsCount ?> commentaires vérifiés</p>
+  <h3>Commentaires validés</h3>
+  <p><?= $checkedCommentsCount ?> commentaires validés</p>
   <div class="table">
     <table>
       <tr>

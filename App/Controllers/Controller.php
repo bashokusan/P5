@@ -49,4 +49,18 @@ abstract class Controller
     return $this->token;
   }
 
+  /**
+   * Render page with its data
+   * @param  string $page Page to display
+   * @param  array  $data Data of the page
+   */
+  public function render($page, array $data){
+    extract($data);
+
+    ob_start();
+    require_once $this->getViewPath().$page.'.php';
+    $content = ob_get_clean();
+    require $this->getTemplatePath();
+  }
+
 }

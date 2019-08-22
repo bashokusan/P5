@@ -6,7 +6,7 @@
 <p>Il y a <a href="?page=comments"><?= $commentCount ?> commentaires<?= $uncheckedCount ? " / " . $uncheckedCount . " non validés " : "" ?></a></p>
 
 <?php if($uncheckedComment) : ?>
-  <h3>Commentaires à valider :</h3>
+  <h3>Commentaires à vérifier :</h3>
   <div class="table">
     <table>
       <tr>

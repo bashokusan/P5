@@ -1,9 +1,9 @@
 {
     "require-dev": {
         "symfony/var-dumper": "^4.3"
+        "filp/whoops": "^2.4",
     },
     "require": {
-        "filp/whoops": "^2.4",
         "swiftmailer/swiftmailer": "^6.0"
     }
 }
