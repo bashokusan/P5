@@ -176,7 +176,8 @@ class BackendController extends Controller
 
       if(isset($_GET['postid']) && !empty($_GET['postid']))
       {
-        $newPost->setId($_POST['id']);
+        $id = (int)$_POST['id'];
+        $newPost->setId($id);
       }
 
       if($newPost->isValid() && empty($imgerrors))

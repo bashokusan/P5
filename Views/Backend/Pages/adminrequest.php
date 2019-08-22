@@ -7,11 +7,11 @@
     <h3>Demande en attente :</h3>
     <?php foreach($userList as $user) : ?>
       <div class="user">
-        <p>Date de la demande : <?= $user->requestDate() ?></p>
-        <p>Nom : <?= $user->name() ?></p>
-        <p>Email : <?= $user->email() ?></p>
+        <p>Date de la demande : <?= htmlentities($user->requestDate()) ?></p>
+        <p>Nom : <?= htmlentities($user->name()) ?></p>
+        <p>Email : <?= htmlentities($user->email()) ?></p>
         <p>Message :</p>
-        <p><?= $user->message() ?></p>
+        <p><?= htmlentities($user->message()) ?></p>
       </div>
       <a href="?acceptrequest=<?= $user->id() ?>&token=<?= $token ?>">Accepter</a>
     <?php endforeach ?>
@@ -23,9 +23,9 @@
     <h3>Demande acceptée :</h3>
     <?php foreach($acceptedUserList as $acceptedUser) : ?>
       <div class="user">
-        <p>Nom : <?= $acceptedUser->name() ?></p>
-        <p>Email : <?= $acceptedUser->email() ?></p>
-        <p><strong><?= $acceptedUser->confirm() == 0 ? "L'utilisateur n'a pas encore confirmé" : "Ce contributeur a confirmé" ?></strong></p>
+        <p>Nom : <?= htmlentities($acceptedUser->name()) ?></p>
+        <p>Email : <?= htmlentities($acceptedUser->email()) ?></p>
+        <p><strong><?= (int)$acceptedUser->confirm() == 0 ? "L'utilisateur n'a pas encore confirmé" : "Ce contributeur a confirmé" ?></strong></p>
         <hr>
       </div>
     <?php endforeach ?>

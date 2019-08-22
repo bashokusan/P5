@@ -76,7 +76,7 @@ class FrontendController extends Controller
     $db = DBFactory::getPDO();
     $postManager = new PostManager($db);
 
-    $currentNbr = $_GET['p'] ?? 1;
+    $currentNbr = (int)$_GET['p'] ?? 1;
     if(!filter_var($currentNbr, FILTER_VALIDATE_INT))
     {
       throw new \Exception("Cette page n'existe pas");
