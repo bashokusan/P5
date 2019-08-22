@@ -1,7 +1,9 @@
 <? $title = "Backoffice | Articles"; ?>
 
 <h2>Liste des articles</h2>
-<?php if($message) echo "<p class='alert success'>" . $message . "</p>"?>
+<?php if($message) : ?>
+  <p class='alert success'><?= $message ?></p>
+<?php endif ?>
 
 <div class="posts_container">
   <?php foreach($postList as $post) : ?>

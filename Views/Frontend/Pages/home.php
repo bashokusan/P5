@@ -31,26 +31,34 @@
 
 <div class="contact_form">
 <h2>Me contacter</h2>
-<?php if($message) echo "<p class='alert success'>" . $message . "</p>"?>
+  <?php if($message) : ?>
+    <p class='alert info'><?= $message ?></p>"
+  <?php endif ?>
   <form class="" action="" method="post">
     <div>
       <fieldset>
         <label for="name">Votre nom</label>
-
-        <?php if(isset($errors) && in_array(Message::NAME_INVALID, $errors)) echo "<p class='alert warning'>nom invalide</p>"; ?>
-
+        <?php if(isset($errors) && in_array(Message::NAME_INVALID, $errors)) : ?>
+          <p class='alert warning'>nom invalide</p>
+        <?php endif ?>
         <input type="text" name="name" id="name" value="<?= $_SESSION['inputs']['name'] ? $_SESSION['inputs']['name'] : "" ?>" placeholder="exemple : John Doe">
 
-        <?php if(isset($errors) && in_array(Message::EMAIL_INVALID, $errors)) echo "<p class='alert warning'>email invalide</p>"; ?>
         <label for="email">Votre email</label>
+        <?php if(isset($errors) && in_array(Message::EMAIL_INVALID, $errors)) : ?>
+          <p class='alert warning'>email invalide</p>
+        <?php endif ?>
         <input type="email" name="email" id="email" value="<?= $_SESSION['inputs']['email'] ? $_SESSION['inputs']['email'] : "" ?>" placeholder="exemple : johndoe@mail.com">
       </fieldset>
     </div>
 
     <div>
-      <?php if(isset($errors) && in_array(Message::MESSAGE_INVALID, $errors)) echo "<p class='alert warning'>message invalide</p>"; ?>
-      <?php if(isset($errors) && in_array(Message::MESSAGE_LENGHT, $errors)) echo "<p class='alert warning'>Le message doit faire entre 10 et 500 caractères</p>"; ?>
       <label for="message">Votre message</label>
+      <?php if(isset($errors) && in_array(Message::MESSAGE_INVALID, $errors)) : ?>
+        <p class='alert warning'>message invalide</p>
+      <?php endif ?>
+      <?php if(isset($errors) && in_array(Message::MESSAGE_LENGHT, $errors)) : ?>
+        <p class='alert warning'>Le message doit faire entre 10 et 500 caractères</p>
+      <?php endif ?>
       <textarea name="message" id="message" rows="8" cols="80" placeholder="exemple : Lorem Ipsum"><?= $_SESSION['inputs']['message'] ? $_SESSION['inputs']['message'] : "" ?></textarea>
     </div>
 
