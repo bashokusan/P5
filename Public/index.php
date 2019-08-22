@@ -9,12 +9,6 @@ require_once '../vendor/autoload.php';
 // Home made autoload
 require_once 'autoload.php';
 
-// Whoops library, to be deleted when live
-$whoops = new \Whoops\Run;
-$whoops->prependHandler(new \Whoops\Handler\PrettyPageHandler);
-$whoops->register();
-
-
 // Path to pages
 $viewPath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . 'Frontend' . DIRECTORY_SEPARATOR . 'Pages' . DIRECTORY_SEPARATOR;
 // Path to template
