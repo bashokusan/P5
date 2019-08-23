@@ -23,11 +23,18 @@ abstract class Controller
 
 
     // Setters
+
+    /**
+     * @param string $viewPath [description]
+     */
     public function setViewPath($viewPath)
     {
         $this->viewPath = $viewPath;
     }
 
+    /**
+     * @param string $templatePath [description]
+     */
     public function setTemplatePath($templatePath)
     {
         $this->templatePath = $templatePath;

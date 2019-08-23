@@ -32,17 +32,26 @@ class Menu
         . $this->menuItem('blog', 'Blog');
     }
 
+    /**
+     * @return string Return all the <li> for the menu
+     */
     public function menuBack() : string
     {
         return $this->menuItem('login', 'Login')
           .$this->menuItem('request', 'Contribuer');
     }
 
+    /**
+     * @return string Return all the <li> for the menu
+     */
     public function menuBackGuest() : string
     {
         return $this->menuItem('logout', 'Logout');
     }
 
+    /**
+     * @return string Return all the <li> for the menu
+     */
     public function menuBackAdmin() : string
     {
         return $this->menuItem('posts', 'Articles')

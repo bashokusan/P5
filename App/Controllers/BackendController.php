@@ -282,7 +282,9 @@ class BackendController extends Controller
         $userManager = new UserManager($db);
         $user = $userManager->getUser($id);
 
-        $userManager->acceptRequest($id, $hashPass);
+        if ($hashPass){
+          $userManager->acceptRequest($id, $hashPass);
+        }
 
         $mailContentText = "Bonjour ".$user->name().", voici votre mot de passe temporaire : ".$pass." Le lien d'accès : http://localhost/P5/Backoffice/index.php A bientôt.";
 
@@ -425,6 +427,7 @@ class BackendController extends Controller
 
     /**
      * Check if user connected or not
+     * @param  string $role [description]
      * @return bool True if there is a role session var
      */
     public function loggedIn($role = null)

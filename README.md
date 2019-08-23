@@ -31,4 +31,4 @@
 
 * You have to write your own database infos in App/DBFactory.
 * SQL functions are made with mysql.
-* You need to have composer and install swiftmailer library and change $transport object in App/Controllers/BackendController/sendMail function.
+* You need to have composer and install swiftmailer library and change $transport object of the SendMail class in App/Controllers/.

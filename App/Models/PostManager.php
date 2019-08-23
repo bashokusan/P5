@@ -165,6 +165,9 @@ class PostManager
         return $this->db->query('SELECT COUNT(*) FROM articles')->fetchColumn();
     }
 
+    /**
+     * @param  int $id [description]
+     */
     public function delete($id)
     {
         $sql = "DELETE FROM comments WHERE idArticle = :id";

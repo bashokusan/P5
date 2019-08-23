@@ -50,6 +50,9 @@ class Message
 
     // Setters
 
+    /**
+     * @param string $name [description]
+     */
     public function setName($name)
     {
         if (!is_string($name) || empty($name)) {
@@ -59,6 +62,9 @@ class Message
         }
     }
 
+    /**
+     * @param string $email [description]
+     */
     public function setEmail($email)
     {
         if (!is_string($email) || !filter_var($email, FILTER_VALIDATE_EMAIL) || empty($email)) {
@@ -68,6 +74,9 @@ class Message
         }
     }
 
+    /**
+     * @param string $message [description]
+     */
     public function setMessage($message)
     {
         if (!is_string($message) || empty($message)) {

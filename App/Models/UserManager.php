@@ -62,6 +62,9 @@ class UserManager
     }
 
 
+    /**
+     * @param  User   $user [description]
+     */
     public function updateinfos(User $user)
     {
         $sql = "UPDATE users SET name = :name, email = :email WHERE id = :id";
@@ -106,6 +109,10 @@ class UserManager
         return $userList;
     }
 
+
+    /**
+     * @param  int $id [description]
+     */
     public function getUser($id)
     {
         $sql = "SELECT * FROM users WHERE id = :id";
@@ -120,6 +127,10 @@ class UserManager
         return $user;
     }
 
+
+    /**
+     * @param  string $email [description]
+     */
     public function getUserByMail($email)
     {
         $sql = "SELECT * FROM users WHERE email = :email AND accept = 1";
@@ -134,6 +145,11 @@ class UserManager
         return $user;
     }
 
+
+    /**
+     * @param  int $id   [description]
+     * @param  string $pass [description]
+     */
     public function acceptRequest($id, $pass)
     {
         $sql = "UPDATE users SET password = :password, accept = 1
@@ -147,6 +163,7 @@ class UserManager
 
     /**
      * Count failed connection from same ip
+     * @param  int $ip [description]
      */
     public function connect($ip)
     {
@@ -160,6 +177,8 @@ class UserManager
 
     /**
      * Insert into connect everytime there is a failed connection from same ip
+     * @param  string $ip     [description]
+     * @param  int $iduser [description]
      */
     public function failConnect($ip, $iduser)
     {
@@ -170,6 +189,8 @@ class UserManager
 
     /**
      * Delete failed connection
+     * @param  string $ip     [description]
+     * @param  int $iduser [description]
      */
     public function restoreConnect($ip, $iduser)
     {
@@ -186,6 +207,7 @@ class UserManager
      * @param string $email    Email of the user
      * @param string $selector Selector
      * @param string $token    Token to be hashed before insert
+     * @param int $expire
      */
     public function resetPass($email, $selector, $token, $expire)
     {
@@ -212,6 +234,8 @@ class UserManager
 
     /**
      * Check for pending reset request with exprire date after current date
+     * @param string $selector Selector
+     * @param string $date Date
      */
     public function getResetPass($selector, $date)
     {

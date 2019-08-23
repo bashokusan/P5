@@ -70,6 +70,9 @@ class Post
 
     // Setters
 
+    /**
+     * @param int $id [description]
+     */
     public function setId($id)
     {
         $this->id = (int)$id;
@@ -153,16 +156,25 @@ class Post
         }
     }
 
+    /**
+     * @param DateTime $publishDate [description]
+     */
     public function setPublishDate(DateTime $publishDate)
     {
         $this->publishDate = $publishDate;
     }
 
+    /**
+     * @param DateTime $updateDate [description]
+     */
     public function setUpdatDate(DateTime $updateDate)
     {
         $this->updateDate = $updateDate;
     }
 
+    /**
+     * @param string $countComment [description]
+     */
     public function setCountComment($countComment)
     {
         $this->countComment = $countComment;
