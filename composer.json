@@ -1,4 +1,12 @@
 {
+    "name": "pierre/blog",
+    "description": "blog OC P5",
+    "authors": [
+        {
+            "name": "bashokusan",
+            "email": "pierresimonnet1@gmail.com"
+        }
+    ],
     "autoload": {
      "psr-4": {
         "App\\":"App/"
