@@ -25,7 +25,6 @@
 ### Libraries
 
 * (dev) symfony/var-dumper
-* (dev) filp/whoops
 * swiftmailer/swiftmailer
 
 ## Install

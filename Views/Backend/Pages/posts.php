@@ -1,16 +1,16 @@
-<? $title = "Backoffice | Articles"; ?>
+<?php $title = "Backoffice | Articles"; ?>
 
 <h2>Liste des articles</h2>
-<?php if($message) : ?>
+<?php if ($message) : ?>
   <p class='alert success'><?= $message ?></p>
 <?php endif ?>
 
 <div class="posts_container">
-  <?php foreach($postList as $post) : ?>
+  <?php foreach ($postList as $post) : ?>
     <hr>
     <div class="post">
       <div class="post_content">
-        <?php if($post->image()) : ?>
+        <?php if ($post->image()) : ?>
           <div class="post_img">
             <img src="../Public/Content/Post-<?= $post->id() ?>/<?= $post->image() ?>" alt="">
           </div>

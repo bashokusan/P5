@@ -3,7 +3,7 @@
 <div class="post_card">
   <h2><?= $post->title() ?></h2>
 
-  <?php if($post->image()) : ?>
+  <?php if ($post->image()) : ?>
     <img src="../Public/Content/Post-<?= $post->id() ?>/<?= $post->image() ?>" alt="">
   <?php endif ?>
 
@@ -19,13 +19,13 @@
 
 <h3>Commentaires</h3>
 <div class="comment_form">
-  <?php if($message) : ?>
+  <?php if ($message) : ?>
     <p class='alert info'><?= $message ?></p>
   <?php endif ?>
   <form class="" action="" method="post">
     <div>
       <label for="name">Votre nom</label>
-      <?php if(isset($errors) && in_array(App\Models\Comment::AUTHOR_INVALID, $errors)) : ?>
+      <?php if (isset($errors) && in_array(App\Models\Comment::AUTHOR_INVALID, $errors)) : ?>
         <p class='alert warning'>auteur invalide</p>
       <?php endif ?>
       <input type="text" name="author" id="name" value="<?= $_SESSION['inputs']['author'] ? $_SESSION['inputs']['author'] : "" ?>" placeholder="votre nom">
@@ -33,10 +33,10 @@
 
     <div>
       <label for="content">Votre commentaire</label>
-      <?php if(isset($errors) && in_array(App\Models\Comment::CONTENT_INVALID, $errors)) : ?>
+      <?php if (isset($errors) && in_array(App\Models\Comment::CONTENT_INVALID, $errors)) : ?>
         <p class='alert warning'>Commentaire invalide</p>
       <?php endif ?>
-      <?php if(isset($errors) && in_array(App\Models\Comment::CONTENT_LENGHT, $errors)) : ?>
+      <?php if (isset($errors) && in_array(App\Models\Comment::CONTENT_LENGHT, $errors)) : ?>
         <p class='alert warning'>Le commentaire doit faire entre 2 et 500 caractères</p>
       <?php endif ?>
       <textarea name="content" id="content" rows="4" cols="80" placeholder="votre commentaire"><?= $_SESSION['inputs']['content'] ? $_SESSION['inputs']['content'] : "" ?></textarea>
@@ -49,8 +49,8 @@
 </div>
 
 <div class="comment_list">
-  <?php if($listofcomments) : ?>
-    <?php foreach($listofcomments as $comment) : ?>
+  <?php if ($listofcomments) : ?>
+    <?php foreach ($listofcomments as $comment) : ?>
       <div class="comment">
         <div class="comment_info">
           <?= $comment->author() ?>

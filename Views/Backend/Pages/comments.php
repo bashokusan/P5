@@ -1,8 +1,8 @@
-<? $title = "Backoffice | Commentaires"; ?>
+<?php $title = "Backoffice | Commentaires"; ?>
 
 <h2>Commentaires</h2>
 
-<?php if($flagCommentsCount): ?>
+<?php if ($flagCommentsCount): ?>
   <h3>Commentaires modérés</h3>
   <p><?= $flagCommentsCount ?> commentaires modérés</p>
   <div class="table">
@@ -15,7 +15,7 @@
         <th>Date de publication</th>
       </tr>
 
-      <?php foreach($flagComments as $comment) : ?>
+      <?php foreach ($flagComments as $comment) : ?>
         <tr>
           <td><?= $comment->id() ?></td>
           <td><a href="../Public/index.php?page=article&id=<?= $comment->idArticle() ?>"><?= $comment->idArticle() ?></a></td>
@@ -29,7 +29,7 @@
   </div>
 <?php endif ?>
 
-<?php if($checkedCommentsCount): ?>
+<?php if ($checkedCommentsCount): ?>
   <h3>Commentaires validés</h3>
   <p><?= $checkedCommentsCount ?> commentaires validés</p>
   <div class="table">
@@ -42,7 +42,7 @@
         <th>Date de publication</th>
       </tr>
 
-      <?php foreach($checkedComment as $comment) : ?>
+      <?php foreach ($checkedComment as $comment) : ?>
         <tr>
           <td><?= $comment->id() ?></td>
           <td><a href="../Public/index.php?page=article&id=<?= $comment->idArticle() ?>"><?= $comment->idArticle() ?></a></td>
@@ -68,7 +68,7 @@
       <th>Date de publication</th>
     </tr>
 
-    <?php foreach($commentsList as $comment) : ?>
+    <?php foreach ($commentsList as $comment) : ?>
       <tr>
         <td><?= $comment->id() ?></td>
         <td><a href="../Public/index.php?page=article&id=<?= $comment->idArticle() ?>"><?= $comment->idArticle() ?></a></td>

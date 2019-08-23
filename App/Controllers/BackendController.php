@@ -21,24 +21,24 @@ class BackendController extends Controller
 {
 
 //------------------------------------------------------------------------------
-// METHODS
-//------------------------------------------------------------------------------
+    // METHODS
+    //------------------------------------------------------------------------------
 
 
-//------------------------------------------------------------------------------
-// Home Page Methods
-//------------------------------------------------------------------------------
-  /**
-   * Home page
-   * Main dashboard with number of posts, comments and unchecked comments list
-   */
-  public function homepage()
-  {
-    $db = DBFactory::getPDO();
-    $postManager = new PostManager($db);
-    $commentManager = new CommentManager($db);
+    //------------------------------------------------------------------------------
+    // Home Page Methods
+    //------------------------------------------------------------------------------
+    /**
+     * Home page
+     * Main dashboard with number of posts, comments and unchecked comments list
+     */
+    public function homepage()
+    {
+        $db = DBFactory::getPDO();
+        $postManager = new PostManager($db);
+        $commentManager = new CommentManager($db);
 
-    $data =
+        $data =
     [
       'token' => $_SESSION['t_user'],
       'postsCount' => $postManager->count(),
@@ -47,216 +47,193 @@ class BackendController extends Controller
       'uncheckedComment' => $commentManager->getListNoId('unchecked')
     ];
 
-    $this->render('home', $data);
-  }
+        $this->render('home', $data);
+    }
 
 
-  /**
-   * Update comment for checked
-   * @param  int $idcomment [description]
-   * @param  int $idpost    [description]
-   */
-  public function updateComment($idcomment, $idpost)
-  {
-    $db = DBFactory::getPDO();
-    $commentManager = new CommentManager($db);
-    $commentManager->updateCheck($idcomment, $idpost, 1);
+    /**
+     * Update comment for checked
+     * @param  int $idcomment [description]
+     * @param  int $idpost    [description]
+     */
+    public function updateComment($idcomment, $idpost)
+    {
+        $db = DBFactory::getPDO();
+        $commentManager = new CommentManager($db);
+        $commentManager->updateCheck($idcomment, $idpost, 1);
 
-    header('Location: ?page=home');
-  }
-
-
-  /**
-   * Update comment for flag
-   * @param  int $idcomment [description]
-   * @param  int $idpost    [description]
-   */
-  public function flagComment($idcomment, $idpost)
-  {
-    $db = DBFactory::getPDO();
-    $commentManager = new CommentManager($db);
-    $commentManager->updateCheck($idcomment, $idpost, 2);
-
-    header('Location: ?page=home');
-  }
+        header('Location: ?page=home');
+    }
 
 
-//------------------------------------------------------------------------------
-// Posts Page Methods
-//------------------------------------------------------------------------------
-  /**
-   * Posts page
-   * Displays all posts
-   */
-  public function postsPage()
-  {
-    $db = DBFactory::getPDO();
-    $postManager = new PostManager($db);
+    /**
+     * Update comment for flag
+     * @param  int $idcomment [description]
+     * @param  int $idpost    [description]
+     */
+    public function flagComment($idcomment, $idpost)
+    {
+        $db = DBFactory::getPDO();
+        $commentManager = new CommentManager($db);
+        $commentManager->updateCheck($idcomment, $idpost, 2);
 
-    $data =
+        header('Location: ?page=home');
+    }
+
+
+    //------------------------------------------------------------------------------
+    // Posts Page Methods
+    //------------------------------------------------------------------------------
+    /**
+     * Posts page
+     * Displays all posts
+     */
+    public function postsPage()
+    {
+        $db = DBFactory::getPDO();
+        $postManager = new PostManager($db);
+
+        $data =
     [
       'token' => $_SESSION['t_user'],
       'postList' => $postManager->getList()
     ];
 
-    $this->render('posts', $data);
-  }
-
-
-  /**
-   * Deletion of post and its comments
-   * @param  int $id Post id
-   */
-  public function deletePost($id)
-  {
-    $db = DBFactory::getPDO();
-    $postManager = new PostManager($db);
-    $postManager->delete($id);
-
-    header('Location: ?page=posts');
-  }
-
-
-//------------------------------------------------------------------------------
-// Edit Page Methods
-//------------------------------------------------------------------------------
-  /**
-   * Edit page
-   * Update or create new post
-   */
-  public function editPage()
-  {
-    $db = DBFactory::getPDO();
-    $postManager = new PostManager($db);
-    $userManager = new UserManager($db);
-    $users = $userManager->getList('confirmed');
-    $sessionid = (int)$_SESSION['id'];
-    $loggedinUser = $userManager->getUser($sessionid);
-
-    $token = $_SESSION['t_user'];
-    $_SESSION['inputs'] = [];
-
-    if(isset($_GET['postid']) && !empty($_GET['postid']))
-    {
-      $id = (int)$_GET['postid'];
-      $post = $postManager->getUnique($id);
+        $this->render('posts', $data);
     }
 
-    if(isset($_POST['idauthor']))
+
+    /**
+     * Deletion of post and its comments
+     * @param  int $id Post id
+     */
+    public function deletePost($id)
     {
-      $_SESSION['inputs'] = $_POST;
+        $db = DBFactory::getPDO();
+        $postManager = new PostManager($db);
+        $postManager->delete($id);
 
-      if (isset($_FILES['image']) && !empty($_FILES['image']['name']))
-      {
-        if($_FILES['image']['error'] === 0)
-        {
-          $extensions_autorisees = array('jpg', 'jpeg', 'gif', 'png');
-          $infosfichier = pathinfo($_FILES['image']['name']);
-          $extension_upload = strtolower($infosfichier['extension']);
-          if (in_array($extension_upload, $extensions_autorisees))
-          {
-            if ($_FILES['image']['size'] > 0 && $_FILES['image']['size'] <= 2000000)
-            {
-              $fileName = uniqid(). "." .$infosfichier['extension'];
-            }
-            else
-            {
-              $imgerrors = "Le fichier doit faire moins de 2mo";
-            }
-          }
-          else
-          {
-            $imgerrors = "Le fichier n'est pas au bon format";
-          }
+        header('Location: ?page=posts');
+    }
+
+
+    //------------------------------------------------------------------------------
+    // Edit Page Methods
+    //------------------------------------------------------------------------------
+    /**
+     * Edit page
+     * Update or create new post
+     */
+    public function editPage()
+    {
+        $db = DBFactory::getPDO();
+        $postManager = new PostManager($db);
+        $userManager = new UserManager($db);
+        $users = $userManager->getList('confirmed');
+        $sessionid = (int)$_SESSION['id'];
+        $loggedinUser = $userManager->getUser($sessionid);
+
+        $token = $_SESSION['t_user'];
+        $_SESSION['inputs'] = [];
+
+        if (isset($_GET['postid']) && !empty($_GET['postid'])) {
+            $id = (int)$_GET['postid'];
+            $post = $postManager->getUnique($id);
         }
-        else
-        {
-          $imgerrors = "Le fichier est invalide";
-        }
-      }
-      elseif(isset($_POST['currentimg']) && !empty($_POST['currentimg']))
-      {
-        $fileName = htmlentities($_POST['currentimg']);
-      }
-      else
-      {
-        $fileName = null;
-      }
 
-      $title = htmlspecialchars($_POST['title']);
-      $kicker = htmlspecialchars($_POST['kicker']);
-      $content = htmlspecialchars($_POST['content']);
+        if (isset($_POST['idauthor'])) {
+            $_SESSION['inputs'] = $_POST;
 
-      $data = [
+            if (isset($_FILES['image']) && !empty($_FILES['image']['name'])) {
+                if ($_FILES['image']['error'] === 0) {
+                    $extensions_autorisees = array('jpg', 'jpeg', 'gif', 'png');
+                    $infosfichier = pathinfo($_FILES['image']['name']);
+                    $extension_upload = strtolower($infosfichier['extension']);
+                    if (in_array($extension_upload, $extensions_autorisees)) {
+                        if ($_FILES['image']['size'] > 0 && $_FILES['image']['size'] <= 2000000) {
+                            $fileName = uniqid(). "." .$extension_upload;
+                        } else {
+                            $imgerrors = "Le fichier doit faire moins de 2mo";
+                        }
+                    } else {
+                        $imgerrors = "Le fichier n'est pas au bon format";
+                    }
+                } else {
+                    $imgerrors = "Le fichier est invalide";
+                }
+            } elseif (isset($_POST['currentimg']) && !empty($_POST['currentimg'])) {
+                $fileName = htmlentities($_POST['currentimg']);
+            } else {
+                $fileName = null;
+            }
+
+            $title = htmlspecialchars($_POST['title']);
+            $kicker = htmlspecialchars($_POST['kicker']);
+            $content = htmlspecialchars($_POST['content']);
+
+            $data = [
         'idauthor' => (int)$_POST['idauthor'],
         'title' => $title,
         'kicker' => $kicker,
         'content' => $content
       ];
 
-      if(isset($fileName)){
-        $data['image'] = $fileName;
-      }
+            if (isset($fileName)) {
+                $data['image'] = $fileName;
+            }
 
-      $newPost = new Post($data);
+            $newPost = new Post($data);
 
-      if(isset($_POST['id']) && isset($_GET['postid']) && !empty($_GET['postid']))
-      {
-        $id = (int)$_POST['id'];
-        $newPost->setId($id);
-      }
+            if (isset($_POST['id']) && isset($_GET['postid']) && !empty($_GET['postid'])) {
+                $id = (int)$_POST['id'];
+                $newPost->setId($id);
+            }
 
-      if($newPost->isValid() && empty($imgerrors))
-      {
-        $postManager->save($newPost);
+            if ($newPost->isValid() && empty($imgerrors)) {
+                $postManager->save($newPost);
 
-        if($newPost->id()){
-          $id = $newPost->id();
-        }else{
-          $id = $db->lastInsertId();
+                if ($newPost->id()) {
+                    $id = $newPost->id();
+                } else {
+                    $id = $db->lastInsertId();
+                }
+
+                if (isset($fileName)) {
+                    $path = '../Public/Content/post-'.$id;
+                    if (!file_exists($path)) {
+                        mkdir($path, 0777, true);
+                    }
+                    move_uploaded_file($_FILES['image']['tmp_name'], $path . DIRECTORY_SEPARATOR . $fileName);
+
+                    $postManager->uploadImg($fileName, (int)$id);
+                }
+
+                header('Location: ?page=posts');
+            } else {
+                $errors = $newPost->errors();
+            }
         }
 
-        if(isset($fileName))
-        {
-          $path = '../Public/Content/post-'.$id;
-          if(!file_exists($path)){
-            mkdir($path,0777, true);
-          }
-          move_uploaded_file($_FILES['image']['tmp_name'], $path . DIRECTORY_SEPARATOR . $fileName);
-
-          $postManager->uploadImg($fileName, (int)$id);
-        }
-
-        header('Location: ?page=posts');
-
-      }
-      else
-      {
-        $errors = $newPost->errors();
-      }
+        ob_start();
+        require_once $this->getViewPath().'edit.php';
+        $content = ob_get_clean();
+        require_once $this->getTemplatePath();
     }
 
-    ob_start();
-    require_once $this->getViewPath().'edit.php';
-    $content = ob_get_clean();
-    require_once $this->getTemplatePath();
 
-  }
+    //------------------------------------------------------------------------------
+    // Comments Page Methods
+    //------------------------------------------------------------------------------
+    /**
+     * Comments page
+     * Displays all comments ordered by posts
+     */
+    public function commentsPage()
+    {
+        $db = DBFactory::getPDO();
+        $commentManager = new CommentManager($db);
 
-
-//------------------------------------------------------------------------------
-// Comments Page Methods
-//------------------------------------------------------------------------------
-  /**
-   * Comments page
-   * Displays all comments ordered by posts
-   */
-  public function commentsPage()
-  {
-    $db = DBFactory::getPDO();
-    $commentManager = new CommentManager($db);
-
-    $data =
+        $data =
     [
       'flagComments' => $commentManager->getListNoId('flag'),
       'flagCommentsCount' => $commentManager->count('flag'),
@@ -266,434 +243,387 @@ class BackendController extends Controller
       'CommentsCount' => $commentManager->count()
     ];
 
-    $this->render('comments', $data);
-  }
+        $this->render('comments', $data);
+    }
 
 
 
-//------------------------------------------------------------------------------
-// Requests Page Methods (Admin)
-//------------------------------------------------------------------------------
-  /**
-   * Requests page
-   * Displays standing by requests and accepted request
-   */
-  public function adminRequestPage()
-  {
+    //------------------------------------------------------------------------------
+    // Requests Page Methods (Admin)
+    //------------------------------------------------------------------------------
+    /**
+     * Requests page
+     * Displays standing by requests and accepted request
+     */
+    public function adminRequestPage()
+    {
+        $db = DBFactory::getPDO();
+        $userManager = new UserManager($db);
 
-    $db = DBFactory::getPDO();
-    $userManager = new UserManager($db);
-
-    $data =
+        $data =
     [
       'userList' => $userManager->getList('new'),
       'acceptedUserList' => $userManager->getList('accepted'),
     ];
 
-    $this->render('adminrequest', $data);
-  }
+        $this->render('adminrequest', $data);
+    }
 
-  /**
-   * Call when accept link clicked on requests page
-   * @param int $id User id
-   */
-  public function acceptRequest($id)
-  {
-    $pass = rand(10000000, 99999999);
-    $hashPass = password_hash((string)$pass, PASSWORD_DEFAULT);
-
-    $db = DBFactory::getPDO();
-    $userManager = new UserManager($db);
-    $user = $userManager->getUser($id);
-
-    $userManager->acceptRequest($id, $hashPass);
-
-    $mailContentText = "Bonjour ".$user->name().", voici votre mot de passe temporaire : ".$pass." Le lien d'accès : http://localhost/P5/Backoffice/index.php A bientôt.";
-
-    $mailContentHtml = "<p>Bonjour ".$user->name()."</p><p>Votre mot de passe temporaire : ".$pass."</p><p><a href='http://localhost/P5/Backoffice/index.php'>Lien d'accès</a></p>";
-
-    $mailTopic = "Bienvenue parmis nous";
-
-    $send = new SendEmail();
-    $send->sendMail($user->email(), $mailContentText, $mailContentHtml, $mailTopic);
-  }
-
-
-//------------------------------------------------------------------------------
-// Profile Page Methods
-//------------------------------------------------------------------------------
-  /**
-   * Profile page
-   */
-  public function profilePage()
-  {
-    $id = $_SESSION['id'];
-    $token = $_SESSION['t_user'];
-
-    $db = DBFactory::getPDO();
-    $userManager = new UserManager($db);
-    $user = $userManager->getUser($id);
-
-    if(isset($_POST['updateprofile']) && isset($_POST['userid']))
+    /**
+     * Call when accept link clicked on requests page
+     * @param int $id User id
+     */
+    public function acceptRequest($id)
     {
-      $data = [
+        $pass = rand(10000000, 99999999);
+        $hashPass = password_hash((string)$pass, PASSWORD_DEFAULT);
+
+        $db = DBFactory::getPDO();
+        $userManager = new UserManager($db);
+        $user = $userManager->getUser($id);
+
+        $userManager->acceptRequest($id, $hashPass);
+
+        $mailContentText = "Bonjour ".$user->name().", voici votre mot de passe temporaire : ".$pass." Le lien d'accès : http://localhost/P5/Backoffice/index.php A bientôt.";
+
+        $mailContentHtml = "<p>Bonjour ".$user->name()."</p><p>Votre mot de passe temporaire : ".$pass."</p><p><a href='http://localhost/P5/Backoffice/index.php'>Lien d'accès</a></p>";
+
+        $mailTopic = "Bienvenue parmis nous";
+
+        $send = new SendEmail();
+        $send->sendMail($user->email(), $mailContentText, $mailContentHtml, $mailTopic);
+    }
+
+
+    //------------------------------------------------------------------------------
+    // Profile Page Methods
+    //------------------------------------------------------------------------------
+    /**
+     * Profile page
+     */
+    public function profilePage()
+    {
+        $id = $_SESSION['id'];
+        $token = $_SESSION['t_user'];
+
+        $db = DBFactory::getPDO();
+        $userManager = new UserManager($db);
+        $user = $userManager->getUser($id);
+
+        if (isset($_POST['updateprofile']) && isset($_POST['userid'])) {
+            $data = [
         'id' => (int)$_POST['userid'],
         'name' => htmlentities($_POST['name']),
         'email' => htmlentities($_POST['email']),
       ];
 
-      $updateuser = new User($data);
+            $updateuser = new User($data);
 
-      if($updateuser->isValid())
-      {
-        $userManager->updateinfos($updateuser);
-        $message = "Vos informations ont été modifiées.";
-      }
-      else
-      {
-        $errors = $updateuser->errors();
-      }
-    }
-
-    ob_start();
-    require_once $this->getViewPath().'profile.php';
-    $content = ob_get_clean();
-    require_once $this->getTemplatePath();
-
-  }
-
-
-//------------------------------------------------------------------------------
-// Change or Reset Password Page Methods
-//------------------------------------------------------------------------------
-  /**
-   * Page to create new password
-   * Also used when reset password
-   */
-  public function newPassPage()
-  {
-    if(isset($_POST['updatemdp']))
-    {
-      if (!empty($_POST['password'] && !empty($_POST['passwordbis'])))
-      {
-        $password = htmlspecialchars($_POST['password']);
-        $passwordConfirm = htmlspecialchars($_POST['passwordbis']);
-
-        if($password === $passwordConfirm)
-        {
-          $db = DBFactory::getPDO();
-          $userManager = new UserManager($db);
-
-          // For user who reset password
-          if(isset($_POST['selector']) && isset($_POST['validator'] ) && !empty($_POST['selector']) && !empty($_POST['validator']))
-          {
-            $currentDateTime = date('U');
-
-            // Check if there is a pending request with selector in form
-            $resetpass = $userManager->getResetPass($_POST['selector'], $currentDateTime);
-            if (!$resetpass)
-            {
-              $error = "Une erreur est survenue. Veuillez soumettre une nouvelle réinitialisation.";
+            if ($updateuser->isValid()) {
+                $userManager->updateinfos($updateuser);
+                $message = "Vos informations ont été modifiées.";
+            } else {
+                $errors = $updateuser->errors();
             }
+        }
 
-            // Compare token in Databse with token in form
-            $tokenBin = (string)hex2bin($_POST['validator']);
-            $tokenCheck = password_verify($tokenBin, $resetpass['token']);
+        ob_start();
+        require_once $this->getViewPath().'profile.php';
+        $content = ob_get_clean();
+        require_once $this->getTemplatePath();
+    }
 
-            if($tokenCheck){
-              $user = $userManager->getUserByMail($resetpass['email']);
-              $id = $user->id();
 
-              $passhash = password_hash($password, PASSWORD_DEFAULT);
-              $userManager->update($id, (string)$passhash);
-              $userManager->deletePassReset($_POST['selector']);
-              $this->logout();
-              header('Location: ?page=login');
+    //------------------------------------------------------------------------------
+    // Change or Reset Password Page Methods
+    //------------------------------------------------------------------------------
+    /**
+     * Page to create new password
+     * Also used when reset password
+     */
+    public function newPassPage()
+    {
+        if (isset($_POST['updatemdp'])) {
+            if (!empty($_POST['password'] && !empty($_POST['passwordbis']))) {
+                $password = htmlspecialchars($_POST['password']);
+                $passwordConfirm = htmlspecialchars($_POST['passwordbis']);
 
-            }else {
-              $error = "Une erreur est survenue. Veuillez soumettre une nouvelle réinitialisation.";
+                if ($password === $passwordConfirm) {
+                    $db = DBFactory::getPDO();
+                    $userManager = new UserManager($db);
+
+                    // For user who reset password
+                    if (isset($_POST['selector']) && isset($_POST['validator']) && !empty($_POST['selector']) && !empty($_POST['validator'])) {
+                        $currentDateTime = date('U');
+
+                        // Check if there is a pending request with selector in form
+                        $resetpass = $userManager->getResetPass($_POST['selector'], $currentDateTime);
+                        if (!$resetpass) {
+                            $error = "Une erreur est survenue. Veuillez soumettre une nouvelle réinitialisation.";
+                        }
+
+                        // Compare token in Databse with token in form
+                        $tokenBin = (string)hex2bin($_POST['validator']);
+                        $tokenCheck = password_verify($tokenBin, $resetpass['token']);
+
+                        if ($tokenCheck) {
+                            $user = $userManager->getUserByMail($resetpass['email']);
+                            $id = $user->id();
+
+                            $passhash = password_hash($password, PASSWORD_DEFAULT);
+                            $userManager->update($id, (string)$passhash);
+                            $userManager->deletePassReset($_POST['selector']);
+                            $this->logout();
+                            header('Location: ?page=login');
+                        } else {
+                            $error = "Une erreur est survenue. Veuillez soumettre une nouvelle réinitialisation.";
+                        }
+                    }
+                    // For users who change password
+                    $user = $userManager->getUser($_SESSION['id']);
+                    $id = $user->id();
+                    // If not confirmed (ie first login and has not changed pass yet)
+                    if ($user->confirm() == 0) {
+                        $passhash = password_hash($password, PASSWORD_DEFAULT);
+                        $userManager->update($id, (string)$passhash, 'confirm');
+                        $this->logout();
+                        header('Location: ?page=login');
+                    }
+                    // If confirmed admin
+                    else {
+                        $passhash = password_hash($password, PASSWORD_DEFAULT);
+                        $userManager->update($id, (string)$passhash);
+                        $this->logout();
+                        header('Location: ?page=login');
+                    }
+                } else {
+                    $error = "les mots de passe ne correspondent pas.";
+                }
+            } else {
+                $error = "Veuillez remplir les champs";
             }
-          }
-          // For users who change password
-          $user = $userManager->getUser($_SESSION['id']);
-          $id = $user->id();
-          // If not confirmed (ie first login and has not changed pass yet)
-          if($user->confirm() == 0)
-          {
-            $passhash = password_hash($password, PASSWORD_DEFAULT);
-            $userManager->update($id, (string)$passhash, 'confirm');
-            $this->logout();
-            header('Location: ?page=login');
-          }
-          // If confirmed admin
-          else
-          {
-            $passhash = password_hash($password, PASSWORD_DEFAULT);
-            $userManager->update($id, (string)$passhash);
-            $this->logout();
-            header('Location: ?page=login');
-          }
         }
-        else
-        {
-          $error = "les mots de passe ne correspondent pas.";
-        }
-      }
-      else
-      {
-        $error = "Veuillez remplir les champs";
-      }
+
+        ob_start();
+        require_once $this->getViewPath().'newpass.php';
+        $content = ob_get_clean();
+        require_once $this->getTemplatePath();
     }
 
-    ob_start();
-    require_once $this->getViewPath().'newpass.php';
-    $content = ob_get_clean();
-    require_once $this->getTemplatePath();
-  }
 
-
-//------------------------------------------------------------------------------
-// Log Out Page Methods
-//------------------------------------------------------------------------------
-  /**
-   * Destroy session when logout
-   */
-  public function logout()
-  {
-    $_SESSION = [];
-    session_destroy();
-  }
-
-  /**
-   * Check if user connected or not
-   * @return bool True if there is a role session var
-   */
-  public function loggedIn($role = null)
-  {
-    if(isset($_SESSION['role']) && $_SESSION['role'] == $role)
+    //------------------------------------------------------------------------------
+    // Log Out Page Methods
+    //------------------------------------------------------------------------------
+    /**
+     * Destroy session when logout
+     */
+    public function logout()
     {
-      return true;
-    }else {
-      return false;
+        $_SESSION = [];
+        session_destroy();
     }
-  }
 
-
-//------------------------------------------------------------------------------
-// Not logged in User Methods
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-// Login Page Methods
-//------------------------------------------------------------------------------
-  /**
-  * Call for login page
-  * Check if user infos are valid and create session
-  */
-  public function login()
-  {
-    if(isset($_POST['login']))
+    /**
+     * Check if user connected or not
+     * @return bool True if there is a role session var
+     */
+    public function loggedIn($role = null)
     {
-      $data = [
+        if (isset($_SESSION['role']) && $_SESSION['role'] == $role) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    //------------------------------------------------------------------------------
+    // Not logged in User Methods
+    //------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------
+    // Login Page Methods
+    //------------------------------------------------------------------------------
+    /**
+    * Call for login page
+    * Check if user infos are valid and create session
+    */
+    public function login()
+    {
+        if (isset($_POST['login'])) {
+            $data = [
         'email' => htmlentities($_POST['email']),
         'password' => htmlentities($_POST['password'])
       ];
-      // Save inputs in session
-      $_SESSION['inputs'] = $_POST;
+            // Save inputs in session
+            $_SESSION['inputs'] = $_POST;
 
-      $db = DBFactory::getPDO();
-      $user = new User($data);
-      $userManager = new UserManager($db);
+            $db = DBFactory::getPDO();
+            $user = new User($data);
+            $userManager = new UserManager($db);
 
-      // Use Ip (see connect method for brute force attack defense)
-      $ip = $_SERVER['REMOTE_ADDR'];
-      $connect = $userManager->connect($ip);
+            // Use Ip (see connect method for brute force attack defense)
+            $ip = $_SERVER['REMOTE_ADDR'];
+            $connect = $userManager->connect($ip);
 
-      // User will be ban is there are more than 3 failed connections.
-      if($connect <= 3)
-      {
-        if($connect == 3){
-          $warning = "Attention, il vous reste un seul essai. <a href='?page=resetpass'>Mot de passe oublié ?</a>";
-        }
+            // User will be ban is there are more than 3 failed connections.
+            if ($connect <= 3) {
+                if ($connect == 3) {
+                    $warning = "Attention, il vous reste un seul essai. <a href='?page=resetpass'>Mot de passe oublié ?</a>";
+                }
 
-        if($user->isValid())
-        {
-          // get user from database with email from form
-          $loggingUser = $userManager->getUserByMail($user->email());
+                if ($user->isValid()) {
+                    // get user from database with email from form
+                    $loggingUser = $userManager->getUserByMail($user->email());
 
-          if($loggingUser)
-          {
-            $passwordCheck = password_verify($user->password(), $loggingUser->password());
-            if($passwordCheck)
-            {
-              // Restore failed connection to 0
-              if($connect){
-                $userManager->restoreConnect($ip, $loggingUser->id());
-              }
+                    if ($loggingUser) {
+                        $passwordCheck = password_verify($user->password(), $loggingUser->password());
+                        if ($passwordCheck) {
+                            // Restore failed connection to 0
+                            if ($connect) {
+                                $userManager->restoreConnect($ip, $loggingUser->id());
+                            }
 
-              // If user is confirmed (has changed his password once)
-              if($loggingUser->confirm() == 1)
-              {
-                session_start();
-                $token = bin2hex(random_bytes(32));
-                $_SESSION['t_user'] = $token;
-                $_SESSION['role'] = 'admin';
-                $_SESSION['id'] = $loggingUser->id();
-                $_SESSION['inputs'] = [];
-                header('Location: ?page=home');
-              }
-              // If user is new and has not changed his password yet
-              elseif($loggingUser->confirm() == 0)
-              {
-                session_start();
-                $token = bin2hex(random_bytes(32));
-                $_SESSION['t_user'] = $token;
-                $_SESSION['role'] = 'guest';
-                $_SESSION['id'] = $loggingUser->id();
-                $_SESSION['inputs'] = [];
-                header('Location: ?page=newpass');
-              }
+                            // If user is confirmed (has changed his password once)
+                            if ($loggingUser->confirm() == 1) {
+                                session_start();
+                                $token = bin2hex(random_bytes(32));
+                                $_SESSION['t_user'] = $token;
+                                $_SESSION['role'] = 'admin';
+                                $_SESSION['id'] = $loggingUser->id();
+                                $_SESSION['inputs'] = [];
+                                header('Location: ?page=home');
+                            }
+                            // If user is new and has not changed his password yet
+                            elseif ($loggingUser->confirm() == 0) {
+                                session_start();
+                                $token = bin2hex(random_bytes(32));
+                                $_SESSION['t_user'] = $token;
+                                $_SESSION['role'] = 'guest';
+                                $_SESSION['id'] = $loggingUser->id();
+                                $_SESSION['inputs'] = [];
+                                header('Location: ?page=newpass');
+                            }
+                        } else {
+                            $prohib = "Informations de connection éronées (mdp)";
+                            // Save the failed connection into dabatase
+                            $failconnect = $userManager->failConnect($ip, $loggingUser->id());
+                        }
+                    } else {
+                        $prohib = "Informations de connection éronées";
+                    }
+                } else {
+                    $errors = $user->errors();
+                }
+            } else {
+                throw new \Exception("Votre accès est bloqué. Contactez l'administrateur.");
             }
-            else
-            {
-              $prohib = "Informations de connection éronées (mdp)";
-              // Save the failed connection into dabatase
-              $failconnect = $userManager->failConnect($ip, $loggingUser->id());
-            }
-          }
-          else
-          {
-            $prohib = "Informations de connection éronées";
-          }
         }
-        else
-        {
-          $errors = $user->errors();
-        }
-      }
-      else
-      {
-        throw new \Exception("Votre accès est bloqué. Contactez l'administrateur.");
-      }
+
+        ob_start();
+        require_once $this->getViewPath().'login.php';
+        $content = ob_get_clean();
+        require_once $this->getTemplatePath();
     }
 
-    ob_start();
-    require_once $this->getViewPath().'login.php';
-    $content = ob_get_clean();
-    require_once $this->getTemplatePath();
-  }
 
-
-//------------------------------------------------------------------------------
-// Reset Password Page Methods
-//------------------------------------------------------------------------------
-  /**
-   * Reset Pass
-   */
-  public function resetPassPage()
-  {
-    if(isset($_POST['resetpass']))
+    //------------------------------------------------------------------------------
+    // Reset Password Page Methods
+    //------------------------------------------------------------------------------
+    /**
+     * Reset Pass
+     */
+    public function resetPassPage()
     {
-      if(!empty($_POST['email']))
-      {
-        $email = htmlentities($_POST['email']);
+        if (isset($_POST['resetpass'])) {
+            if (!empty($_POST['email'])) {
+                $email = htmlentities($_POST['email']);
 
-        if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-          $db = DBFactory::getPDO();
-          $userManager = new UserManager($db);
+                if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    $db = DBFactory::getPDO();
+                    $userManager = new UserManager($db);
 
-          // get user from database with email from form
-          $loggingUser = $userManager->getUserByMail($email);
+                    // get user from database with email from form
+                    $loggingUser = $userManager->getUserByMail($email);
 
-          if($loggingUser)
-          {
-            $selector = bin2hex(random_bytes(8));
-            // not encrypted token to be inserted in the databse
-            $token = random_bytes(32);
-            // encrypted token inserted in the url
-            $cryptoken = bin2hex($token);
+                    if ($loggingUser) {
+                        $selector = bin2hex(random_bytes(8));
+                        // not encrypted token to be inserted in the databse
+                        $token = random_bytes(32);
+                        // encrypted token inserted in the url
+                        $cryptoken = bin2hex($token);
 
-            $expire = (int)date('U') + 3600;
+                        $expire = (int)date('U') + 3600;
 
-            // Create a new line for this user in resetpass table
-            $userManager->resetPass($loggingUser->email(), $selector, $token, $expire);
+                        // Create a new line for this user in resetpass table
+                        $userManager->resetPass($loggingUser->email(), $selector, $token, $expire);
 
-            $mailContentText = "Bonjour ".$loggingUser->name().". Une demande de réinitialisation de votre mot de passe a été faite. Réinitialisez votre mot en passe en cliquant sur le lien suivant : http://localhost/P5/Backoffice/index.php?page=reset&restoken=$selector&validator=$cryptoken Attention, le lien est actif pendant une heure. Si la demande ne vient pas de vous, ignorez ce message.";
+                        $mailContentText = "Bonjour ".$loggingUser->name().". Une demande de réinitialisation de votre mot de passe a été faite. Réinitialisez votre mot en passe en cliquant sur le lien suivant : http://localhost/P5/Backoffice/index.php?page=reset&restoken=$selector&validator=$cryptoken Attention, le lien est actif pendant une heure. Si la demande ne vient pas de vous, ignorez ce message.";
 
-            $mailContentHtml =
+                        $mailContentHtml =
             "<p>Bonjour ".$loggingUser->name()."</p>
             <p>Une demande de réinitialisation de votre mot de passe a été faite.</p>
             <p>Réinitialisez votre mot en passe en cliquant sur le lien suivant : <a href='http://localhost/P5/Backoffice/index.php?page=reset&restoken=$selector&validator=$cryptoken'>Réinitialiser</a></p>
             <p>Attention, le lien est actif pendant une heure.</p>
             <p>Si la demande ne vient pas de vous, ignorez ce message</p>";
 
-            $mailTopic = "Réinitialisation de votre mot de passe";
+                        $mailTopic = "Réinitialisation de votre mot de passe";
 
-            $send = new SendEmail();
-            $send->sendMail($loggingUser->email(), $mailContentText, $mailContentHtml, $mailTopic);
+                        $send = new SendEmail();
+                        $send->sendMail($loggingUser->email(), $mailContentText, $mailContentHtml, $mailTopic);
 
-            $info = "Un email contenant un lien de réinitialisation vous a été envoyé";
-          }
-          else{
-            $warning = "Erreur. Veuillez réessayer";
-          }
+                        $info = "Un email contenant un lien de réinitialisation vous a été envoyé";
+                    } else {
+                        $warning = "Erreur. Veuillez réessayer";
+                    }
+                } else {
+                    $warning = "L'email est invalide";
+                }
+            } else {
+                $warning = "Le champ doit être rempli";
+            }
         }
-        else
-        {
-          $warning = "L'email est invalide";
-        }
-      }
-      else
-      {
-        $warning = "Le champ doit être rempli";
-      }
+
+        ob_start();
+        require_once $this->getViewPath().'resetpass.php';
+        $content = ob_get_clean();
+        require_once $this->getTemplatePath();
     }
 
-    ob_start();
-    require_once $this->getViewPath().'resetpass.php';
-    $content = ob_get_clean();
-    require_once $this->getTemplatePath();
-  }
 
-
-//------------------------------------------------------------------------------
-// Contribute Page Methods (Not logged in user)
-//------------------------------------------------------------------------------
-  /**
-   * Page to request admin role
-   * Save email and message from request form into the database
-   */
-  public function requestPage()
-  {
-    if($_POST['request'])
+    //------------------------------------------------------------------------------
+    // Contribute Page Methods (Not logged in user)
+    //------------------------------------------------------------------------------
+    /**
+     * Page to request admin role
+     * Save email and message from request form into the database
+     */
+    public function requestPage()
     {
-      $data = [
+        if ($_POST['request']) {
+            $data = [
         'name' => htmlentities($_POST['name']),
         'email' => htmlentities($_POST['email']),
         'message' => htmlentities($_POST['message'])
       ];
 
-      $_SESSION['inputs'] = $_POST;
+            $_SESSION['inputs'] = $_POST;
 
-      $user = new User($data);
-      $db = DBFactory::getPDO();
-      $userManager = new UserManager($db);
+            $user = new User($data);
+            $db = DBFactory::getPDO();
+            $userManager = new UserManager($db);
 
-      if($user->isValid())
-      {
-        $userManager->add($user);
-        $message = "Votre demande a bien été envoyé, vous recevrez un mail si elle est acceptée";
-        $_SESSION['inputs'] = [];
-      }
-      else
-      {
-        $errors = $user->errors();
-      }
+            if ($user->isValid()) {
+                $userManager->add($user);
+                $message = "Votre demande a bien été envoyé, vous recevrez un mail si elle est acceptée";
+                $_SESSION['inputs'] = [];
+            } else {
+                $errors = $user->errors();
+            }
+        }
+
+        ob_start();
+        require_once $this->getViewPath().'request.php';
+        $content = ob_get_clean();
+        require_once $this->getTemplatePath();
     }
-
-    ob_start();
-    require_once $this->getViewPath().'request.php';
-    $content = ob_get_clean();
-    require_once $this->getTemplatePath();
-  }
-
 }
