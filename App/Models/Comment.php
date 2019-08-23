@@ -59,7 +59,6 @@ class Comment
   }
 
   // Setters
-
   public function setId($id)
   {
     $this->id = (int)$id;

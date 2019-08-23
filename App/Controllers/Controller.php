@@ -10,8 +10,6 @@ abstract class Controller
 
   protected $viewPath;
   protected $templatePath;
-  protected $token;
-
 
   /**
    * Set the viewPath and templatePath
@@ -31,10 +29,6 @@ abstract class Controller
 
   public function setTemplatePath($templatePath){
     $this->templatePath = $templatePath;
-  }
-
-  public function setToken($token){
-    $this->token = $token;
   }
 
   // Getters

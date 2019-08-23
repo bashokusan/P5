@@ -223,6 +223,7 @@ class UserManager
 
   /**
    * Delete line from passreset table for user with selector in param
+   * @param string $selector [description]
    */
   public function deletePassReset($selector){
     $sql = "DELETE FROM passreset WHERE selector = :selector";
