@@ -44,9 +44,9 @@ class PostManager
 
   /**
    * Add new post in the database
-   * @param post $post Post object created after form submit
+   * @param Post $post Post object created after form submit
    */
-  public function add(Post $post)
+  public function add($post)
   {
     $sql = "INSERT INTO articles(idauthor, title, kicker, content, publishDate)
             VALUES(:idauthor, :title, :kicker, :content, NOW())";

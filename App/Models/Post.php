@@ -104,7 +104,7 @@ class Post
    */
   public function setIdAuthor($idauthor)
   {
-    if(!is_int(($idauthor)) || empty($idauthor))
+    if(!(int)$idauthor || empty($idauthor))
     {
       $this->errors[] = self::IDAUTHOR_INVALID;
     }
