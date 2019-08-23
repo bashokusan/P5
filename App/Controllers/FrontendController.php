@@ -66,7 +66,7 @@ class FrontendController extends Controller
       }
 
     }
-
+    
     ob_start();
     require_once $this->getViewPath().'home.php';
     $content = ob_get_clean();
