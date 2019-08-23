@@ -68,9 +68,7 @@ class UserManager
 
   /**
    * [getList description]
-   * @param  [type] $idArticle [description]
-   * @param  [type] $type      [description]
-   * @return [type]            [description]
+   * @param  string $type      [description]
    */
   public function getList($type = null)
   {
@@ -176,10 +174,9 @@ class UserManager
 
   /**
    * Delete current line from the table and create a new one
-   * @param [type] $email    Email of the user
-   * @param [type] $selector Selector
-   * @param [type] $token    Token to be hashed before insert
-   * @param [type] $expire   Expire date of the request
+   * @param string $email    Email of the user
+   * @param string $selector Selector
+   * @param string $token    Token to be hashed before insert
    */
   public function resetPass($email, $selector, $token, $expire){
     $sql = "DELETE FROM passreset WHERE email = :email";
@@ -205,8 +202,6 @@ class UserManager
 
   /**
    * Check for pending reset request with exprire date after current date
-   * @param [type] $selector Selector
-   * @param [type] $date     Current date
    */
   public function getResetPass($selector, $date){
     $sql = "SELECT * FROM passreset WHERE selector = :selector AND expire >= :current";

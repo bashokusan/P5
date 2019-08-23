@@ -96,8 +96,8 @@ class Post
 
 
   /**
-   * Set name, is not a string or empty, new error.
-   * @param string $name name of the post
+   * Set id author, is not a string or empty, new error.
+   * @param string $idauthor Id author of the post
    */
   public function setIdAuthor($idauthor)
   {

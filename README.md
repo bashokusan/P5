@@ -1,7 +1,7 @@
 #OC_P5
 ## A blog with a back office
 
-### Features :
+### Features
 
 * For visitor :
   * See list of posts
@@ -22,16 +22,14 @@
   * Change password
   * Reset password
 
-### Libraries :
+### Libraries
 
 * (dev) symfony/var-dumper
 * (dev) filp/whoops
-
 * swiftmailer/swiftmailer
 
-## Install :
+## Install
 
 * You have to write your own database infos in App/DBFactory.
 * SQL functions are made with mysql.
-
 * You need to have composer and install swiftmailer library and change $transport object in App/Controllers/BackendController/sendMail function.

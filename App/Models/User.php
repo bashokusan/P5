@@ -63,8 +63,8 @@ class User
   }
 
   /**
-   * Set email, is not a string or empty, new error.
-   * @param string $email Email of the user
+   * Set name, is not a string or empty, new error.
+   * @param string $name Name of the user
    */
   public function setname($name)
   {

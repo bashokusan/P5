@@ -108,11 +108,6 @@ class Comment
     $this->publishDate = $publishDate;
   }
 
-  public function setUpdatDate($updateDate)
-  {
-    $this->updateDate = $updateDate;
-  }
-
 
   // Getters
 
@@ -146,9 +141,5 @@ class Comment
     return $this->publishDate;
   }
 
-  public function updateDate() :?string
-  {
-    return $this->updateDate;
-  }
 
 }

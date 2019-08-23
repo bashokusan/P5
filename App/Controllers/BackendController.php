@@ -163,20 +163,29 @@ class BackendController extends Controller
       {
         $fileName = htmlentities($_POST['currentimg']);
       }
+      else
+      {
+        $fileName = null;
+      }
+
+      $title = htmlspecialchars($_POST['title']);
+      $kicker = htmlspecialchars($_POST['kicker']);
+      $content = htmlspecialchars($_POST['content']);
 
       $data = [
         'idauthor' => (int)$_POST['idauthor'],
         'image' => $fileName,
-        'title' => htmlentities($_POST['title']),
-        'kicker' => htmlentities($_POST['kicker']),
-        'content' => htmlentities($_POST['content'])
+        'title' => $title,
+        'kicker' => $kicker,
+        'content' => $content
       ];
 
       $newPost = new Post($data);
 
-      if(isset($_GET['postid']) && !empty($_GET['postid']))
+      if(isset($_POST['id']) && isset($_GET['postid']) && !empty($_GET['postid']))
       {
-        $newPost->setId($_POST['id']);
+        $id = (int)$_POST['id'];
+        $newPost->setId($id);
       }
 
       if($newPost->isValid() && empty($imgerrors))
@@ -305,7 +314,7 @@ class BackendController extends Controller
     $userManager = new UserManager($db);
     $user = $userManager->getUser($id);
 
-    if(isset($_POST['updateprofile']))
+    if(isset($_POST['updateprofile']) && isset($_POST['userid']))
     {
       $data = [
         'id' => (int)$_POST['userid'],
@@ -343,12 +352,12 @@ class BackendController extends Controller
    */
   public function newPassPage()
   {
-    if($_POST['updatemdp'])
+    if(isset($_POST['updatemdp']))
     {
       if (!empty($_POST['password'] && !empty($_POST['passwordbis'])))
       {
-        $password = $_POST['password'];
-        $passwordConfirm = $_POST['passwordbis'];
+        $password = htmlspecialchars($_POST['password']);
+        $passwordConfirm = htmlspecialchars($_POST['passwordbis']);
 
         if($password === $passwordConfirm)
         {
@@ -583,7 +592,7 @@ class BackendController extends Controller
             // encrypted token inserted in the url
             $cryptoken = bin2hex($token);
 
-            $expire = date('U') + 3600;
+            $expire = (int)date('U') + 3600;
 
             // Create a new line for this user in resetpass table
             $userManager->resetPass($loggingUser->email(), $selector, $token, $expire);

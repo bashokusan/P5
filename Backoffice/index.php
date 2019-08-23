@@ -9,6 +9,8 @@ require_once '../vendor/autoload.php';
 // Home made autoload
 require_once '../Public/autoload.php';
 
+//use App\Controllers\BackendController;
+
 // Path to pages
 $viewPath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . 'Backend' . DIRECTORY_SEPARATOR . 'Pages' . DIRECTORY_SEPARATOR;
 // Path to template
@@ -32,7 +34,7 @@ try {
   // If user is logged in as admin
   if($controller->loggedIn('admin'))
   {
-    if(!$_GET || $_GET['page'] == 'home')
+    if(!$_GET || (isset($_GET['page']) && $_GET['page'] == 'home'))
     {
       $controller->homepage();
     }
@@ -47,7 +49,7 @@ try {
       $controller->flagComment((int)$_GET['flag'], (int)$_GET['post']);
     }
 
-    elseif($_GET['page'] == 'posts')
+    elseif(isset($_GET['page']) && $_GET['page'] == 'posts')
     {
       $controller->postsPage();
     }
@@ -57,37 +59,37 @@ try {
       $controller->deletePost((int)$_GET['delete']);
     }
 
-    elseif($_GET['page'] == 'edit')
+    elseif(isset($_GET['page']) && $_GET['page'] == 'edit')
     {
       $controller->editPage();
     }
 
-    elseif($_GET['page'] == 'comments')
+    elseif(isset($_GET['page']) && $_GET['page'] == 'comments')
     {
       $controller->commentsPage();
     }
 
-    elseif($_GET['page'] == 'adminrequest')
+    elseif(isset($_GET['page']) && $_GET['page'] == 'adminrequest')
     {
       $controller->adminRequestPage();
     }
-      elseif($_GET['acceptrequest'])
+      elseif(isset($_GET['acceptrequest']) && $_GET['acceptrequest'])
       {
         $controller->acceptRequest((int)$_GET['acceptrequest']);
         header('Location: ?page=adminrequest');
       }
 
-    elseif($_GET['page'] == 'profile')
+    elseif(isset($_GET['page']) && $_GET['page'] == 'profile')
     {
       $controller->profilePage();
     }
 
-    elseif($_GET['page'] == 'newpass')
+    elseif(isset($_GET['page']) && $_GET['page'] == 'newpass')
     {
       $controller->newPassPage();
     }
 
-    elseif($_GET['page'] == 'logout')
+    elseif(isset($_GET['page']) && $_GET['page'] == 'logout')
     {
       $controller->logout();
       header('Location: ?page=login');
@@ -102,7 +104,7 @@ try {
   // If user is logged in as guest (unconfirmed admin)
   elseif($controller->loggedIn('guest'))
   {
-    if($_GET['page'] == 'logout')
+    if(isset($_GET['page']) && $_GET['page'] == 'logout')
     {
       $controller->logout();
       header('Location: ?page=login');
@@ -116,17 +118,17 @@ try {
   // If user is not logged in
   elseif(!$controller->loggedIn())
   {
-    if(!$_GET['page'] || $_GET['page'] == 'login' || isset($_GET['guest']))
+    if(!$_GET['page'] || (isset($_GET['page']) && $_GET['page'] == 'login') || isset($_GET['guest']))
     {
       $controller->login();
     }
 
-    elseif($_GET['page'] == 'resetpass')
+    elseif(isset($_GET['page']) && $_GET['page'] == 'resetpass')
     {
       $controller->resetPassPage();
     }
 
-    elseif($_GET['page'] == 'reset')
+    elseif(isset($_GET['page']) && $_GET['page'] == 'reset')
     {
       // In url from the email sent after reset request
       if(isset($_GET['restoken']) && isset($_GET['validator'] )&& !empty($_GET['restoken']) && !empty($_GET['validator'])){
@@ -140,7 +142,7 @@ try {
 
     }
 
-    elseif($_GET['page'] == 'request')
+    elseif(isset($_GET['page']) && $_GET['page'] == 'request')
     {
       $controller->requestPage();
     }

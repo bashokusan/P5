@@ -15,7 +15,6 @@ abstract class Controller
    * Set the viewPath and templatePath
    * @param string $viewPath     Path to pages
    * @param string $templatePath Path to template
-   * @param string $token Token
    */
   public function __construct($viewPath, $templatePath){
     $this->setViewPath($viewPath);
