@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\Controller;
+use App\Controllers\SendEmail;
 use App\Models\DBFactory;
 use App\Models\Message;
 use App\Models\MessageManager;
@@ -12,9 +13,6 @@ use App\Models\Comment;
 use App\Models\CommentManager;
 use App\Models\User;
 use App\Models\UserManager;
-use Swift_SmtpTransport;
-use Swift_Mailer;
-use Swift_Message;
 
 /**
  * Main controller, action to do when called by the router
@@ -297,6 +295,7 @@ class BackendController extends Controller
 
   /**
    * Call when accept link clicked on requests page
+   * @param int $id User id
    */
   public function acceptRequest($id)
   {
@@ -315,7 +314,8 @@ class BackendController extends Controller
 
     $mailTopic = "Bienvenue parmis nous";
 
-    $this->sendMail($user->email(), $mailContentText, $mailContentHtml, $mailTopic);
+    $send = new SendEmail();
+    $send->sendMail($user->email(), $mailContentText, $mailContentHtml, $mailTopic);
   }
 
 
@@ -628,7 +628,8 @@ class BackendController extends Controller
 
             $mailTopic = "Réinitialisation de votre mot de passe";
 
-            $this->sendMail($loggingUser->email(), $mailContentText, $mailContentHtml, $mailTopic);
+            $send = new SendEmail();
+            $send->sendMail($loggingUser->email(), $mailContentText, $mailContentHtml, $mailTopic);
 
             $info = "Un email contenant un lien de réinitialisation vous a été envoyé";
           }
@@ -693,45 +694,6 @@ class BackendController extends Controller
     require_once $this->getViewPath().'request.php';
     $content = ob_get_clean();
     require_once $this->getTemplatePath();
-  }
-
-
-//------------------------------------------------------------------------------
-// Send Mail Methods
-//------------------------------------------------------------------------------
-  /**
-   * Send email to user (see above)
-   * @return int
-   */
-  public function sendMail($userMail, $contentText, $contentHtml, $topic)
-  {
-    $from = ['contact@monsite.fr' => 'Contact'];
-    $to = $userMail;
-
-    $content = $contentText;
-
-    $contentHtml = $contentHtml;
-
-    // Create the Transport
-    $transport = (new Swift_SmtpTransport('smtp.mailtrap.io', 2525))
-        ->setUsername('d481f137380620')
-        ->setPassword('8282c28192de76')
-    ;
-
-    // Create the Mailer using your created Transport
-    $mailer = new Swift_Mailer($transport);
-
-    // Create a message
-    $message = (new Swift_Message($topic))
-      ->setFrom($from)
-      ->setTo($to)
-      ->setBody($content, 'text/plain')
-      ->addPart($contentHtml, 'text/html');
-
-    // Send the message
-    $result = $mailer->send($message);
-
-    return $result;
   }
 
 }

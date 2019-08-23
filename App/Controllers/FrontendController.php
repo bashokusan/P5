@@ -53,7 +53,8 @@ class FrontendController extends Controller
       if($newMessage->isValid()){
         $messageManager = new MessageManager;
         ;
-        if ($messageManager->send($newMessage)) {
+        if ($messageManager->send($newMessage))
+        {
           $message = 'Votre message a bien été envoyé.';
           $_SESSION['inputs'] = [];
         }else {
