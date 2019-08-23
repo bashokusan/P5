@@ -26,30 +26,30 @@ class Menu
     /**
      * @return string Return all the <li> for the menu
      */
-    public static function menuFront() : string
+    public function menuFront() : string
     {
-        return static::menuItem('home', 'About')
-        . static::menuItem('blog', 'Blog');
+        return $this->menuItem('home', 'About')
+        . $this->menuItem('blog', 'Blog');
     }
 
-    public static function menuBack() : string
+    public function menuBack() : string
     {
-        return static::menuItem('login', 'Login')
-          .static::menuItem('request', 'Contribuer');
+        return $this->menuItem('login', 'Login')
+          .$this->menuItem('request', 'Contribuer');
     }
 
-    public static function menuBackGuest() : string
+    public function menuBackGuest() : string
     {
-        return static::menuItem('logout', 'Logout');
+        return $this->menuItem('logout', 'Logout');
     }
 
-    public static function menuBackAdmin() : string
+    public function menuBackAdmin() : string
     {
-        return static::menuItem('posts', 'Articles')
-          .static::menuItem('edit', 'Nouveau')
-          .static::menuItem('comments', 'Commentaires')
-          .static::menuItem('adminrequest', 'Requests')
-          .static::menuItem('profile', 'Profil')
-          .static::menuItem('logout', 'Logout');
+        return $this->menuItem('posts', 'Articles')
+          .$this->menuItem('edit', 'Nouveau')
+          .$this->menuItem('comments', 'Commentaires')
+          .$this->menuItem('adminrequest', 'Requests')
+          .$this->menuItem('profile', 'Profil')
+          .$this->menuItem('logout', 'Logout');
     }
 }
