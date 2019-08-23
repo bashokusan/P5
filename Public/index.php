@@ -4,18 +4,19 @@ session_start();
 // Composer autoload
 require_once '../vendor/autoload.php';
 
+use App\Controllers\FrontendController;
+
 // Path to pages
 $viewPath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . 'Frontend' . DIRECTORY_SEPARATOR . 'Pages' . DIRECTORY_SEPARATOR;
 // Path to template
 $templatePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Views/Frontend/Layout/template.php';
 
-use App\Controllers\FrontendController;
 
 /**
  * Instance of FrontendController
  * @var FrontendController
  */
-$controller = new FrontendController($viewPath, $templatePath);
+$controller = new FrontendController($viewPath, $templatePath, $nav);
 
 try {
 

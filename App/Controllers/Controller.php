@@ -40,10 +40,6 @@ abstract class Controller
     return $this->templatePath;
   }
 
-  public function getToken(){
-    return $this->token;
-  }
-
   /**
    * Render page with its data
    * @param  string $page Page to display
