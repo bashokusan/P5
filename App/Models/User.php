@@ -54,7 +54,9 @@ class User
     }
 
     // Setters
-
+    /**
+     * @param int $id [description]
+     */
     public function setId($id)
     {
         $this->id = (int)$id;
@@ -99,6 +101,9 @@ class User
         }
     }
 
+    /**
+     * @param string $message [description]
+     */
     public function setMessage($message)
     {
         if (!is_string($message) || empty($message)) {
@@ -110,16 +115,25 @@ class User
         }
     }
 
+    /**
+     * @param string $requestDate [description]
+     */
     public function setRequestDate($requestDate)
     {
         $this->requestDate = $requestDate;
     }
 
+    /**
+     * @param int $accept [description]
+     */
     public function setAccept($accept)
     {
         $this->accept = (int)$accept;
     }
 
+    /**
+     * @param int $confirm [description]
+     */
     public function setConfirm($confirm)
     {
         $this->confirm = (int)$confirm;

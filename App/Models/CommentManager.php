@@ -38,6 +38,7 @@ class CommentManager
     /**
      * Get list of comments with type (unchecked or checked)
      * No article id needed
+     * @param  string $type [description]
      */
     public function getListNoId($type = null)
     {
@@ -72,7 +73,8 @@ class CommentManager
 
     /**
      * Get list of checked comment only
-     *
+     * @param  int $idArticle [description]
+     * @param  string $type      [description]
      */
     public function getList($idArticle, $type = null)
     {

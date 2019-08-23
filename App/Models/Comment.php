@@ -26,6 +26,9 @@ class Comment
         }
     }
 
+    /**
+     * @param  array $data [description]
+     */
     public function hydrate($data)
     {
         foreach ($data as $key => $value) {
@@ -55,11 +58,18 @@ class Comment
     }
 
     // Setters
+
+    /**
+     * @param int $id [description]
+     */
     public function setId($id)
     {
         $this->id = (int)$id;
     }
 
+    /**
+     * @param int $idArticle [description]
+     */
     public function setIdArticle($idArticle)
     {
         $this->idArticle = (int)$idArticle;
@@ -93,6 +103,9 @@ class Comment
         }
     }
 
+    /**
+     * @param string $publishDate [description]
+     */
     public function setPublishDate($publishDate)
     {
         $this->publishDate = $publishDate;
