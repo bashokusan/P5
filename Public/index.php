@@ -1,18 +1,15 @@
 <?php
 session_start();
 
-// Loadtime (see Views/Frontent/Sections/footer)
-define('LOADTIME', microtime(true));
-
 // Composer autoload
 require_once '../vendor/autoload.php';
-// Home made autoload
-require_once 'autoload.php';
 
 // Path to pages
 $viewPath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . 'Frontend' . DIRECTORY_SEPARATOR . 'Pages' . DIRECTORY_SEPARATOR;
 // Path to template
 $templatePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Views/Frontend/Layout/template.php';
+
+use App\Controllers\FrontendController;
 
 /**
  * Instance of FrontendController

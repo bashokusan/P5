@@ -1,5 +1,11 @@
 <?php
 
+namespace App\Models;
+use App\Models\Message;
+use Swift_SmtpTransport;
+use Swift_Mailer;
+use Swift_Message;
+
 /**
  * Send message
  */
@@ -7,7 +13,7 @@ class MessageManager
 {
   /**
    * @param  Message $message Message object created from form post
-   * @return bool           True if message sent, false is not
+   * @return int            1 if message sent, 0 is not
    */
   public function send(Message $message){
 
@@ -41,7 +47,6 @@ class MessageManager
     $result = $mailer->send($message);
 
     return $result;
-
   }
 
 }

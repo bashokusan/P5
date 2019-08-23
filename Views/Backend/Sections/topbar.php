@@ -6,11 +6,11 @@
     <ul>
       <div class="nav_menu">
         <?php if(isset($_SESSION['role']) && $_SESSION['role'] == "admin") : ?>
-          <?= Helpers::menuBackAdmin()  ?>
+          <?= App\Models\Helpers::menuBackAdmin()  ?>
         <?php elseif(isset($_SESSION['role']) && $_SESSION['role'] == "guest") :?>
-          <?= Helpers::menuBackGuest()  ?>
+          <?= App\Models\Helpers::menuBackGuest()  ?>
         <?php else : ?>
-          <?= Helpers::menuBack()  ?>
+          <?= App\Models\Helpers::menuBack()  ?>
         <?php endif ?>
       </div>
       <div class="nav_cta">

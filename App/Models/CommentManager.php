@@ -1,5 +1,8 @@
 <?php
 
+namespace App\Models;
+use PDO;
+
 /**
  * Manage comments
  */
@@ -35,8 +38,6 @@ class CommentManager
   /**
    * Get list of comments with type (unchecked or checked)
    * No article id needed
-   *
-   * @param  string Type of comment (all -null-, checked, unchecked)
    */
   public function getListNoId($type = null)
   {
@@ -72,8 +73,6 @@ class CommentManager
   /**
    * Get list of checked comment only
    *
-   * @param  int $idArticle Article id
-   * @param  string Type of comment (all -null-, checked, unchecked)
    */
   public function getList($idArticle, $type = null)
   {

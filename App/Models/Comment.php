@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Models;
+
 /**
  * Class for comment object defining a comment
  * Created when comment form is submitted

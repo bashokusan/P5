@@ -1,5 +1,21 @@
 <?php
 
+namespace App\Controllers;
+
+use App\Controllers\Controller;
+use App\Models\DBFactory;
+use App\Models\Message;
+use App\Models\MessageManager;
+use App\Models\Post;
+use App\Models\PostManager;
+use App\Models\Comment;
+use App\Models\CommentManager;
+use App\Models\User;
+use App\Models\UserManager;
+use Swift_SmtpTransport;
+use Swift_Mailer;
+use Swift_Message;
+
 /**
  * Main controller, action to do when called by the router
  */
@@ -116,7 +132,8 @@ class BackendController extends Controller
     $postManager = new PostManager($db);
     $userManager = new UserManager($db);
     $users = $userManager->getList('confirmed');
-    $loggedinUser = $userManager->getUser((int)$_SESSION['id']);
+    $sessionid = (int)$_SESSION['id'];
+    $loggedinUser = $userManager->getUser($sessionid);
 
     $token = $_SESSION['t_user'];
     $_SESSION['inputs'] = [];
@@ -174,11 +191,14 @@ class BackendController extends Controller
 
       $data = [
         'idauthor' => (int)$_POST['idauthor'],
-        'image' => $fileName,
         'title' => $title,
         'kicker' => $kicker,
         'content' => $content
       ];
+
+      if(isset($fileName)){
+        $data['image'] = $fileName;
+      }
 
       $newPost = new Post($data);
 
@@ -198,7 +218,7 @@ class BackendController extends Controller
           $id = $db->lastInsertId();
         }
 
-        if($fileName)
+        if(isset($fileName))
         {
           $path = '../Public/Content/post-'.$id;
           if(!file_exists($path)){
@@ -281,7 +301,7 @@ class BackendController extends Controller
   public function acceptRequest($id)
   {
     $pass = rand(10000000, 99999999);
-    $hashPass = password_hash($pass, PASSWORD_DEFAULT);
+    $hashPass = password_hash((string)$pass, PASSWORD_DEFAULT);
 
     $db = DBFactory::getPDO();
     $userManager = new UserManager($db);
@@ -377,7 +397,7 @@ class BackendController extends Controller
             }
 
             // Compare token in Databse with token in form
-            $tokenBin = hex2bin($_POST['validator']);
+            $tokenBin = (string)hex2bin($_POST['validator']);
             $tokenCheck = password_verify($tokenBin, $resetpass['token']);
 
             if($tokenCheck){
@@ -385,7 +405,7 @@ class BackendController extends Controller
               $id = $user->id();
 
               $passhash = password_hash($password, PASSWORD_DEFAULT);
-              $userManager->update($id, $passhash);
+              $userManager->update($id, (string)$passhash);
               $userManager->deletePassReset($_POST['selector']);
               $this->logout();
               header('Location: ?page=login');
@@ -401,7 +421,7 @@ class BackendController extends Controller
           if($user->confirm() == 0)
           {
             $passhash = password_hash($password, PASSWORD_DEFAULT);
-            $userManager->update($id, $passhash, 'confirm');
+            $userManager->update($id, (string)$passhash, 'confirm');
             $this->logout();
             header('Location: ?page=login');
           }
@@ -409,7 +429,7 @@ class BackendController extends Controller
           else
           {
             $passhash = password_hash($password, PASSWORD_DEFAULT);
-            $userManager->update($id, $passhash);
+            $userManager->update($id, (string)$passhash);
             $this->logout();
             header('Location: ?page=login');
           }
@@ -681,7 +701,7 @@ class BackendController extends Controller
 //------------------------------------------------------------------------------
   /**
    * Send email to user (see above)
-   * @return bool
+   * @return int
    */
   public function sendMail($userMail, $contentText, $contentHtml, $topic)
   {
