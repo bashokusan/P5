@@ -27,12 +27,12 @@ try {
     $controller->home();
   }
 
-  elseif (isset($_GET['page']) && $_GET['page'] == 'blog')
+  elseif(isset($_GET['page']) && $_GET['page'] == 'blog')
   {
     $controller->blog();
   }
 
-  elseif (isset($_GET['page']) && $_GET['page'] == 'article' && !empty($_GET['id']))
+  elseif(isset($_GET['page']) && $_GET['page'] == 'article' && !empty($_GET['id']))
   {
     if(!filter_var($_GET['id'], FILTER_VALIDATE_INT))
     {

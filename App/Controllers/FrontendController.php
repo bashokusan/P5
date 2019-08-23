@@ -82,9 +82,12 @@ class FrontendController extends Controller
     $postManager = new PostManager($db);
 
     if(isset($_GET['p'])){
-      $currentNbr = (int)$_GET['p'] ?? 1;
+      $currentNbr = (int)$_GET['p'];
     }
-
+    else
+    {
+      $currentNbr = 1;
+    }
     if(!filter_var($currentNbr, FILTER_VALIDATE_INT))
     {
       throw new \Exception("Cette page n'existe pas");

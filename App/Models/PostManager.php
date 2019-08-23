@@ -96,7 +96,6 @@ class PostManager
    * Get all posts from database
    * @param  int $limit  (see pagination in FrontendController blog())
    * @param  int $offset (see pagination in FrontendController blog())
-   * @return Post
    */
   public function getList($limit = null, $offset = null)
   {
@@ -129,7 +128,6 @@ class PostManager
   /**
    * Get one post
    * @param  int $id Article id
-   * @return Post
    */
   public function getUnique($id)
   {
@@ -140,6 +138,10 @@ class PostManager
     ]);
     $query->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Post::class);
     $post = $query->fetch();
+    if(!$post)
+    {
+      return null;
+    }
 
     $query = $this->db->prepare("SELECT src FROM images WHERE idarticle = :id ORDER BY id DESC");
     $query->execute([

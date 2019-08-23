@@ -161,9 +161,11 @@ class BackendController extends Controller
       }
       elseif(isset($_POST['currentimg']) && !empty($_POST['currentimg']))
       {
-        $currentimg = $_POST['currentimg'];
-        $currentimg = filter_var($currentimg, FILTER_SANITIZE_STRING);
-        $fileName = htmlentities($currentimg);
+        $fileName = htmlentities($_POST['currentimg']);
+      }
+      else
+      {
+        $fileName = null;
       }
 
       $title = htmlspecialchars($_POST['title']);
@@ -173,9 +175,9 @@ class BackendController extends Controller
       $data = [
         'idauthor' => (int)$_POST['idauthor'],
         'image' => $fileName,
-        'title' => htmlentities($title),
-        'kicker' => htmlentities($kicker),
-        'content' => htmlentities($content)
+        'title' => $title,
+        'kicker' => $kicker,
+        'content' => $content
       ];
 
       $newPost = new Post($data);
@@ -354,8 +356,8 @@ class BackendController extends Controller
     {
       if (!empty($_POST['password'] && !empty($_POST['passwordbis'])))
       {
-        $password = $_POST['password'];
-        $passwordConfirm = $_POST['passwordbis'];
+        $password = htmlspecialchars($_POST['password']);
+        $passwordConfirm = htmlspecialchars($_POST['passwordbis']);
 
         if($password === $passwordConfirm)
         {
@@ -590,7 +592,7 @@ class BackendController extends Controller
             // encrypted token inserted in the url
             $cryptoken = bin2hex($token);
 
-            $expire = date('U') + 3600;
+            $expire = (int)date('U') + 3600;
 
             // Create a new line for this user in resetpass table
             $userManager->resetPass($loggingUser->email(), $selector, $token, $expire);
