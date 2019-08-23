@@ -1,5 +1,11 @@
 <?php
 
+namespace App\Models;
+use App\Models\Message;
+use Swift_SmtpTransport;
+use Swift_Mailer;
+use Swift_Message;
+
 /**
  * Send message
  */

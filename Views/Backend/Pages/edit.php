@@ -7,7 +7,7 @@
 
     <p>
       <label for="author">Auteur</label>
-      <?php if(isset($errors) && in_array(Post::IDAUTHOR_INVALID, $errors)) : ?>
+      <?php if(isset($errors) && in_array(App\Models\Post::IDAUTHOR_INVALID, $errors)) : ?>
         <p class='alert warning'>auteur invalide</p>
       <?php endif ?>
       <select class="userslist" name="idauthor">
@@ -38,10 +38,10 @@
 
     <p>
       <label for="title">Titre</label>
-      <?php if(isset($errors) && in_array(Post::TITLE_INVALID, $errors)) : ?>
+      <?php if(isset($errors) && in_array(App\Models\Post::TITLE_INVALID, $errors)) : ?>
         <p class='alert warning'>titre invalide</p>
       <?php endif ?>
-      <?php if(isset($errors) && in_array(Post::TITLE_LENGHT, $errors)) : ?>
+      <?php if(isset($errors) && in_array(App\Models\Post::TITLE_LENGHT, $errors)) : ?>
         <p class='alert warning'>Le titre doit faire au moins 10 caractères</p>
       <?php endif ?>
       <input type="text" name="title" value="<?php if($post){echo $post->title();}
@@ -51,10 +51,10 @@
 
     <p>
       <label for="kicker">Chapeau</label>
-      <?php if(isset($errors) && in_array(Post::KICKER_INVALID, $errors)) : ?>
+      <?php if(isset($errors) && in_array(App\Models\Post::KICKER_INVALID, $errors)) : ?>
         <p class='alert warning'>chapeau invalide</p>
       <?php endif ?>
-      <?php if(isset($errors) && in_array(Post::KICKER_LENGHT, $errors)) : ?>
+      <?php if(isset($errors) && in_array(App\Models\Post::KICKER_LENGHT, $errors)) : ?>
         <p class='alert warning'>Le chapeau doit faire au moins 10 caractères</p>
       <?php endif ?>
       <textarea name="kicker" rows="2" cols="80"><?php if($post){echo $post->kicker();}
@@ -64,10 +64,10 @@
 
     <p>
       <label for="content">Contenu</label>
-      <?php if(isset($errors) && in_array(Post::CONTENT_INVALID, $errors)) : ?>
+      <?php if(isset($errors) && in_array(App\Models\Post::CONTENT_INVALID, $errors)) : ?>
         <p class='alert warning'>Contenu invalide</p>
       <?php endif ?>
-      <?php if(isset($errors) && in_array(Post::CONTENT_LENGHT, $errors)) : ?>
+      <?php if(isset($errors) && in_array(App\Models\Post::CONTENT_LENGHT, $errors)) : ?>
         <p class='alert warning'>L'article doit faire au moins 100 caractères</p>
       <?php endif ?>
       <textarea name="content" rows="8" cols="80"><?php if($post){echo $post->content();}

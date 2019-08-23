@@ -1,5 +1,21 @@
 <?php
 
+namespace App\Controllers;
+
+use App\Controllers\Controller;
+use App\Models\DBFactory;
+use App\Models\Message;
+use App\Models\MessageManager;
+use App\Models\Post;
+use App\Models\PostManager;
+use App\Models\Comment;
+use App\Models\CommentManager;
+use App\Models\User;
+use App\Models\UserManager;
+use Swift_SmtpTransport;
+use Swift_Mailer;
+use Swift_Message;
+
 /**
  * Main controller, action to do when called by the router
  */

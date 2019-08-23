@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Models;
+
 /**
  * Class for random but useful functions.
  */

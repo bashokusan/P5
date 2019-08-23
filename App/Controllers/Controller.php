@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Controllers;
+
 /**
  * Parent Controller for Backend and Frontend Controllers
  */

@@ -1,5 +1,8 @@
 <?php
 
+namespace App\Models;
+use DateTime;
+
 /**
  * Class for post object defining a post
  */
