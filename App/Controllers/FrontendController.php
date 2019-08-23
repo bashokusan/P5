@@ -27,12 +27,12 @@ class FrontendController extends Controller
 
       $name = htmlspecialchars($_POST['name']);
       $email = htmlspecialchars($_POST['email']);
-      $message = htmlspecialchars($_POST['message']);
+      $messageContent = htmlspecialchars($_POST['message']);
 
       $data = [
-        'name' => htmlentities($name),
-        'email' => htmlentities($email),
-        'message' => htmlentities($message),
+        'name' => $name,
+        'email' => $email,
+        'message' => $messageContent,
       ];
 
       $_SESSION['inputs'] = $_POST;
@@ -141,8 +141,8 @@ class FrontendController extends Controller
       $content = htmlspecialchars($_POST['content']);
       $data = [
         'idArticle' => $id,
-        'author' => htmlentities($author),
-        'content' => htmlentities($content),
+        'author' => $author,
+        'content' => $content,
       ];
 
       $_SESSION['inputs'] = $_POST;
