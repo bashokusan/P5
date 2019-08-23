@@ -116,7 +116,8 @@ class BackendController extends Controller
     $postManager = new PostManager($db);
     $userManager = new UserManager($db);
     $users = $userManager->getList('confirmed');
-    $loggedinUser = $userManager->getUser((int)$_SESSION['id']);
+    $sessionid = (int)$_SESSION['id'];
+    $loggedinUser = $userManager->getUser($sessionid);
 
     $token = $_SESSION['t_user'];
     $_SESSION['inputs'] = [];
