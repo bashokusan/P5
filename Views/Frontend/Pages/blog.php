@@ -1,11 +1,11 @@
 <?php $title = "Blog"; ?>
 
 <div class="posts_container">
-  <?php foreach($postList as $post) : ?>
+  <?php foreach ($postList as $post) : ?>
     <div class="post_card">
       <h3><?= $post->title() ?></h3>
 
-      <?php if($post->image()) : ?>
+      <?php if ($post->image()) : ?>
         <img src="../Public/Content/Post-<?= $post->id() ?>/<?= $post->image() ?>" alt="">
       <?php endif ?>
 
@@ -15,7 +15,7 @@
 
       <h4><?= $post->kicker() ?></h4>
 
-      <?php if($post->countComment()) :?>
+      <?php if ($post->countComment()) :?>
       <p><em><?= $post->countComment() ?> <?= $post->countComment() == 1 ? "commentaire" : "commentaires" ?></em></p>
       <?php endif ?>
 
@@ -25,10 +25,10 @@
 </div>
 
 <div class="pagination">
-  <?php if($currentNbr > 1) : ?>
+  <?php if ($currentNbr > 1) : ?>
   <a href="?page=blog&p=<?= $currentNbr - 1 ?>">Page précédente</a>
   <?php endif ?>
-  <?php if($currentNbr < $total) : ?>
+  <?php if ($currentNbr < $total) : ?>
   <a href="?page=blog&p=<?= $currentNbr + 1 ?>">Page suivante</a>
   <?php endif ?>
 </div>

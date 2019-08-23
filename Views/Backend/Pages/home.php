@@ -1,11 +1,11 @@
-<? $title = "Backoffice | Accueil"; ?>
+<?php $title = "Backoffice | Accueil"; ?>
 
 <h2>Dashboard</h2>
 
 <p>Il y a <a href="?page=posts"><?= $postsCount ?> articles</a></p>
 <p>Il y a <a href="?page=comments"><?= $commentCount ?> commentaires<?= $uncheckedCount ? " / " . $uncheckedCount . " non validés " : "" ?></a></p>
 
-<?php if($uncheckedComment) : ?>
+<?php if ($uncheckedComment) : ?>
   <h3>Commentaires à vérifier :</h3>
   <div class="table">
     <table>
@@ -18,7 +18,7 @@
         <th>Action</th>
       </tr>
 
-      <?php foreach($uncheckedComment as $comment) : ?>
+      <?php foreach ($uncheckedComment as $comment) : ?>
         <tr>
           <td><?= $comment->id() ?></td>
           <td><a href="../Public/index.php?page=article&id=<?= $comment->idArticle() ?>"><?= $comment->idArticle() ?></a></td>

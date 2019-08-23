@@ -8,139 +8,126 @@ namespace App\Models;
  */
 class Comment
 {
+    private $errors = [];
+    private $id;
+    private $idArticle;
+    private $author;
+    private $content;
+    private $publishDate;
 
-  private $errors = [];
-  private $id;
-  private $idArticle;
-  private $author;
-  private $content;
-  private $publishDate;
+    const AUTHOR_INVALID = 1;
+    const CONTENT_INVALID = 2;
+    const CONTENT_LENGHT = 3;
 
-  const AUTHOR_INVALID = 1;
-  const CONTENT_INVALID = 2;
-  const CONTENT_LENGHT = 3;
-
-  public function __construct(array $values = [])
-  {
-    if(!empty($values))
+    public function __construct(array $values = [])
     {
-      $this->hydrate($values);
+        if (!empty($values)) {
+            $this->hydrate($values);
+        }
     }
-  }
 
-  public function hydrate($data)
-  {
-    foreach($data as $key => $value)
+    public function hydrate($data)
     {
-      $method = 'set'.ucfirst($key);
-      if(is_callable([$this, $method]))
-      {
-        $this->$method($value);
-      }
+        foreach ($data as $key => $value) {
+            $method = 'set'.ucfirst($key);
+            if (is_callable([$this, $method])) {
+                $this->$method($value);
+            }
+        }
     }
-  }
 
-  /**
-   * Check if object is new
-   * @return bool true if new, false if not new
-   */
-  public function isNew() :bool
-  {
-    return empty($this->id);
-  }
-
-  /**
-   * Check if object is valid
-   * @return bool true if every item is not empty, false if at least one item is empty
-   */
-  public function isValid() :bool
-  {
-    return !(empty($this->idArticle) || empty($this->author) || empty($this->content));
-  }
-
-  // Setters
-  public function setId($id)
-  {
-    $this->id = (int)$id;
-  }
-
-  public function setIdArticle($idArticle)
-  {
-    $this->idArticle = (int)$idArticle;
-  }
-
-  /**
-   * Set author, is not a string or empty, new error.
-   * @param string $author Author of the comment from comment form post
-   */
-  public function setAuthor($author)
-  {
-    if(!is_string($author) || empty($author))
+    /**
+     * Check if object is new
+     * @return bool true if new, false if not new
+     */
+    public function isNew() :bool
     {
-      $this->errors[] = self::AUTHOR_INVALID;
+        return empty($this->id);
     }
-    else
+
+    /**
+     * Check if object is valid
+     * @return bool true if every item is not empty, false if at least one item is empty
+     */
+    public function isValid() :bool
     {
-      $this->author = $author;
+        return !(empty($this->idArticle) || empty($this->author) || empty($this->content));
     }
-  }
 
-  /**
-   * Set content, is not a string or empty, new error.
-   * @param string $content Content of the comment from comment form post
-   */
-  public function setContent($content)
-  {
-    if(!is_string($content) || empty($content))
+    // Setters
+    public function setId($id)
     {
-      $this->errors[] = self::CONTENT_INVALID;
+        $this->id = (int)$id;
     }
-    elseif (!empty($content) && (strlen($content) < 2 || strlen($content) > 500 )) {
-      $this->errors[] = self::CONTENT_LENGHT;
-    }
-    else
+
+    public function setIdArticle($idArticle)
     {
-      $this->content = nl2br($content);
+        $this->idArticle = (int)$idArticle;
     }
-  }
 
-  public function setPublishDate($publishDate)
-  {
-    $this->publishDate = $publishDate;
-  }
+    /**
+     * Set author, is not a string or empty, new error.
+     * @param string $author Author of the comment from comment form post
+     */
+    public function setAuthor($author)
+    {
+        if (!is_string($author) || empty($author)) {
+            $this->errors[] = self::AUTHOR_INVALID;
+        } else {
+            $this->author = $author;
+        }
+    }
 
+    /**
+     * Set content, is not a string or empty, new error.
+     * @param string $content Content of the comment from comment form post
+     */
+    public function setContent($content)
+    {
+        if (!is_string($content) || empty($content)) {
+            $this->errors[] = self::CONTENT_INVALID;
+        } elseif (!empty($content) && (strlen($content) < 2 || strlen($content) > 500)) {
+            $this->errors[] = self::CONTENT_LENGHT;
+        } else {
+            $this->content = nl2br($content);
+        }
+    }
 
-  // Getters
-
-  public function errors()
-  {
-    return $this->errors;
-  }
-
-  public function id()
-  {
-    return $this->id;
-  }
-
-  public function idArticle()
-  {
-    return $this->idArticle;
-  }
-
-  public function author()
-  {
-    return $this->author;
-  }
-
-  public function content()
-  {
-    return $this->content;
-  }
-
-  public function publishDate()
-  {
-    return $this->publishDate;
-  }
+    public function setPublishDate($publishDate)
+    {
+        $this->publishDate = $publishDate;
+    }
 
 
+    // Getters
+
+    public function errors()
+    {
+        return $this->errors;
+    }
+
+    public function id()
+    {
+        return $this->id;
+    }
+
+    public function idArticle()
+    {
+        return $this->idArticle;
+    }
+
+    public function author()
+    {
+        return $this->author;
+    }
+
+    public function content()
+    {
+        return $this->content;
+    }
+
+    public function publishDate()
+    {
+        return $this->publishDate;
+    }
 }

@@ -19,35 +19,22 @@ $templatePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Views/Frontend/Layout/
 $controller = new FrontendController($viewPath, $templatePath, $nav);
 
 try {
-
-  if(!isset($_GET['page']) || $_GET['page'] == 'home')
-  {
-    $controller->home();
-  }
-
-  elseif(isset($_GET['page']) && $_GET['page'] == 'blog')
-  {
-    $controller->blog();
-  }
-
-  elseif(isset($_GET['page']) && $_GET['page'] == 'article' && !empty($_GET['id']))
-  {
-    if(!filter_var($_GET['id'], FILTER_VALIDATE_INT))
-    {
-      throw new \Exception("Cette page n'existe pas");
+    if (!isset($_GET['page']) || $_GET['page'] == 'home') {
+        $controller->home();
+    } elseif (isset($_GET['page']) && $_GET['page'] == 'blog') {
+        $controller->blog();
+    } elseif (isset($_GET['page']) && $_GET['page'] == 'article' && !empty($_GET['id'])) {
+        if (!filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
+            throw new \Exception("Cette page n'existe pas");
+        }
+        $controller->post((int)$_GET['id']);
+    } else {
+        throw new \Exception("Cette page n'existe pas");
     }
-    $controller->post((int)$_GET['id']);
-  }
-
-  else
-  {
-    throw new \Exception("Cette page n'existe pas");
-  }
-
 } catch (\Exception $e) {
-  $errorMessage = $e->getMessage();
-  ob_start();
-  require_once $viewPath.'error.php';
-  $content = ob_get_clean();
-  require $templatePath;
+    $errorMessage = $e->getMessage();
+    ob_start();
+    require_once $viewPath.'error.php';
+    $content = ob_get_clean();
+    require $templatePath;
 }
