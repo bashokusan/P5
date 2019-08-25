@@ -62,7 +62,7 @@ class FrontendController extends Controller
                 $errors = $newMessage->errors();
             }
         }
-    
+
         ob_start();
         require_once $this->getViewPath().'home.php';
         $content = ob_get_clean();

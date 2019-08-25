@@ -38,16 +38,16 @@ class BackendController extends Controller
         $postManager = new PostManager($db);
         $commentManager = new CommentManager($db);
 
-        $data =
-    [
-      'token' => $_SESSION['t_user'],
-      'postsCount' => $postManager->count(),
-      'commentCount' => $commentManager->count(),
-      'uncheckedCount' => $commentManager->count('unchecked'),
-      'uncheckedComment' => $commentManager->getListNoId('unchecked')
-    ];
+        $token = $_SESSION['t_user'];
+        $postsCount = $postManager->count();
+        $commentCount = $commentManager->count();
+        $uncheckedCount = $commentManager->count('unchecked');
+        $uncheckedComment = $commentManager->getListNoId('unchecked');
 
-        $this->render('home', $data);
+        ob_start();
+        require_once $this->getViewPath().'home.php';
+        $content = ob_get_clean();
+        require_once $this->getTemplatePath();
     }
 
 
@@ -93,13 +93,13 @@ class BackendController extends Controller
         $db = DBFactory::getPDO();
         $postManager = new PostManager($db);
 
-        $data =
-    [
-      'token' => $_SESSION['t_user'],
-      'postList' => $postManager->getList()
-    ];
+        $token = $_SESSION['t_user'];
+        $postList = $postManager->getList();
 
-        $this->render('posts', $data);
+        ob_start();
+        require_once $this->getViewPath().'posts.php';
+        $content = ob_get_clean();
+        require_once $this->getTemplatePath();
     }
 
 
@@ -233,17 +233,17 @@ class BackendController extends Controller
         $db = DBFactory::getPDO();
         $commentManager = new CommentManager($db);
 
-        $data =
-    [
-      'flagComments' => $commentManager->getListNoId('flag'),
-      'flagCommentsCount' => $commentManager->count('flag'),
-      'checkedComment' => $commentManager->getListNoId('checked'),
-      'checkedCommentsCount' => $commentManager->count('checked'),
-      'commentsList' => $commentManager->getListNoId(),
-      'CommentsCount' => $commentManager->count()
-    ];
+        $flagComments = $commentManager->getListNoId('flag');
+        $flagCommentsCount = $commentManager->count('flag');
+        $checkedComment = $commentManager->getListNoId('checked');
+        $checkedCommentsCount = $commentManager->count('checked');
+        $commentsList = $commentManager->getListNoId();
+        $CommentsCount = $commentManager->count();
 
-        $this->render('comments', $data);
+        ob_start();
+        require_once $this->getViewPath().'comments.php';
+        $content = ob_get_clean();
+        require_once $this->getTemplatePath();
     }
 
 
@@ -260,13 +260,13 @@ class BackendController extends Controller
         $db = DBFactory::getPDO();
         $userManager = new UserManager($db);
 
-        $data =
-    [
-      'userList' => $userManager->getList('new'),
-      'acceptedUserList' => $userManager->getList('accepted'),
-    ];
+        $userList = $userManager->getList('new');
+        $acceptedUserList = $userManager->getList('accepted');
 
-        $this->render('adminrequest', $data);
+        ob_start();
+        require_once $this->getViewPath().'adminrequest.php';
+        $content = ob_get_clean();
+        require_once $this->getTemplatePath();
     }
 
     /**
@@ -282,15 +282,15 @@ class BackendController extends Controller
         $userManager = new UserManager($db);
         $user = $userManager->getUser($id);
 
-        if ($hashPass){
-          $userManager->acceptRequest($id, $hashPass);
+        if ($hashPass) {
+            $userManager->acceptRequest($id, $hashPass);
         }
 
         $mailContentText = "Bonjour ".$user->name().", voici votre mot de passe temporaire : ".$pass." Le lien d'accès : http://localhost/P5/Backoffice/index.php A bientôt.";
 
         $mailContentHtml = "<p>Bonjour ".$user->name()."</p><p>Votre mot de passe temporaire : ".$pass."</p><p><a href='http://localhost/P5/Backoffice/index.php'>Lien d'accès</a></p>";
 
-        $mailTopic = "Bienvenue parmis nous";
+        $mailTopic = "Bienvenue parmi nous";
 
         $send = new SendEmail();
         $send->sendMail($user->email(), $mailContentText, $mailContentHtml, $mailTopic);
