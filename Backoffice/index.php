@@ -7,13 +7,19 @@ define('LOADTIME', microtime(true));
 // Composer autoload
 require_once '../vendor/autoload.php';
 
-use App\Controllers\BackendController;
+use App\Controllers\Controller;
 use App\Controllers\Backend\Homepage;
 use App\Controllers\Backend\PostsList;
 use App\Controllers\Backend\EditPost;
 use App\Controllers\Backend\CommentsPage;
 use App\Controllers\Backend\RequestsList;
 use App\Controllers\Backend\Profile;
+use App\Controllers\Backend\NewPass;
+use App\Controllers\Backend\Auth;
+use App\Controllers\Backend\Logout;
+use App\Controllers\Backend\RequestPage;
+use App\Controllers\Backend\ResetPass;
+
 
 // Path to pages
 $viewPath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . 'Backend' . DIRECTORY_SEPARATOR . 'Pages' . DIRECTORY_SEPARATOR;
@@ -22,9 +28,9 @@ $templatePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Views/Backend/Layout/t
 
 /**
  * Instance of BackendController
- * @var BackendController
+ * @var Controller
  */
-$controller = new BackendController($viewPath, $templatePath);
+$controller = new Controller($viewPath, $templatePath);
 
 
 // Session hijacking defense
@@ -69,9 +75,11 @@ try {
             $profile = new Profile($viewPath, $templatePath);
             $profile->profilePage();
         } elseif (isset($_GET['page']) && $_GET['page'] == 'newpass') {
-            $controller->newPassPage();
+            $newpass = new NewPass($viewPath, $templatePath);
+            $newpass->newPassPage();
         } elseif (isset($_GET['page']) && $_GET['page'] == 'logout') {
-            $controller->logout();
+            $logout = new Logout();
+            $logout->logout();
         } else {
             throw new \Exception("Page introuvable");
         }
@@ -80,31 +88,39 @@ try {
     // If user is logged in as guest (unconfirmed admin)
     elseif ($controller->loggedIn('guest')) {
         if (isset($_GET['page']) && $_GET['page'] == 'logout') {
-            $controller->logout();
+          $logout = new Auth($viewPath, $templatePath);
+          $logout->logout();
         } else {
-            $controller->newPassPage();
+          $newpass = new NewPass($viewPath, $templatePath);
+          $newpass->newPassPage();
         }
     }
 
     // If user is not logged in
     elseif (!$controller->loggedIn()) {
         if (!$_GET['page'] || (isset($_GET['page']) && $_GET['page'] == 'login') || isset($_GET['guest'])) {
-            $controller->login();
+            $login = new Auth($viewPath, $templatePath);
+            $login->login();
         } elseif (isset($_GET['page']) && $_GET['page'] == 'resetpass') {
-            $controller->resetPassPage();
+            $resetPass = new ResetPass($viewPath, $templatePath);
+            $resetPass->resetPass();
         } elseif (isset($_GET['page']) && $_GET['page'] == 'reset') {
             // In url from the email sent after reset request
             if (isset($_GET['restoken']) && isset($_GET['validator'])&& !empty($_GET['restoken']) && !empty($_GET['validator'])) {
                 if (ctype_xdigit($_GET['restoken']) && ctype_xdigit($_GET['validator'])) {
-                    $controller->newPassPage();
+                  $newpass = new NewPass($viewPath, $templatePath);
+                  $newpass->newPassPage();
                 }
             } else {
-                $controller->login();
+              $login = new Auth($viewPath, $templatePath);
+              $login->login();
             }
         } elseif (isset($_GET['page']) && $_GET['page'] == 'request') {
-            $controller->requestPage();
+            $request = new RequestPage($viewPath, $templatePath);
+            $request->requestPage();
         } else {
-            $controller->login();
+          $login = new Auth($viewPath, $templatePath);
+          $login->login();
         }
     }
 } catch (\Exception $e) {

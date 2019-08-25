@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Controllers;
 
 /**
  * Class for random but useful functions.

@@ -5,7 +5,7 @@ namespace App\Controllers;
 /**
  * Parent Controller for Backend and Frontend Controllers
  */
-abstract class Controller
+class Controller
 {
     protected $viewPath;
     protected $templatePath;
@@ -49,6 +49,21 @@ abstract class Controller
     public function getTemplatePath()
     {
         return $this->templatePath;
+    }
+
+
+    /**
+     * Check if user connected or not
+     * @param  string $role [description]
+     * @return bool True if there is a role session var
+     */
+    public function loggedIn($role = null)
+    {
+        if (isset($_SESSION['role']) && $_SESSION['role'] == $role) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
