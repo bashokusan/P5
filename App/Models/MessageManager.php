@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\Message;
-use App\Controllers\SendEmail;
+use App\Controllers\Helpers\SendEmail;
 
 /**
  * Send message

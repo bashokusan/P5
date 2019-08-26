@@ -6,7 +6,7 @@ use App\Controllers\Controller;
 
 use App\Models\DBFactory;
 use App\Models\UserManager;
-use App\Controllers\SendEmail;
+use App\Controllers\Helpers\SendEmail;
 
 /**
  *

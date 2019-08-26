@@ -44,12 +44,12 @@ class EditPost extends Controller
 
             if (isset($_FILES['image']) && !empty($_FILES['image']['name'])) {
                 if ($_FILES['image']['error'] === 0) {
-                    $extensions_autorisees = array('jpg', 'jpeg', 'gif', 'png');
+                    $authorizedExtensions = array('jpg', 'jpeg', 'gif', 'png');
                     $infosfichier = pathinfo($_FILES['image']['name']);
-                    $extension_upload = strtolower($infosfichier['extension']);
-                    if (in_array($extension_upload, $extensions_autorisees)) {
+                    $extensionUpload = strtolower($infosfichier['extension']);
+                    if (in_array($extensionUpload, $authorizedExtensions)) {
                         if ($_FILES['image']['size'] > 0 && $_FILES['image']['size'] <= 2000000) {
-                            $fileName = uniqid(). "." .$extension_upload;
+                            $fileName = uniqid(). "." .$extensionUpload;
                         } else {
                             $imgerrors = "Le fichier doit faire moins de 2mo";
                         }

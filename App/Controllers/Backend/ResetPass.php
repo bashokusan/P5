@@ -3,7 +3,7 @@
 namespace App\Controllers\Backend;
 
 use App\Controllers\Controller;
-use App\Controllers\SendEmail;
+use App\Controllers\Helpers\SendEmail;
 use App\Models\DBFactory;
 use App\Models\User;
 use App\Models\UserManager;
