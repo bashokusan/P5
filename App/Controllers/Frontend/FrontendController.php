@@ -89,6 +89,7 @@ class FrontendController extends Controller
         $db = DBFactory::getPDO();
         $postManager = new PostManager($db);
 
+        // Pagination
         if (isset($_GET['p'])) {
             $currentNbr = (int)$_GET['p'];
         } else {
@@ -102,13 +103,15 @@ class FrontendController extends Controller
             throw new \Exception("Cette page n'existe pas");
         }
         $count = (int)$postManager->count();
+        if($count == 0){
+          throw new \Exception("Il n'y pas encore d'articles");
+        }
         $limit = 6;
         $total = ceil($count / $limit);
         if ($currentNbr > $total) {
             throw new \Exception("Cette page n'existe pas");
         }
         $offset = $limit * ($currentNbr - 1);
-
 
         $postList = $postManager->getList($limit, $offset);
 
@@ -142,7 +145,7 @@ class FrontendController extends Controller
 
         if (isset($_POST['add'])) {
             $author = htmlspecialchars($_POST['author']);
-            $content = htmlspecialchars($_POST['content']);
+            $content = htmlspecialchars($_POST['comment']);
             $data = [
         'idArticle' => $id,
         'author' => $author,

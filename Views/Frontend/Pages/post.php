@@ -1,5 +1,9 @@
 <?php $title = 'Blog | ' . $post->title() ?>
 
+<?php if ($message) : ?>
+  <p class='alert info'><?= $message ?></p>
+<?php endif ?>
+
 <div class="post_card">
   <h2><?= $post->title() ?></h2>
 
@@ -15,13 +19,10 @@
 
   <p><?= nl2br($post->content()) ?></p>
 </div>
-<div class="comment_section">
+<div class="comment_section" >
 
 <h3>Commentaires</h3>
 <div class="comment_form">
-  <?php if ($message) : ?>
-    <p class='alert info'><?= $message ?></p>
-  <?php endif ?>
   <form class="" action="" method="post">
     <div>
       <label for="name">Votre nom</label>
@@ -39,7 +40,7 @@
       <?php if (isset($errors) && in_array(App\Models\Comment::CONTENT_LENGHT, $errors)) : ?>
         <p class='alert warning'>Le commentaire doit faire entre 2 et 500 caractères</p>
       <?php endif ?>
-      <textarea name="content" id="content" rows="4" cols="80" placeholder="votre commentaire"><?= $_SESSION['inputs']['content'] ? $_SESSION['inputs']['content'] : "" ?></textarea>
+      <textarea name="comment" id="content" rows="4" cols="80" placeholder="votre commentaire"><?= $_SESSION['inputs']['comment'] ? $_SESSION['inputs']['comment'] : "" ?></textarea>
     </div>
 
     <div>
