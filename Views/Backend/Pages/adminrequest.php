@@ -7,13 +7,13 @@
     <h3>Demande en attente :</h3>
     <?php foreach ($userList as $user) : ?>
       <div class="user">
-        <p>Date de la demande : <?= htmlentities($user->requestDate()) ?></p>
-        <p>Nom : <?= htmlentities($user->name()) ?></p>
-        <p>Email : <?= htmlentities($user->email()) ?></p>
+        <p>Date de la demande : <?= htmlentities((string)$user->requestDate()) ?></p>
+        <p>Nom : <?= htmlentities((string)$user->name()) ?></p>
+        <p>Email : <?= htmlentities((string)$user->email()) ?></p>
         <p>Message :</p>
-        <p><?= htmlentities($user->message()) ?></p>
+        <p><?= htmlentities((string)$user->message()) ?></p>
       </div>
-      <a href="?acceptrequest=<?= htmlentities($user->id()) ?>&token=<?= htmlentities($token) ?>">Accepter</a>
+      <a href="?acceptrequest=<?= htmlentities((string)$user->id()) ?>&token=<?= htmlentities((string)$token) ?>">Accepter</a>
     <?php endforeach ?>
   <?php endif ?>
 </div>
@@ -23,8 +23,8 @@
     <h3>Demande acceptée :</h3>
     <?php foreach ($acceptedUserList as $acceptedUser) : ?>
       <div class="user">
-        <p>Nom : <?= htmlentities($acceptedUser->name()) ?></p>
-        <p>Email : <?= htmlentities($acceptedUser->email()) ?></p>
+        <p>Nom : <?= htmlentities((string)$acceptedUser->name()) ?></p>
+        <p>Email : <?= htmlentities((string)$acceptedUser->email()) ?></p>
         <p><strong><?= (int)$acceptedUser->confirm() === 0 ? "L'utilisateur n'a pas encore confirmé" : "Ce contributeur a confirmé" ?></strong></p>
         <hr>
       </div>

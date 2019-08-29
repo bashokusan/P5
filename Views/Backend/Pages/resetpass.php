@@ -5,10 +5,10 @@
   <p>Vous recevrez un email contenant les insctructions à suivre pour réinitialiser votre mot de passe</p>
   <form class="reset_form" action="" method="post">
     <?php if ($info) : ?>
-      <p class='alert info'><?= htmlentities($info) ?></p>
+      <p class='alert info'><?= htmlentities((string)$info) ?></p>
     <?php endif ?>
     <?php if ($warning) : ?>
-      <p class='alert warning'><?= htmlentities($warning) ?></p>
+      <p class='alert warning'><?= htmlentities((string)$warning) ?></p>
     <?php endif ?>
     <input type="email" name="email" placeholder="Email" value="">
 

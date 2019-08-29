@@ -5,7 +5,7 @@
   <nav>
     <ul>
       <div class="nav_menu">
-        <?= $menu ?>
+        <?= (string)$menu ?>
       </div>
       <div class="nav_cta">
         <li><a href="../Backoffice/index.php">Administration</a></li>

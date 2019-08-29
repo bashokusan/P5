@@ -5,10 +5,10 @@
 
   <form class="login_form" action="" method="post">
     <?php if ($warning) : ?>
-      <p class='alert info'><?= htmlentities($warning) ?></p>
+      <p class='alert info'><?= htmlentities((string)$warning) ?></p>
     <?php endif ?>
     <?php if ($prohib) : ?>
-      <p class='alert warning'><?= htmlentities($prohib) ?></p>
+      <p class='alert warning'><?= htmlentities((string)$prohib) ?></p>
     <?php endif ?>
 
     <?php if (isset($errors) && in_array(App\Models\User::EMAIL_INVALID, $errors)) : ?>

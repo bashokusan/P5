@@ -4,7 +4,7 @@
 
 <?php if ($flagCommentsCount): ?>
   <h3>Commentaires modérés</h3>
-  <p><?= htmlentities($flagCommentsCount) ?> commentaires modérés</p>
+  <p><?= htmlentities((string)$flagCommentsCount) ?> commentaires modérés</p>
   <div class="table">
     <table>
       <tr>
@@ -17,11 +17,11 @@
 
       <?php foreach ($flagComments as $comment) : ?>
         <tr>
-          <td><?= htmlentities($comment->id()) ?></td>
-          <td><a href="../Public/index.php?page=article&id=<?= htmlentities($comment->idArticle()) ?>"><?= htmlentities($comment->idArticle()) ?></a></td>
-          <td><?= htmlentities($comment->author()) ?></td>
-          <td><?= htmlentities($comment->content()) ?></td>
-          <td><?= htmlentities($comment->publishDate()) ?></td>
+          <td><?= htmlentities((string)$comment->id()) ?></td>
+          <td><a href="../Public/index.php?page=article&id=<?= htmlentities((string)$comment->idArticle()) ?>"><?= htmlentities((string)$comment->idArticle()) ?></a></td>
+          <td><?= htmlentities((string)$comment->author()) ?></td>
+          <td><?= htmlentities((string)$comment->content()) ?></td>
+          <td><?= htmlentities((string)$comment->publishDate()) ?></td>
         </tr>
       <?php endforeach ?>
 
@@ -31,7 +31,7 @@
 
 <?php if ($checkedCommentsCount): ?>
   <h3>Commentaires validés</h3>
-  <p><?= htmlentities($checkedCommentsCount) ?> commentaires validés</p>
+  <p><?= htmlentities((string)$checkedCommentsCount) ?> commentaires validés</p>
   <div class="table">
     <table>
       <tr>
@@ -44,11 +44,11 @@
 
       <?php foreach ($checkedComment as $comment) : ?>
         <tr>
-          <td><?= htmlentities($comment->id()) ?></td>
-          <td><a href="../Public/index.php?page=article&id=<?= htmlentities($comment->idArticle()) ?>"><?= htmlentities($comment->idArticle()) ?></a></td>
-          <td><?= htmlentities($comment->author()) ?></td>
-          <td><?= htmlentities($comment->content()) ?></td>
-          <td><?= htmlentities($comment->publishDate()) ?></td>
+          <td><?= htmlentities((string)$comment->id()) ?></td>
+          <td><a href="../Public/index.php?page=article&id=<?= htmlentities((string)$comment->idArticle()) ?>"><?= htmlentities((string)$comment->idArticle()) ?></a></td>
+          <td><?= htmlentities((string)$comment->author()) ?></td>
+          <td><?= htmlentities((string)$comment->content()) ?></td>
+          <td><?= htmlentities((string)$comment->publishDate()) ?></td>
         </tr>
       <?php endforeach ?>
 

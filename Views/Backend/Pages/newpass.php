@@ -20,13 +20,13 @@
     <input type="password" name="passwordbis" placeholder="Confirmez le mot de passe" value="">
 
     <?php if (isset($_GET['restoken'])) : ?>
-      <input type="hidden" name="selector" value="<?= htmlentities($_GET['restoken']) ?>">
+      <input type="hidden" name="selector" value="<?= htmlentities((string)$_GET['restoken']) ?>">
     <?php endif ?>
     <?php if (isset($_GET['validator'])) : ?>
-      <input type="hidden" name="validator" value="<?= htmlentities($_GET['validator']) ?>">
+      <input type="hidden" name="validator" value="<?= htmlentities((string)$_GET['validator']) ?>">
     <?php endif ?>
     <?php if (isset($_SESSION['t_user'])) : ?>
-    <input type="hidden" name="t_user" value="<?= htmlentities($_SESSION['t_user']) ?>">
+    <input type="hidden" name="t_user" value="<?= htmlentities((string)$_SESSION['t_user']) ?>">
     <?php endif ?>
     <input type="submit" name="updatemdp" value="Modifier">
 

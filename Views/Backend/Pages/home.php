@@ -2,8 +2,8 @@
 
 <h2>Dashboard</h2>
 
-<p>Il y a <a href="?page=posts"><?= htmlentities($postsCount) ?> articles</a></p>
-<p>Il y a <a href="?page=comments"><?= htmlentities($commentCount) ?> commentaires<?= $uncheckedCount ? " / " . htmlentities($uncheckedCount) . " non validés " : "" ?></a></p>
+<p>Il y a <a href="?page=posts"><?= htmlentities((string)$postsCount) ?> articles</a></p>
+<p>Il y a <a href="?page=comments"><?= htmlentities((string)$commentCount) ?> commentaires<?= $uncheckedCount ? " / " . htmlentities((string)$uncheckedCount) . " non validés " : "" ?></a></p>
 
 <?php if ($uncheckedComment) : ?>
   <h3>Commentaires à vérifier :</h3>
@@ -20,14 +20,14 @@
 
       <?php foreach ($uncheckedComment as $comment) : ?>
         <tr>
-          <td><?= htmlentities($comment->id()) ?></td>
-          <td><a href="../Public/index.php?page=article&id=<?= htmlentities($comment->idArticle()) ?>"><?= htmlentities($comment->idArticle()) ?></a></td>
-          <td><?= htmlentities($comment->author()) ?></td>
-          <td><?= htmlentities($comment->content()) ?></td>
-          <td><?= htmlentities($comment->publishDate()) ?></td>
+          <td><?= htmlentities((string)$comment->id()) ?></td>
+          <td><a href="../Public/index.php?page=article&id=<?= htmlentities((string)$comment->idArticle()) ?>"><?= htmlentities((string)$comment->idArticle()) ?></a></td>
+          <td><?= htmlentities((string)$comment->author()) ?></td>
+          <td><?= htmlentities((string)$comment->content()) ?></td>
+          <td><?= htmlentities((string)$comment->publishDate()) ?></td>
           <td>
-            <a href="?check=<?= htmlentities($comment->id()) ?>&post=<?= htmlentities($comment->idArticle()) ?>&token=<?= htmlentities($token) ?>">Valider</a> /
-            <a href="?flag=<?= htmlentities($comment->id()) ?>&post=<?= htmlentities($comment->idArticle()) ?>&token=<?= htmlentities($token) ?>">Modérer</a>
+            <a href="?check=<?= htmlentities((string)$comment->id()) ?>&post=<?= htmlentities((string)$comment->idArticle()) ?>&token=<?= htmlentities((string)$token) ?>">Valider</a> /
+            <a href="?flag=<?= htmlentities((string)$comment->id()) ?>&post=<?= htmlentities((string)$comment->idArticle()) ?>&token=<?= htmlentities((string)$token) ?>">Modérer</a>
           </td>
         </tr>
       <?php endforeach ?>
