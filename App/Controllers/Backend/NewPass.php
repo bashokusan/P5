@@ -44,7 +44,7 @@ class NewPass extends Controller
                       }
 
                       // Compare token in Databse with token in form
-                      $tokenBin = hex2bin((string)$_POST['validator']);
+                      $tokenBin = (string)hex2bin($_POST['validator']);
                       $tokenCheck = password_verify($tokenBin, $resetpass['token']);
 
                       if ($tokenCheck) {
