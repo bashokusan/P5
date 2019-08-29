@@ -35,7 +35,7 @@ class Auth extends Controller
           $userManager = new UserManager($db);
 
           // Use Ip (see connect method for brute force attack defense)
-          $ip = $_SERVER['REMOTE_ADDR'];
+          $ip = (string)$_SERVER['REMOTE_ADDR'];
           $connect = $userManager->connect($ip);
 
           // User will be ban is there are more than 3 failed connections.

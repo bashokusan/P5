@@ -89,31 +89,7 @@ class FrontendController extends Controller
         $db = DBFactory::getPDO();
         $postManager = new PostManager($db);
 
-        // Pagination
-        if (isset($_GET['p'])) {
-            $currentNbr = (int)$_GET['p'];
-        } else {
-            $currentNbr = 1;
-        }
-        if (!filter_var($currentNbr, FILTER_VALIDATE_INT)) {
-            throw new \Exception("Cette page n'existe pas");
-        }
-        $currentNbr = (int)$currentNbr;
-        if ($currentNbr <= 0) {
-            throw new \Exception("Cette page n'existe pas");
-        }
-        $count = (int)$postManager->count();
-        if($count == 0){
-          throw new \Exception("Il n'y pas encore d'articles");
-        }
-        $limit = 6;
-        $total = ceil($count / $limit);
-        if ($currentNbr > $total) {
-            throw new \Exception("Cette page n'existe pas");
-        }
-        $offset = $limit * ($currentNbr - 1);
-
-        $postList = $postManager->getList($limit, $offset);
+        $postList = $postManager->getList();
 
         ob_start();
         require_once $this->getViewPath() .'blog.php';

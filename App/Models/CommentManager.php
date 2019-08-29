@@ -145,7 +145,12 @@ class CommentManager
         break;
     }
         if ($id) {
-            $sql .= " AND idArticle =".$id;
+            $sql .= " AND idArticle = :idarticle";
+            $query = $this->db->prepare($sql);
+            $query->execute([
+          'idarticle'  => $id
+        ]);
+            return $query->fetchColumn();
         }
         return $this->db->query($sql)->fetchColumn();
     }
@@ -159,11 +164,18 @@ class CommentManager
      */
     public function updateCheck($id, $idarticle, $type)
     {
-        $sql = "UPDATE comments SET checked = $type WHERE id = $id";
-        $query = $this->db->exec($sql);
+        $sql = "UPDATE comments SET checked = $type WHERE id = :id";
+        $query = $this->db->prepare($sql);
+        $query->execute([
+      'id'  => $id
+    ]);
 
         if ($type === 1) {
-            $query = $this->db->exec("UPDATE articles SET countComment = countComment + 1 WHERE id = $idarticle");
+            $query = $this->db->exec("UPDATE articles SET countComment = countComment + 1 WHERE id = :idarticle");
+            $query = $this->db->prepare($sql);
+            $query->execute([
+          'idArticle'  => $idarticle
+        ]);
         }
     }
 }
