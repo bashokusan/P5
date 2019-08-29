@@ -3,19 +3,19 @@
 <div class="posts_container">
   <?php foreach ($postList as $post) : ?>
     <div class="post_card">
-      <h3><?= htmlentities((string)$post->title()) ?></h3>
+      <h3><?= htmlentities($post->title()) ?></h3>
 
-      <p><em>Publié le <?= htmlentities((string)$post->publishDate()->format('d/m/Y à H\hi')) ?><?= ($post->updateDate()) ? " - Modifié le " . htmlentities((string)$post->updateDate()->format('d/m/Y à H\hi')) : ""; ?></em></p>
+      <p><em>Publié le <?= htmlentities($post->publishDate()->format('d/m/Y à H\hi')) ?><?= ($post->updateDate()) ? " - Modifié le " . htmlentities($post->updateDate()->format('d/m/Y à H\hi')) : ""; ?></em></p>
 
-      <?= (htmlentities((string)$post->name())) ? "<p>Par ".htmlentities((string)$post->name())."</p>" : "" ?>
+      <?= (htmlentities($post->name())) ? "<p>Par ".htmlentities($post->name())."</p>" : "" ?>
 
-      <h4><?= htmlentities((string)$post->kicker()) ?></h4>
+      <h4><?= htmlentities($post->kicker()) ?></h4>
 
-      <?php if (htmlentities((string)$post->countComment())) :?>
-      <p><em><?= htmlentities((string)$post->countComment()) ?> <?= (int)$post->countComment() === 1 ? "commentaire" : "commentaires" ?></em></p>
+      <?php if (htmlentities($post->countComment())) :?>
+      <p><em><?= htmlentities($post->countComment()) ?> <?= (int)$post->countComment() === 1 ? "commentaire" : "commentaires" ?></em></p>
       <?php endif ?>
 
-      <a href="?page=article&id=<?= htmlentities((string)$post->id()) ?>">Lire la suite</a>
+      <a href="?page=article&id=<?= htmlentities($post->id()) ?>">Lire la suite</a>
     </div>
   <?php endforeach ?>
 </div>

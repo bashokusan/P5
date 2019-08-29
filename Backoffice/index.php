@@ -65,7 +65,7 @@ try {
         } elseif (isset($_GET['page']) && $_GET['page'] == 'adminrequest') {
             $requests = new RequestsList($viewPath, $templatePath);
             $requests->adminRequestPage();
-        } elseif (isset($_GET['acceptrequest']) && $_GET['acceptrequest']) {
+        } elseif (isset($_GET['acceptrequest'])) {
             $acceptRequest = new RequestsList($viewPath, $templatePath);
             $acceptRequest->acceptRequest((int)$_GET['acceptrequest']);
             header('Location: ?page=adminrequest');
@@ -96,7 +96,7 @@ try {
 
     // If user is not logged in
     elseif (!$controller->loggedIn()) {
-        if (!$_GET['page'] || (isset($_GET['page']) && $_GET['page'] == 'login') || isset($_GET['guest'])) {
+        if (!$_GET['page'] || (isset($_GET['page']) && (string)$_GET['page'] === 'login') || isset($_GET['guest'])) {
             $login = new Auth($viewPath, $templatePath);
             $login->login();
         } elseif (isset($_GET['page']) && $_GET['page'] == 'resetpass') {
@@ -105,7 +105,7 @@ try {
         } elseif (isset($_GET['page']) && $_GET['page'] == 'reset') {
             // In url from the email sent after reset request
             if (isset($_GET['restoken']) && isset($_GET['validator'])&& !empty($_GET['restoken']) && !empty($_GET['validator'])) {
-                if (ctype_xdigit($_GET['restoken']) && ctype_xdigit($_GET['validator'])) {
+                if (ctype_xdigit((string)$_GET['restoken']) && ctype_xdigit((string)$_GET['validator'])) {
                   $newpass = new NewPass($viewPath, $templatePath);
                   $newpass->newPassPage();
                 }

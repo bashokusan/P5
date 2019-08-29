@@ -35,9 +35,9 @@ class FrontendController extends Controller
     public function home()
     {
         if (isset($_POST['send'])) {
-            $name = htmlspecialchars($_POST['name']);
-            $email = htmlspecialchars($_POST['email']);
-            $messageContent = htmlspecialchars($_POST['message']);
+            $name = htmlspecialchars((string)$_POST['name']);
+            $email = htmlspecialchars((string)$_POST['email']);
+            $messageContent = htmlspecialchars((string)$_POST['message']);
 
             $data = [
         'name' => $name,
@@ -144,8 +144,8 @@ class FrontendController extends Controller
         $commentManager = new CommentManager($db);
 
         if (isset($_POST['add'])) {
-            $author = htmlspecialchars($_POST['author']);
-            $content = htmlspecialchars($_POST['comment']);
+            $author = htmlspecialchars((string)$_POST['author']);
+            $content = htmlspecialchars((string)$_POST['comment']);
             $data = [
         'idArticle' => $id,
         'author' => $author,

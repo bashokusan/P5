@@ -1,19 +1,19 @@
-<?php $title = 'Blog | ' . htmlentities((string)$post->title()) ?>
+<?php $title = 'Blog | ' . htmlentities($post->title()) ?>
 
 <?php if ($message) : ?>
-  <p class='alert info'><?= htmlentities((string)$message) ?></p>
+  <p class='alert info'><?= htmlentities($message) ?></p>
 <?php endif ?>
 
 <div class="post_card">
-  <h2><?= htmlentities((string)$post->title()) ?></h2>
+  <h2><?= htmlentities($post->title()) ?></h2>
 
-  <p><em>Publié le <?= htmlentities((string)$post->publishDate()->format('d/m/Y à H\hi')) ?><?= ($post->updateDate()) ? " - Modifié le " . htmlentities((string)$post->updateDate()->format('d/m/Y à H\hi')) : ""; ?></em></p>
+  <p><em>Publié le <?= htmlentities($post->publishDate()->format('d/m/Y à H\hi')) ?><?= ($post->updateDate()) ? " - Modifié le " . htmlentities($post->updateDate()->format('d/m/Y à H\hi')) : ""; ?></em></p>
 
-  <?= ($post->name()) ? "<p>Par ".htmlentities((string)$post->name())."</p>" : "" ?>
+  <?= ($post->name()) ? "<p>Par ".htmlentities($post->name())."</p>" : "" ?>
 
-  <h3><?= nl2br(htmlentities((string)$post->kicker())) ?></h3>
+  <h3><?= nl2br(htmlentities($post->kicker())) ?></h3>
 
-  <p><?= nl2br(htmlentities((string)$post->content())) ?></p>
+  <p><?= nl2br(htmlentities($post->content())) ?></p>
 </div>
 <div class="comment_section" >
 
@@ -50,11 +50,11 @@
     <?php foreach ($listofcomments as $comment) : ?>
       <div class="comment">
         <div class="comment_info">
-          <?= htmlentities((string)$comment->author()) ?>
-          <?= htmlentities((string)$comment->publishDate()) ?>
+          <?= htmlentities($comment->author()) ?>
+          <?= htmlentities($comment->publishDate()) ?>
         </div>
         <div class="comment_content">
-          <?= htmlentities((string)$comment->content()) ?>
+          <?= htmlentities($comment->content()) ?>
         </div>
       </div>
     <?php endforeach ?>

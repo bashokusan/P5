@@ -31,8 +31,8 @@ class Profile extends Controller
         if (isset($_POST['updateprofile']) && isset($_POST['userid'])) {
             $data = [
       'id' => (int)$_POST['userid'],
-      'name' => htmlentities($_POST['name']),
-      'email' => htmlentities($_POST['email']),
+      'name' => htmlentities((string)$_POST['name']),
+      'email' => htmlentities((string)$_POST['email']),
     ];
 
             $updateuser = new User($data);

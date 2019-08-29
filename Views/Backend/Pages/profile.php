@@ -3,7 +3,7 @@
 <h2>Votre profil</h2>
 <div class="user">
   <?php if ($message) : ?>
-    <p class='alert success'><?= htmlentities((string)$message) ?></p>
+    <p class='alert success'><?= htmlentities($message) ?></p>
   <?php endif ?>
 
   <form class="update_form" action="" method="post">
@@ -13,13 +13,13 @@
     <?php if (isset($errors) && in_array(User::NAME_INVALID, $errors)) : ?>
       <p class='alert warning'>Le nom est invalide</p>
     <?php endif ?>
-    <input type="text" name="name" placeholder="" value="<?= $updateuser ? $updateuser->name() : htmlentities((string)$user->name()) ?>">
+    <input type="text" name="name" placeholder="" value="<?= $updateuser ? $updateuser->name() : htmlentities($user->name()) ?>">
 
     <label for="email">Email</label>
     <?php if (isset($errors) && in_array(User::EMAIL_INVALID, $errors)) : ?>
       <p class='alert warning'>Email invalide</p>
     <?php endif ?>
-    <input type="email" name="email" placeholder="" value="<?= $updateuser ? $updateuser->email() : htmlentities((string)$user->email()) ?>">
+    <input type="email" name="email" placeholder="" value="<?= $updateuser ? $updateuser->email() : htmlentities($user->email()) ?>">
 
     <input type="hidden" name="userid" value="<?= $user->id() ?>">
     <input type="submit" name="updateprofile" value="Mettre à jour">

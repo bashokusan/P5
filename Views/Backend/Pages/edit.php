@@ -13,14 +13,14 @@
       <select class="userslist" name="idauthor">
         <?php if ($users) : ?>
           <?php foreach ($users as $user) : ?>
-            <option value="<?= htmlentities((string)$user->id()) ?>"
+            <option value="<?= htmlentities($user->id()) ?>"
             <?php
               if ($post && ($post->name() == $user->name())) {
                   print_r("selected");
               } elseif ($user->name() == $loggedinUser->name()) {
                   print_r("selected");
               }
-            ?>><?= htmlentities((string)$user->name()) ?></option>
+            ?>><?= htmlentities($user->name()) ?></option>
           <?php endforeach ?>
         <?php endif ?>
         </select>
@@ -35,7 +35,7 @@
         <p class='alert warning'>Le titre doit faire au moins 10 caractères</p>
       <?php endif ?>
       <input type="text" name="title" value="<?php if ($post) {
-                print_r(htmlentities((string)$post->title()));
+                print_r(htmlentities($post->title()));
           } ?>">
     </p>
 
@@ -48,7 +48,7 @@
         <p class='alert warning'>Le chapeau doit faire au moins 10 caractères</p>
       <?php endif ?>
       <textarea name="kicker" rows="2" cols="80"><?php if ($post) {
-          print_r(htmlentities((string)$post->kicker()));
+          print_r(htmlentities($post->kicker()));
       }?></textarea>
     </p>
 
@@ -61,13 +61,13 @@
         <p class='alert warning'>L'article doit faire au moins 100 caractères</p>
       <?php endif ?>
       <textarea name="content" rows="8" cols="80"><?php if ($post) {
-          print_r(htmlentities((string)$post->content()));
+          print_r(htmlentities($post->content()));
       }?></textarea>
     </p>
 
     <?php if ($post) : ?>
       <p>
-        <input type="hidden" name="id" value="<?= htmlentities((string)$post->id()) ?>">
+        <input type="hidden" name="id" value="<?= htmlentities($post->id()) ?>">
       </p>
       <p>
         <input type="submit" name="update" value="Modifier">

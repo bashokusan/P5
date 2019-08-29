@@ -3,7 +3,7 @@
 <div class="request">
   <h2>Contribuer au site</h2>
   <?php if ($message) : ?>
-    <p class='alert success'><?= htmlentities((string)$message) ?></p>
+    <p class='alert success'><?= htmlentities($message) ?></p>
   <?php endif ?>
   <p>Envoyez le formulaire ci-dessous pour demander à être administrateur</p>
 

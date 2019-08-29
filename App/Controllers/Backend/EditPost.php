@@ -42,9 +42,9 @@ class EditPost extends Controller
         if (isset($_POST['idauthor'])) {
             $_SESSION['inputs'] = $_POST;
 
-            $title = htmlspecialchars($_POST['title']);
-            $kicker = htmlspecialchars($_POST['kicker']);
-            $content = htmlspecialchars($_POST['content']);
+            $title = htmlspecialchars((string)$_POST['title']);
+            $kicker = htmlspecialchars((string)$_POST['kicker']);
+            $content = htmlspecialchars((string)$_POST['content']);
 
             $data = [
       'idauthor' => (int)$_POST['idauthor'],
