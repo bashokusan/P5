@@ -11,12 +11,12 @@
       <p class='alert warning'><?= $prohib ?></p>
     <?php endif ?>
 
-    <?php if (isset($errors) && in_array(User::EMAIL_INVALID, $errors)) : ?>
+    <?php if (isset($errors) && in_array(App\Models\User::EMAIL_INVALID, $errors)) : ?>
       <p class='alert warning'>Email invalide</p>
     <?php endif ?>
-    <input type="email" name="email" placeholder="Email" value="<?= $_SESSION['inputs']['email'] ? $_SESSION['inputs']['email'] : "" ?>">
+    <input type="email" name="email" placeholder="Email" value="">
 
-    <?php if (isset($errors) && in_array(User::PASSWORD_INVALID, $errors)) : ?>
+    <?php if (isset($errors) && in_array(App\Models\User::PASSWORD_INVALID, $errors)) : ?>
       <p class='alert warning'>Mot de passe invalide</p>
     <?php endif ?>
     <input type="password" name="password" placeholder="Mot de passe" value="">

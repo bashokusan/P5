@@ -4,7 +4,7 @@ session_start();
 // Composer autoload
 require_once '../vendor/autoload.php';
 
-use App\Controllers\FrontendController;
+use App\Controllers\Frontend\FrontendController;
 
 // Path to pages
 $viewPath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . 'Frontend' . DIRECTORY_SEPARATOR . 'Pages' . DIRECTORY_SEPARATOR;

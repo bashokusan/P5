@@ -1,6 +1,6 @@
 <?php
 
-use App\Controllers\Menu;
+use App\Controllers\Helpers\Menu;
 
 $path = dirname(__DIR__). DIRECTORY_SEPARATOR . 'Sections' . DIRECTORY_SEPARATOR;
 

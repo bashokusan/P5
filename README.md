@@ -13,7 +13,7 @@
   * Request for admin role
 
 * For admin :
-  * All the above +
+  * All the above
   * Write new post
   * Update post
   * Delete post
@@ -24,7 +24,9 @@
 
 ### Libraries
 
-* (dev) symfony/var-dumper
+* symfony/var-dumper
+* phpstan/phpstan
+* friendsofphp/php-cs-fixer
 * swiftmailer/swiftmailer
 
 ## Install

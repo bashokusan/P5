@@ -25,6 +25,7 @@
   </div>
 
   <div class="hero">
+    <img src="../Public/Content/042915114454.jpg" alt="hero image">
   </div>
 
 </div>
@@ -41,13 +42,13 @@
         <?php if (isset($errors) && in_array(App\Models\Message::NAME_INVALID, $errors)) : ?>
           <p class='alert warning'>nom invalide</p>
         <?php endif ?>
-        <input type="text" name="name" id="name" value="<?= $_SESSION['inputs']['name'] ? $_SESSION['inputs']['name'] : "" ?>" placeholder="exemple : John Doe">
+        <input type="text" name="name" id="name" value="" placeholder="exemple : John Doe">
 
         <label for="email">Votre email</label>
         <?php if (isset($errors) && in_array(App\Models\Message::EMAIL_INVALID, $errors)) : ?>
           <p class='alert warning'>email invalide</p>
         <?php endif ?>
-        <input type="email" name="email" id="email" value="<?= $_SESSION['inputs']['email'] ? $_SESSION['inputs']['email'] : "" ?>" placeholder="exemple : johndoe@mail.com">
+        <input type="email" name="email" id="email" value="" placeholder="exemple : johndoe@mail.com">
       </fieldset>
     </div>
 
@@ -59,7 +60,7 @@
       <?php if (isset($errors) && in_array(App\Models\Message::MESSAGE_LENGHT, $errors)) : ?>
         <p class='alert warning'>Le message doit faire entre 10 et 500 caractères</p>
       <?php endif ?>
-      <textarea name="message" id="message" rows="8" cols="80" placeholder="exemple : Lorem Ipsum"><?= $_SESSION['inputs']['message'] ? $_SESSION['inputs']['message'] : "" ?></textarea>
+      <textarea name="message" id="message" rows="8" cols="80"></textarea>
     </div>
 
     <div>

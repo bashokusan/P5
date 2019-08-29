@@ -32,7 +32,6 @@ $templatePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Views/Backend/Layout/t
  */
 $controller = new Controller($viewPath, $templatePath);
 
-
 // Session hijacking defense
 $controller->sessionHijack();
 
@@ -40,7 +39,6 @@ $controller->sessionHijack();
 $controller->csrf();
 
 try {
-
   // If user is logged in as admin
     if ($controller->loggedIn('admin')) {
         if (!$_GET || (isset($_GET['page']) && $_GET['page'] == 'home')) {
