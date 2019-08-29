@@ -46,9 +46,7 @@
       <?php endif ?>
       <input type="text" name="title" value="<?php if ($post) {
                 echo $post->title();
-            } elseif (isset($_SESSION['inputs']['title']) && !empty($_SESSION['inputs']['title'])) {
-          echo $_SESSION['inputs']['title'];
-      } else {
+          } else {
           echo "";
       }?>">
     </p>
@@ -63,8 +61,6 @@
       <?php endif ?>
       <textarea name="kicker" rows="2" cols="80"><?php if ($post) {
           echo $post->kicker();
-      } elseif (isset($_SESSION['inputs']['kicker']) && !empty($_SESSION['inputs']['kicker'])) {
-          echo $_SESSION['inputs']['kicker'];
       } else {
           echo "";
       }?></textarea>
@@ -80,8 +76,6 @@
       <?php endif ?>
       <textarea name="content" rows="8" cols="80"><?php if ($post) {
           echo $post->content();
-      } elseif (isset($_SESSION['inputs']['content']) && !empty($_SESSION['inputs']['content'])) {
-          echo $_SESSION['inputs']['content'];
       } else {
           echo "";
       }?></textarea>

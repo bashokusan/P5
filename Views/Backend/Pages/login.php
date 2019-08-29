@@ -14,7 +14,7 @@
     <?php if (isset($errors) && in_array(App\Models\User::EMAIL_INVALID, $errors)) : ?>
       <p class='alert warning'>Email invalide</p>
     <?php endif ?>
-    <input type="email" name="email" placeholder="Email" value="<?= $_SESSION['inputs']['email'] ? $_SESSION['inputs']['email'] : "" ?>">
+    <input type="email" name="email" placeholder="Email" value="">
 
     <?php if (isset($errors) && in_array(App\Models\User::PASSWORD_INVALID, $errors)) : ?>
       <p class='alert warning'>Mot de passe invalide</p>

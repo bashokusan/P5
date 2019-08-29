@@ -29,7 +29,7 @@
       <?php if (isset($errors) && in_array(App\Models\Comment::AUTHOR_INVALID, $errors)) : ?>
         <p class='alert warning'>auteur invalide</p>
       <?php endif ?>
-      <input type="text" name="author" id="name" value="<?= $_SESSION['inputs']['author'] ? $_SESSION['inputs']['author'] : "" ?>" placeholder="votre nom">
+      <input type="text" name="author" id="name" value="<?= $_SESSION['inputs']['author'] ? htmlentities((string)$_SESSION['inputs']['author']) : "" ?>" placeholder="votre nom">
     </div>
 
     <div>
@@ -40,7 +40,7 @@
       <?php if (isset($errors) && in_array(App\Models\Comment::CONTENT_LENGHT, $errors)) : ?>
         <p class='alert warning'>Le commentaire doit faire entre 2 et 500 caractères</p>
       <?php endif ?>
-      <textarea name="comment" id="content" rows="4" cols="80" placeholder="votre commentaire"><?= $_SESSION['inputs']['comment'] ? $_SESSION['inputs']['comment'] : "" ?></textarea>
+      <textarea name="comment" id="content" rows="4" cols="80" placeholder="votre commentaire"><?= $_SESSION['inputs']['comment'] ? htmlentities((string)$_SESSION['inputs']['comment']) : "" ?></textarea>
     </div>
 
     <div>
