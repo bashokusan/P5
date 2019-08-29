@@ -79,15 +79,11 @@ class PostManager
 
     /**
      * Get all posts from database
-     * @param  int $limit  (see pagination in FrontendController blog())
-     * @param  int $offset (see pagination in FrontendController blog())
      */
-    public function getList($limit = null, $offset = null)
+    public function getList()
     {
         $sql = "SELECT articles.id, articles.title, articles.kicker, articles.content, articles.publishDate, articles.updateDate, articles.countComment, users.name FROM articles JOIN users ON articles.idauthor = users.id ORDER BY articles.id DESC ";
-        if (isset($limit) && isset($offset)) {
-            $sql .= "LIMIT $limit OFFSET $offset";
-        }
+
         $query = $this->db->query($sql);
         $query->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Post::class);
         $postList= $query->fetchAll();

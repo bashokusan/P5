@@ -163,7 +163,7 @@ class UserManager
 
     /**
      * Count failed connection from same ip
-     * @param  int $ip [description]
+     * @param  string $ip [description]
      */
     public function connect($ip)
     {

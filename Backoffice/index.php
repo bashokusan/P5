@@ -86,7 +86,7 @@ try {
     // If user is logged in as guest (unconfirmed admin)
     elseif ($controller->loggedIn('guest')) {
         if (isset($_GET['page']) && $_GET['page'] == 'logout') {
-          $logout = new Auth($viewPath, $templatePath);
+          $logout = new Logout();
           $logout->logout();
         } else {
           $newpass = new NewPass($viewPath, $templatePath);
