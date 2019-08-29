@@ -24,9 +24,15 @@ class RequestsList extends Controller
     {
         $db = DBFactory::getPDO();
         $userManager = new UserManager($db);
-
+        
         $userList = $userManager->getList('new');
         $acceptedUserList = $userManager->getList('accepted');
+
+        if (isset($_POST['accept'])) {
+            if (isset($_POST['userid']) && !empty($_POST['userid'])) {
+                $this->acceptRequest((int)$_POST['userid']);
+            }
+        }
 
         ob_start();
         require_once $this->getViewPath().'adminrequest.php';

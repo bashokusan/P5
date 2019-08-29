@@ -43,30 +43,9 @@ try {
         if (!$_GET || (isset($_GET['page']) && $_GET['page'] === 'home')) {
             $homepage = new Homepage($viewPath, $templatePath);
             $homepage->homepage();
-        } elseif (!empty($_GET['check']) && !empty($_GET['post'])) {
-            if (!filter_var($_GET['check'], FILTER_VALIDATE_INT) || !filter_var($_GET['post'], FILTER_VALIDATE_INT)) {
-                throw new \Exception("Cette page n'existe pas");
-            } else {
-                $homepage = new Homepage($viewPath, $templatePath);
-                $homepage->updateComment((int)$_GET['check'], (int)$_GET['post']);
-            }
-        } elseif (!empty($_GET['flag']) && !empty($_GET['post'])) {
-            if (!filter_var($_GET['flag'], FILTER_VALIDATE_INT) || !filter_var($_GET['post'], FILTER_VALIDATE_INT)) {
-                throw new \Exception("Cette page n'existe pas");
-            } else {
-                $homepage = new Homepage($viewPath, $templatePath);
-                $homepage->flagComment((int)$_GET['flag'], (int)$_GET['post']);
-            }
         } elseif (isset($_GET['page']) && $_GET['page'] === 'posts') {
             $posts = new PostsList($viewPath, $templatePath);
             $posts->postsPage();
-        } elseif (!empty($_GET['delete'])) {
-            if (!filter_var($_GET['delete'], FILTER_VALIDATE_INT)) {
-                throw new \Exception("Cette page n'existe pas");
-            } else {
-                $posts = new PostsList($viewPath, $templatePath);
-                $posts->deletePost((int)$_GET['delete']);
-            }
         } elseif (isset($_GET['page']) && $_GET['page'] === 'edit') {
             $editPost = new EditPost($viewPath, $templatePath);
             $editPost->editPage();
@@ -76,15 +55,6 @@ try {
         } elseif (isset($_GET['page']) && $_GET['page'] === 'adminrequest') {
             $requests = new RequestsList($viewPath, $templatePath);
             $requests->adminRequestPage();
-        } elseif (isset($_GET['acceptrequest'])) {
-            if (!filter_var($_GET['acceptrequest'], FILTER_VALIDATE_INT)) {
-                throw new \Exception("Cette page n'existe pas");
-            } else {
-                $acceptRequest = new RequestsList($viewPath, $templatePath);
-                $acceptRequest->acceptRequest((int)$_GET['acceptrequest']);
-            }
-
-            header('Location: ?page=adminrequest');
         } elseif (isset($_GET['page']) && $_GET['page'] === 'profile') {
             $profile = new Profile($viewPath, $templatePath);
             $profile->profilePage();

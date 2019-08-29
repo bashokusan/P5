@@ -26,8 +26,13 @@
           <td><?= htmlentities($comment->content()) ?></td>
           <td><?= htmlentities($comment->publishDate()) ?></td>
           <td>
-            <a href="?check=<?= htmlentities($comment->id()) ?>&post=<?= htmlentities($comment->idArticle()) ?>&token=<?= htmlentities($token) ?>">Valider</a> /
-            <a href="?flag=<?= htmlentities($comment->id()) ?>&post=<?= htmlentities($comment->idArticle()) ?>&token=<?= htmlentities($token) ?>">Modérer</a>
+            <form class="" action="" method="post">
+              <input type="hidden" name="id" value="<?= htmlentities($comment->id()) ?>">
+              <input type="hidden" name="post" value="<?= htmlentities($comment->idArticle()) ?>">
+              <input type="hidden" name="t_user" value="<?= htmlentities($token) ?>">
+              <input type="submit" name="check" value="Valider">
+              <input type="submit" name="flag" value="Modérer">
+            </form>
           </td>
         </tr>
       <?php endforeach ?>

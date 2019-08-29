@@ -32,6 +32,16 @@ class Homepage extends Controller
         $uncheckedCount = $commentManager->count('unchecked');
         $uncheckedComment = $commentManager->getListNoId('unchecked');
 
+        if (isset($_POST['check'])) {
+            if (isset($_POST['id']) && !empty($_POST['id']) && isset($_POST['post']) && !empty($_POST['post'])) {
+                $this->updateComment((int)$_POST['id'], (int)$_POST['post']);
+            }
+        } elseif (isset($_POST['flag'])) {
+            if (isset($_POST['id']) && !empty($_POST['id']) && isset($_POST['post']) && !empty($_POST['post'])) {
+                $this->flagComment((int)$_POST['id'], (int)$_POST['post']);
+            }
+        }
+
         ob_start();
         require_once $this->getViewPath().'home.php';
         $content = ob_get_clean();

@@ -45,8 +45,6 @@ class FrontendController extends Controller
         'message' => $messageContent,
       ];
 
-            $_SESSION['inputs'] = $_POST;
-
             $newMessage = new Message($data);
 
             if ($newMessage->isValid()) {
@@ -54,7 +52,6 @@ class FrontendController extends Controller
                 ;
                 if ($messageManager->send($newMessage)) {
                     $message = 'Votre message a bien été envoyé.';
-                    $_SESSION['inputs'] = [];
                 } else {
                     $message = 'Une erreur est survenue.';
                 }
@@ -67,8 +64,6 @@ class FrontendController extends Controller
         require_once $this->getViewPath().'home.php';
         $content = ob_get_clean();
         require_once $this->getTemplatePath();
-
-        $_SESSION['inputs'] = [];
     }
 
 
@@ -131,13 +126,11 @@ class FrontendController extends Controller
         'content' => $content,
       ];
 
-            $_SESSION['inputs'] = $_POST;
 
             $newComment = new Comment($data);
 
             if ($newComment->isValid()) {
                 $commentManager->save($newComment);
-                $_SESSION['inputs'] = [];
                 $message = "Votre commentaire à bien été envoyé. Il sera vérifié avant d'être mis en ligne";
             } else {
                 $errors = $newComment->errors();
@@ -153,7 +146,5 @@ class FrontendController extends Controller
         require_once $this->getViewPath() .'post.php';
         $content = ob_get_clean();
         require_once $this->getTemplatePath();
-
-        $_SESSION['inputs'] = [];
     }
 }

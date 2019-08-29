@@ -28,6 +28,12 @@ class PostsList extends Controller
         $token = $_SESSION['t_user'];
         $postList = $postManager->getList();
 
+        if (isset($_POST['delete'])) {
+            if (isset($_POST['id']) && !empty($_POST['id'])) {
+                $this->deletePost((int)$_POST['id']);
+            }
+        }
+
         ob_start();
         require_once $this->getViewPath().'posts.php';
         $content = ob_get_clean();

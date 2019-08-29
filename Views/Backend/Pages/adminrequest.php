@@ -11,9 +11,13 @@
         <p>Nom : <?= htmlentities($user->name()) ?></p>
         <p>Email : <?= htmlentities($user->email()) ?></p>
         <p>Message :</p>
-        <p><?= htmlentities($user->message()) ?></p>
+        <p><?= nl2br(htmlentities($user->message())) ?></p>
       </div>
-      <a href="?acceptrequest=<?= htmlentities($user->id()) ?>&token=<?= htmlentities($token) ?>">Accepter</a>
+      <form class="" action="" method="post">
+        <input type="hidden" name="userid" value="<?= htmlentities($user->id()) ?>">
+        <input type="hidden" name="t_user" value="<?= htmlentities($token) ?>">
+        <input type="submit" name="accept" value="Accepter">
+      </form>
     <?php endforeach ?>
   <?php endif ?>
 </div>
