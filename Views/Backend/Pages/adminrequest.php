@@ -13,7 +13,7 @@
         <p>Message :</p>
         <p><?= htmlentities($user->message()) ?></p>
       </div>
-      <a href="?acceptrequest=<?= $user->id() ?>&token=<?= $token ?>">Accepter</a>
+      <a href="?acceptrequest=<?= htmlentities($user->id()) ?>&token=<?= htmlentities($token) ?>">Accepter</a>
     <?php endforeach ?>
   <?php endif ?>
 </div>
@@ -25,7 +25,7 @@
       <div class="user">
         <p>Nom : <?= htmlentities($acceptedUser->name()) ?></p>
         <p>Email : <?= htmlentities($acceptedUser->email()) ?></p>
-        <p><strong><?= (int)$acceptedUser->confirm() == 0 ? "L'utilisateur n'a pas encore confirmé" : "Ce contributeur a confirmé" ?></strong></p>
+        <p><strong><?= (int)$acceptedUser->confirm() === 0 ? "L'utilisateur n'a pas encore confirmé" : "Ce contributeur a confirmé" ?></strong></p>
         <hr>
       </div>
     <?php endforeach ?>

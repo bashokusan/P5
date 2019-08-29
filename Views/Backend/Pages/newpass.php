@@ -4,7 +4,7 @@
   <h2>Modifier votre mot de passe</h2>
 
   <?php if ($error) : ?>
-    <p class='alert warning'><?= $error ?></p>
+    <p class='alert warning'><?= htmlentities($error) ?></p>
   <?php endif ?>
 
   <form class="newpass_form" action="" method="post">
@@ -26,7 +26,7 @@
       <input type="hidden" name="validator" value="<?= htmlentities($_GET['validator']) ?>">
     <?php endif ?>
     <?php if (isset($_SESSION['t_user'])) : ?>
-    <input type="hidden" name="t_user" value="<?= $_SESSION['t_user'] ?>">
+    <input type="hidden" name="t_user" value="<?= htmlentities($_SESSION['t_user']) ?>">
     <?php endif ?>
     <input type="submit" name="updatemdp" value="Modifier">
 
