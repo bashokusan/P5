@@ -21,8 +21,8 @@ class Profile extends Controller
      */
     public function profilePage()
     {
-        $id = $_SESSION['id'];
-        $token = $_SESSION['t_user'];
+        $id = (int)$_SESSION['id'];
+        $token = (string)$_SESSION['t_user'];
 
         $db = DBFactory::getPDO();
         $userManager = new UserManager($db);
