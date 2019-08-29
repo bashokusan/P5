@@ -1,2 +1,2 @@
-<h1>Erreur 404 !!!!!!!!!</h1>
+<h1>Erreur</h1>
 <p><?= htmlentities($errorMessage) ?></p>

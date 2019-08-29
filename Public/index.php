@@ -7,9 +7,9 @@ require_once '../vendor/autoload.php';
 use App\Controllers\Frontend\FrontendController;
 
 // Path to pages
-$viewPath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . 'Frontend' . DIRECTORY_SEPARATOR . 'Pages' . DIRECTORY_SEPARATOR;
+$viewPath = '../Views/Frontend/Pages/';
 // Path to template
-$templatePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Views/Frontend/Layout/template.php';
+$templatePath = '../Views/Frontend/Layout/template.php';
 
 
 /**

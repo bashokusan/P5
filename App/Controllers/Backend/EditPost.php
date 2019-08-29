@@ -32,7 +32,6 @@ class EditPost extends Controller
         $loggedinUser = $userManager->getUser($sessionid);
 
         $token = $_SESSION['t_user'];
-        $_SESSION['inputs'] = [];
 
         if (isset($_GET['postid']) && !empty($_GET['postid'])) {
             $id = (int)$_GET['postid'];
@@ -40,8 +39,6 @@ class EditPost extends Controller
         }
 
         if (isset($_POST['idauthor'])) {
-            $_SESSION['inputs'] = $_POST;
-
             $title = htmlspecialchars((string)$_POST['title']);
             $kicker = htmlspecialchars((string)$_POST['kicker']);
             $content = htmlspecialchars((string)$_POST['content']);
