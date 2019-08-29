@@ -16,9 +16,9 @@
             <option value="<?= htmlentities($user->id()) ?>"
             <?php
               if ($post && ($post->name() == $user->name())) {
-                  echo "selected";
+                  print_r("selected");
               } elseif ($user->name() == $loggedinUser->name()) {
-                  echo "selected";
+                  print_r("selected");
               }
             ?>><?= htmlentities($user->name()) ?></option>
           <?php endforeach ?>
@@ -35,10 +35,8 @@
         <p class='alert warning'>Le titre doit faire au moins 10 caractères</p>
       <?php endif ?>
       <input type="text" name="title" value="<?php if ($post) {
-                echo htmlentities($post->title());
-          } else {
-          echo "";
-      }?>">
+                print_r(htmlentities($post->title()));
+          } ?>">
     </p>
 
     <p>
@@ -50,9 +48,7 @@
         <p class='alert warning'>Le chapeau doit faire au moins 10 caractères</p>
       <?php endif ?>
       <textarea name="kicker" rows="2" cols="80"><?php if ($post) {
-          echo htmlentities($post->kicker());
-      } else {
-          echo "";
+          print_r(htmlentities($post->kicker()));
       }?></textarea>
     </p>
 
@@ -65,9 +61,7 @@
         <p class='alert warning'>L'article doit faire au moins 100 caractères</p>
       <?php endif ?>
       <textarea name="content" rows="8" cols="80"><?php if ($post) {
-          echo htmlentities($post->content());
-      } else {
-          echo "";
+          print_r(htmlentities($post->content()));
       }?></textarea>
     </p>
 

@@ -26,8 +26,8 @@ class NewPass extends Controller
   {
       if (isset($_POST['updatemdp'])) {
           if (!empty($_POST['password'] && !empty($_POST['passwordbis']))) {
-              $password = htmlspecialchars($_POST['password']);
-              $passwordConfirm = htmlspecialchars($_POST['passwordbis']);
+              $password = htmlspecialchars((string)$_POST['password']);
+              $passwordConfirm = htmlspecialchars((string)$_POST['passwordbis']);
 
               if ($password === $passwordConfirm) {
                   $db = DBFactory::getPDO();
@@ -38,13 +38,13 @@ class NewPass extends Controller
                       $currentDateTime = date('U');
 
                       // Check if there is a pending request with selector in form
-                      $resetpass = $userManager->getResetPass($_POST['selector'], $currentDateTime);
+                      $resetpass = $userManager->getResetPass((string)$_POST['selector'], $currentDateTime);
                       if (!$resetpass) {
                           $error = "Une erreur est survenue. Veuillez soumettre une nouvelle réinitialisation.";
                       }
 
                       // Compare token in Databse with token in form
-                      $tokenBin = (string)hex2bin($_POST['validator']);
+                      $tokenBin = hex2bin((string)$_POST['validator']);
                       $tokenCheck = password_verify($tokenBin, $resetpass['token']);
 
                       if ($tokenCheck) {
@@ -53,7 +53,7 @@ class NewPass extends Controller
 
                           $passhash = password_hash($password, PASSWORD_DEFAULT);
                           $userManager->update($id, (string)$passhash);
-                          $userManager->deletePassReset($_POST['selector']);
+                          $userManager->deletePassReset((string)$_POST['selector']);
                           $logout = new Logout();
                           $logout->logout();
                       } else {

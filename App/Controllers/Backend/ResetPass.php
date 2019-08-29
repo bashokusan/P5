@@ -24,7 +24,7 @@ class ResetPass extends Controller
   {
       if (isset($_POST['resetpass'])) {
           if (!empty($_POST['email'])) {
-              $email = htmlentities($_POST['email']);
+              $email = htmlentities((string)$_POST['email']);
 
               if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                   $db = DBFactory::getPDO();

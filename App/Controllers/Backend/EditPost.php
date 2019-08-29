@@ -42,32 +42,9 @@ class EditPost extends Controller
         if (isset($_POST['idauthor'])) {
             $_SESSION['inputs'] = $_POST;
 
-            if (isset($_FILES['image']) && !empty($_FILES['image']['name'])) {
-                if ($_FILES['image']['error'] === 0) {
-                    $authorizedExtensions = array('jpg', 'jpeg', 'gif', 'png');
-                    $infosfichier = pathinfo($_FILES['image']['name']);
-                    $extensionUpload = strtolower($infosfichier['extension']);
-                    if (in_array($extensionUpload, $authorizedExtensions)) {
-                        if ($_FILES['image']['size'] > 0 && $_FILES['image']['size'] <= 2000000) {
-                            $fileName = uniqid(). "." .$extensionUpload;
-                        } else {
-                            $imgerrors = "Le fichier doit faire moins de 2mo";
-                        }
-                    } else {
-                        $imgerrors = "Le fichier n'est pas au bon format";
-                    }
-                } else {
-                    $imgerrors = "Le fichier est invalide";
-                }
-            } elseif (isset($_POST['currentimg']) && !empty($_POST['currentimg'])) {
-                $fileName = htmlentities($_POST['currentimg']);
-            } else {
-                $fileName = null;
-            }
-
-            $title = htmlspecialchars($_POST['title']);
-            $kicker = htmlspecialchars($_POST['kicker']);
-            $content = htmlspecialchars($_POST['content']);
+            $title = htmlspecialchars((string)$_POST['title']);
+            $kicker = htmlspecialchars((string)$_POST['kicker']);
+            $content = htmlspecialchars((string)$_POST['content']);
 
             $data = [
       'idauthor' => (int)$_POST['idauthor'],
@@ -76,9 +53,6 @@ class EditPost extends Controller
       'content' => $content
     ];
 
-            if (isset($fileName)) {
-                $data['image'] = $fileName;
-            }
 
             $newPost = new Post($data);
 
@@ -96,15 +70,6 @@ class EditPost extends Controller
                     $id = $db->lastInsertId();
                 }
 
-                if (isset($fileName)) {
-                    $path = '../Public/Content/post-'.$id;
-                    if (!file_exists($path)) {
-                        mkdir($path, 0777, true);
-                    }
-                    move_uploaded_file($_FILES['image']['tmp_name'], $path . DIRECTORY_SEPARATOR . $fileName);
-
-                    $postManager->uploadImg($fileName, (int)$id);
-                }
 
                 header('Location: ?page=posts');
             } else {

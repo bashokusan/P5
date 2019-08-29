@@ -24,8 +24,8 @@ class Auth extends Controller
   {
       if (isset($_POST['login'])) {
           $data = [
-      'email' => htmlentities($_POST['email']),
-      'password' => htmlentities($_POST['password'])
+      'email' => htmlentities((string)$_POST['email']),
+      'password' => htmlentities((string)$_POST['password'])
     ];
           // Save inputs in session
           $_SESSION['inputs'] = $_POST;
@@ -35,7 +35,7 @@ class Auth extends Controller
           $userManager = new UserManager($db);
 
           // Use Ip (see connect method for brute force attack defense)
-          $ip = $_SERVER['REMOTE_ADDR'];
+          $ip = (string)$_SERVER['REMOTE_ADDR'];
           $connect = $userManager->connect($ip);
 
           // User will be ban is there are more than 3 failed connections.

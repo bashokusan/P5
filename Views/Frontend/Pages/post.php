@@ -1,7 +1,7 @@
 <?php $title = 'Blog | ' . htmlentities($post->title()) ?>
 
 <?php if ($message) : ?>
-  <p class='alert info'><?= $message ?></p>
+  <p class='alert info'><?= htmlentities($message) ?></p>
 <?php endif ?>
 
 <div class="post_card">

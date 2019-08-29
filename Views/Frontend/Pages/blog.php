@@ -5,10 +5,6 @@
     <div class="post_card">
       <h3><?= htmlentities($post->title()) ?></h3>
 
-      <?php if (htmlentities($post->image())) : ?>
-        <img src="../Public/Content/Post-<?= htmlentities($post->id()) ?>/<?= htmlentities($post->image()) ?>" alt="">
-      <?php endif ?>
-
       <p><em>Publié le <?= htmlentities($post->publishDate()->format('d/m/Y à H\hi')) ?><?= ($post->updateDate()) ? " - Modifié le " . htmlentities($post->updateDate()->format('d/m/Y à H\hi')) : ""; ?></em></p>
 
       <?= (htmlentities($post->name())) ? "<p>Par ".htmlentities($post->name())."</p>" : "" ?>

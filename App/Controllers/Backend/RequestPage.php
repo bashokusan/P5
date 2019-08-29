@@ -22,11 +22,11 @@ class RequestPage extends Controller
    */
   public function requestPage()
   {
-      if ($_POST['request']) {
+      if (isset($_POST['request'])) {
           $data = [
-      'name' => htmlentities($_POST['name']),
-      'email' => htmlentities($_POST['email']),
-      'message' => htmlentities($_POST['message'])
+      'name' => htmlentities((string)$_POST['name']),
+      'email' => htmlentities((string)$_POST['email']),
+      'message' => htmlentities((string)$_POST['message'])
     ];
 
           $_SESSION['inputs'] = $_POST;

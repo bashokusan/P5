@@ -16,7 +16,7 @@ $templatePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Views/Frontend/Layout/
  * Instance of FrontendController
  * @var FrontendController
  */
-$controller = new FrontendController($viewPath, $templatePath, $nav);
+$controller = new FrontendController($viewPath, $templatePath);
 
 try {
     if (!isset($_GET['page']) || $_GET['page'] == 'home') {
@@ -24,7 +24,7 @@ try {
     } elseif (isset($_GET['page']) && $_GET['page'] == 'blog') {
         $controller->blog();
     } elseif (isset($_GET['page']) && $_GET['page'] == 'article' && !empty($_GET['id'])) {
-        if (!filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
+        if (!filter_var((int)$_GET['id'], FILTER_VALIDATE_INT)) {
             throw new \Exception("Cette page n'existe pas");
         }
         $controller->post((int)$_GET['id']);

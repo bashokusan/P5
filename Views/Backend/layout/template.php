@@ -18,10 +18,10 @@ if (isset($_SESSION['role']) && $_SESSION['role'] == "admin") {
 }
 require_once $path . 'topbar.php';
 
-// Content of the page
-echo "<div class='container'>";
-echo $content;
-echo "</div>";
-
+?>
+<div class='container'>
+<?= $content; ?>
+</div>
+<?php
 // <footer>
 require_once $path . 'footer.php';
