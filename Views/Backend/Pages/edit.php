@@ -36,7 +36,7 @@
       <?php endif ?>
       <input type="text" name="title" value="<?php if ($post) {
                 echo htmlentities($post->title());
-          } ?>">
+            } ?>">
     </p>
 
     <p>
@@ -48,8 +48,8 @@
         <p class='alert warning'>Le chapeau doit faire au moins 10 caractères</p>
       <?php endif ?>
       <textarea name="kicker" rows="2" cols="80"><?php if ($post) {
-          echo htmlentities($post->kicker());
-      }?></textarea>
+                echo htmlentities($post->kicker());
+            }?></textarea>
     </p>
 
     <p>
@@ -61,8 +61,8 @@
         <p class='alert warning'>L'article doit faire au moins 100 caractères</p>
       <?php endif ?>
       <textarea name="content" rows="8" cols="80"><?php if ($post) {
-          echo htmlentities($post->content());
-      }?></textarea>
+                echo htmlentities($post->content());
+            }?></textarea>
     </p>
 
     <?php if ($post) : ?>

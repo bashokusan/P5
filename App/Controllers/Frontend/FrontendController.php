@@ -117,6 +117,9 @@ class FrontendController extends Controller
         $db = DBFactory::getPDO();
         $manager = new PostManager($db);
         $post = $manager->getUnique($id);
+        if (!$post) {
+            throw new \Exception("Cette page n'existe pas");
+        }
         $commentManager = new CommentManager($db);
 
         if (isset($_POST['add'])) {

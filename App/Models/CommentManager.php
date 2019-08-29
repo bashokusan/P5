@@ -170,11 +170,11 @@ class CommentManager
       'id'  => $id
     ]);
 
-        if ($type === 1) {
-            $query = $this->db->exec("UPDATE articles SET countComment = countComment + 1 WHERE id = :idarticle");
+        if ($type == 1) {
+            $sql = "UPDATE articles SET countComment = countComment + 1 WHERE id = :idarticle";
             $query = $this->db->prepare($sql);
             $query->execute([
-          'idArticle'  => $idarticle
+          'idarticle'  => $idarticle
         ]);
         }
     }
