@@ -77,24 +77,6 @@ class PostManager
     ]);
     }
 
-
-    /**
-     * Upload image in images table
-     * @param  string $fileName Name of image
-     * @param  int $id       Id of post
-     */
-    public function uploadImg($fileName, $id)
-    {
-        $sql = "INSERT INTO images(idarticle, src)
-            VALUES(:idarticle, :src)";
-        $query = $this->db->prepare($sql);
-        $query->execute([
-      'idarticle' => $id,
-      'src' => $fileName,
-    ]);
-    }
-
-
     /**
      * Get all posts from database
      * @param  int $limit  (see pagination in FrontendController blog())
@@ -111,12 +93,6 @@ class PostManager
         $postList= $query->fetchAll();
 
         foreach ($postList as $post) {
-            $query = $this->db->prepare("SELECT src FROM images WHERE idarticle = :id ORDER BY id DESC");
-            $query->execute([
-        'id' => $post->id()
-      ]);
-            $src = $query->fetch();
-            $post->setImage($src[0]);
             $post->setPublishDate(new DateTime($post->publishDate()));
             if ($post->updateDate()) {
                 $post->setUpdatDate(new DateTime($post->updateDate()));
@@ -145,12 +121,6 @@ class PostManager
             return null;
         }
 
-        $query = $this->db->prepare("SELECT src FROM images WHERE idarticle = :id ORDER BY id DESC");
-        $query->execute([
-      'id' => (int)$id
-    ]);
-        $src = $query->fetch();
-        $post->setImage($src[0]);
         $post->setPublishDate(new DateTime($post->publishDate()));
         if ($post->updateDate()) {
             $post->setUpdatDate(new DateTime($post->updateDate()));
@@ -171,12 +141,6 @@ class PostManager
     public function delete($id)
     {
         $sql = "DELETE FROM comments WHERE idArticle = :id";
-        $query = $this->db->prepare($sql);
-        $query->execute([
-      'id' => (int)$id
-    ]);
-
-        $sql = "DELETE FROM images WHERE idarticle = :id";
         $query = $this->db->prepare($sql);
         $query->execute([
       'id' => (int)$id
