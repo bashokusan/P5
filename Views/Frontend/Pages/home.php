@@ -33,7 +33,7 @@
 <div class="contact_form">
 <h2>Me contacter</h2>
   <?php if ($message) : ?>
-    <p class='alert info'><?= $message ?></p>
+    <p class='alert info'><?= htmlentities($message) ?></p>
   <?php endif ?>
   <form class="" action="" method="post">
     <div>

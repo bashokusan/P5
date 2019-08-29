@@ -13,27 +13,17 @@
       <select class="userslist" name="idauthor">
         <?php if ($users) : ?>
           <?php foreach ($users as $user) : ?>
-            <option value="<?= $user->id() ?>"
+            <option value="<?= htmlentities($user->id()) ?>"
             <?php
               if ($post && ($post->name() == $user->name())) {
                   echo "selected";
               } elseif ($user->name() == $loggedinUser->name()) {
                   echo "selected";
               }
-            ?>><?= $user->name() ?></option>
+            ?>><?= htmlentities($user->name()) ?></option>
           <?php endforeach ?>
         <?php endif ?>
         </select>
-    </p>
-
-    <?php if ($post && $post->image()) : ?>
-      <p><img width="200" src="../Public/Content/Post-<?= $post->id() ?>/<?= $post->image() ?>" alt=""></p>
-    <?php endif ?>
-
-    <?= $imgerrors ? "<p class='alert warning'>".$imgerrors ."</p>" : ""?>
-    <p>
-      <label>Changer l'image</label>
-      <input type="file" name="image" />
     </p>
 
     <p>
@@ -45,7 +35,7 @@
         <p class='alert warning'>Le titre doit faire au moins 10 caractères</p>
       <?php endif ?>
       <input type="text" name="title" value="<?php if ($post) {
-                echo $post->title();
+                echo htmlentities($post->title());
           } else {
           echo "";
       }?>">
@@ -60,7 +50,7 @@
         <p class='alert warning'>Le chapeau doit faire au moins 10 caractères</p>
       <?php endif ?>
       <textarea name="kicker" rows="2" cols="80"><?php if ($post) {
-          echo $post->kicker();
+          echo htmlentities($post->kicker());
       } else {
           echo "";
       }?></textarea>
@@ -75,7 +65,7 @@
         <p class='alert warning'>L'article doit faire au moins 100 caractères</p>
       <?php endif ?>
       <textarea name="content" rows="8" cols="80"><?php if ($post) {
-          echo $post->content();
+          echo htmlentities($post->content());
       } else {
           echo "";
       }?></textarea>
@@ -83,10 +73,7 @@
 
     <?php if ($post) : ?>
       <p>
-        <input type="hidden" name="currentimg" value="<?= $post->image() ?>">
-      </p>
-      <p>
-        <input type="hidden" name="id" value="<?= $post->id() ?>">
+        <input type="hidden" name="id" value="<?= htmlentities($post->id()) ?>">
       </p>
       <p>
         <input type="submit" name="update" value="Modifier">
