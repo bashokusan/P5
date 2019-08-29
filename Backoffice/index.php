@@ -21,9 +21,9 @@ use App\Controllers\Backend\RequestPage;
 use App\Controllers\Backend\ResetPass;
 
 // Path to pages
-$viewPath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . 'Backend' . DIRECTORY_SEPARATOR . 'Pages' . DIRECTORY_SEPARATOR;
+$viewPath = '../Views/Backend/Pages/';
 // Path to template
-$templatePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Views/Backend/Layout/template.php';
+$templatePath = '../Views/Backend/Layout/template.php';
 
 /**
  * Instance of BackendController
