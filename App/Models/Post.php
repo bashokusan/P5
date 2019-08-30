@@ -108,7 +108,7 @@ class Post
     {
         if (!is_string($title) || empty($title)) {
             $this->errors[] = self::TITLE_INVALID;
-        } elseif (!empty($title) && (strlen($title) < 10 || strlen($title) > 500)) {
+        } elseif (strlen($title) < 10 || strlen($title) > 500) {
             $this->errors[] = self::TITLE_LENGHT;
         } else {
             $this->title = $title;
@@ -123,7 +123,7 @@ class Post
     {
         if (!is_string($kicker) || empty($kicker)) {
             $this->errors[] = self::KICKER_INVALID;
-        } elseif (!empty($kicker) && (strlen($kicker) < 10 || strlen($kicker) > 500)) {
+        } elseif (strlen($kicker) < 10 || strlen($kicker) > 500) {
             $this->errors[] = self::KICKER_LENGHT;
         } else {
             $this->kicker = $kicker;
@@ -138,7 +138,7 @@ class Post
     {
         if (!is_string($content) || empty($content)) {
             $this->errors[] = self::CONTENT_INVALID;
-        } elseif (!empty($content) && (strlen($content) < 10 || strlen($content) > 50000)) {
+        } elseif (strlen($content) < 10 || strlen($content) > 50000) {
             $this->errors[] = self::CONTENT_LENGHT;
         } else {
             $this->content = $content;
