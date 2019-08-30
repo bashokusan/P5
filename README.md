@@ -1,6 +1,10 @@
 #OC_P5
 ## A blog with a back office
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/2659a3b6abfa54f66486/maintainability)](https://codeclimate.com/github/bashokusan/P5/maintainability)
+
+[![Maintainability](https://api.codeclimate.com/v1/badges/2659a3b6abfa54f66486/maintainability)](https://codeclimate.com/github/bashokusan/P5/maintainability)
+
 ### Features
 
 * For visitor :
