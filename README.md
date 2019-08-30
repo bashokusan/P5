@@ -3,7 +3,7 @@
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/2659a3b6abfa54f66486/maintainability)](https://codeclimate.com/github/bashokusan/P5/maintainability)
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/2659a3b6abfa54f66486/maintainability)](https://codeclimate.com/github/bashokusan/P5/maintainability)
+[![SymfonyInsight](https://insight.symfony.com/projects/094ac1ed-0246-4a8a-8518-d80e8a7bcafa/small.svg)](https://insight.symfony.com/projects/094ac1ed-0246-4a8a-8518-d80e8a7bcafa)
 
 ### Features
 

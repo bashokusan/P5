@@ -56,26 +56,8 @@ class Auth extends Controller
                                 $userManager->restoreConnect($ip, $loggingUser->id());
                             }
 
-                            // If user is confirmed (has changed his password once)
-                            if ($loggingUser->confirm() == 1) {
-                                session_start();
-                                $token = bin2hex(random_bytes(32));
-                                $_SESSION['t_user'] = $token;
-                                $_SESSION['role'] = 'admin';
-                                $_SESSION['id'] = $loggingUser->id();
-                                $_SESSION['inputs'] = [];
-                                header('Location: ?page=home');
-                            }
-                            // If user is new and has not changed his password yet
-                            elseif ($loggingUser->confirm() == 0) {
-                                session_start();
-                                $token = bin2hex(random_bytes(32));
-                                $_SESSION['t_user'] = $token;
-                                $_SESSION['role'] = 'guest';
-                                $_SESSION['id'] = $loggingUser->id();
-                                $_SESSION['inputs'] = [];
-                                header('Location: ?page=newpass');
-                            }
+                            $this->connect($loggingUser);
+
                         } else {
                             $prohib = "Informations de connection éronées (mdp)";
                             // Save the failed connection into dabatase
@@ -96,5 +78,33 @@ class Auth extends Controller
         require_once $this->getViewPath().'login.php';
         $content = ob_get_clean();
         require_once $this->getTemplatePath();
+    }
+
+
+    /**
+     * @param  User $user [description]
+     */
+    public function connect($user)
+    {
+      // If user is confirmed (has changed his password once)
+      if ($user->confirm() == 1) {
+          session_start();
+          $token = bin2hex(random_bytes(32));
+          $_SESSION['t_user'] = $token;
+          $_SESSION['role'] = 'admin';
+          $_SESSION['id'] = $user->id();
+          $_SESSION['inputs'] = [];
+          header('Location: ?page=home');
+      }
+      // If user is new and has not changed his password yet
+      elseif ($user->confirm() == 0) {
+          session_start();
+          $token = bin2hex(random_bytes(32));
+          $_SESSION['t_user'] = $token;
+          $_SESSION['role'] = 'guest';
+          $_SESSION['id'] = $user->id();
+          $_SESSION['inputs'] = [];
+          header('Location: ?page=newpass');
+      }
     }
 }
