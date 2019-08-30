@@ -7,7 +7,13 @@ namespace App\Controllers;
  */
 class Controller
 {
+    /**
+     * @var string
+     */
     protected $viewPath;
+    /**
+     * @var string
+     */
     protected $templatePath;
 
     /**
