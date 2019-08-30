@@ -14,6 +14,7 @@ class Comment
     private $author;
     private $content;
     private $publishDate;
+    private $checked;
 
     const AUTHOR_INVALID = 1;
     const CONTENT_INVALID = 2;
@@ -142,5 +143,10 @@ class Comment
     public function publishDate()
     {
         return $this->publishDate;
+    }
+
+    public function checked()
+    {
+        return $this->checked;
     }
 }
