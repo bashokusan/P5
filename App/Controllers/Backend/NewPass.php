@@ -30,53 +30,7 @@ class NewPass extends Controller
                 $passwordConfirm = htmlspecialchars((string)$_POST['passwordbis']);
 
                 if ($password === $passwordConfirm) {
-                    $db = DBFactory::getPDO();
-                    $userManager = new UserManager($db);
-
-                    // For user who reset password
-                    if (isset($_POST['selector']) && isset($_POST['validator']) && !empty($_POST['selector']) && !empty($_POST['validator'])) {
-                        $currentDateTime = date('U');
-
-                        // Check if there is a pending request with selector in form
-                        $resetpass = $userManager->getResetPass((string)$_POST['selector'], $currentDateTime);
-                        if (!$resetpass) {
-                            $error = "Une erreur est survenue. Veuillez soumettre une nouvelle réinitialisation.";
-                        }
-
-                        // Compare token in Databse with token in form
-                        $tokenBin = (string)hex2bin($_POST['validator']);
-                        $tokenCheck = password_verify($tokenBin, $resetpass['token']);
-
-                        if ($tokenCheck) {
-                            $user = $userManager->getUserByMail($resetpass['email']);
-                            $id = $user->id();
-
-                            $passhash = password_hash($password, PASSWORD_DEFAULT);
-                            $userManager->update($id, (string)$passhash);
-                            $userManager->deletePassReset((string)$_POST['selector']);
-                            $logout = new Logout();
-                            $logout->logout();
-                        } else {
-                            $error = "Une erreur est survenue. Veuillez soumettre une nouvelle réinitialisation.";
-                        }
-                    }
-                    // For users who change password
-                    $user = $userManager->getUser($_SESSION['id']);
-                    $id = $user->id();
-                    // If not confirmed (ie first login and has not changed pass yet)
-                    if ($user->confirm() == 0) {
-                        $passhash = password_hash($password, PASSWORD_DEFAULT);
-                        $userManager->update($id, (string)$passhash, 'confirm');
-                        $logout = new Logout();
-                        $logout->logout();
-                    }
-                    // If confirmed admin
-                    else {
-                        $passhash = password_hash($password, PASSWORD_DEFAULT);
-                        $userManager->update($id, (string)$passhash);
-                        $logout = new Logout();
-                        $logout->logout();
-                    }
+                    $this->updatemdp($password);
                 } else {
                     $error = "les mots de passe ne correspondent pas.";
                 }
@@ -89,5 +43,62 @@ class NewPass extends Controller
         require_once $this->getViewPath().'newpass.php';
         $content = ob_get_clean();
         require_once $this->getTemplatePath();
+    }
+
+
+    /**
+     * @param string $password [description]
+     */
+    public function updatemdp($password)
+    {
+        $db = DBFactory::getPDO();
+        $userManager = new UserManager($db);
+
+        // For user who reset password
+        if (isset($_POST['selector']) && isset($_POST['validator']) && !empty($_POST['selector']) && !empty($_POST['validator'])) {
+
+            $currentDateTime = date('U');
+
+            // Check if there is a pending request with selector in form
+            $resetpass = $userManager->getResetPass((string)$_POST['selector'], $currentDateTime);
+            if (!$resetpass) {
+                $error = "Une erreur est survenue. Veuillez soumettre une nouvelle réinitialisation.";
+            }
+
+            // Compare token in Databse with token in form
+            $tokenBin = (string)hex2bin($_POST['validator']);
+            $tokenCheck = password_verify($tokenBin, $resetpass['token']);
+
+            if ($tokenCheck) {
+                $user = $userManager->getUserByMail($resetpass['email']);
+                $id = $user->id();
+
+                $passhash = password_hash($password, PASSWORD_DEFAULT);
+                $userManager->update($id, (string)$passhash);
+                $userManager->deletePassReset((string)$_POST['selector']);
+                $logout = new Logout();
+                $logout->logout();
+            } else {
+                $error = "Une erreur est survenue. Veuillez soumettre une nouvelle réinitialisation.";
+            }
+        }else {
+          // For users who change password
+          $user = $userManager->getUser($_SESSION['id']);
+          $id = $user->id();
+          // If not confirmed (ie first login and has not changed pass yet)
+          if ($user->confirm() == 0) {
+              $passhash = password_hash($password, PASSWORD_DEFAULT);
+              $userManager->update($id, (string)$passhash, 'confirm');
+              $logout = new Logout();
+              $logout->logout();
+          }
+          // If confirmed admin
+          else {
+              $passhash = password_hash($password, PASSWORD_DEFAULT);
+              $userManager->update($id, (string)$passhash);
+              $logout = new Logout();
+              $logout->logout();
+          }
+        }
     }
 }
