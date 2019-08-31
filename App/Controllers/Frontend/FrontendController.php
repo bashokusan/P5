@@ -74,7 +74,6 @@ class FrontendController extends Controller
      * Actions when in blog page :
      *
      * Call PDO and create an object PostManager
-     * Handle pagination
      * Call list of posts with getList function
      *
      * Require content of the page.
