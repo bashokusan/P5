@@ -7,7 +7,7 @@
 <div class="post_card">
   <h2><?= htmlentities($post->title()) ?></h2>
 
-  <p><em>Publié le <?= htmlentities($post->publishDate()->format('d/m/Y à H\hi')) ?><?= ($post->updateDate()) ? " - Modifié le " . htmlentities($post->updateDate()->format('d/m/Y à H\hi')) : ""; ?></em></p>
+  <p><em>Publié le <?= htmlentities($post->publishDate()->format('d/m/Y')) ?><?= ($post->updateDate()) ? " - Modifié le " . htmlentities($post->updateDate()->format('d/m/Y')) : ""; ?></em></p>
 
   <?= ($post->name()) ? "<p>Par ".htmlentities($post->name())."</p>" : "" ?>
 
@@ -51,7 +51,7 @@
       <div class="comment">
         <div class="comment_info">
           <?= htmlentities($comment->author()) ?>
-          <?= htmlentities($comment->publishDate()) ?>
+          <?= htmlentities($comment->publishDate()->format('d/m/Y à H\hi')) ?>
         </div>
         <div class="comment_content">
           <?= htmlentities($comment->content()) ?>

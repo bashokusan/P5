@@ -5,7 +5,8 @@
 
   <form class="login_form" action="" method="post">
     <?php if ($warning) : ?>
-      <p class='alert info'><?= htmlentities($warning) ?></p>
+      <p class='alert info'><?= $warning ?></p>
+      <a href='?page=resetpass'>Mot de passe oublié ?</a>
     <?php endif ?>
     <?php if ($prohib) : ?>
       <p class='alert warning'><?= htmlentities($prohib) ?></p>

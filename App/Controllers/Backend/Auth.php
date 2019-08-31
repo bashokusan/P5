@@ -41,7 +41,7 @@ class Auth extends Controller
             // User will be ban is there are more than 3 failed connections.
             if ($connect <= 3) {
                 if ($connect == 3) {
-                    $warning = "Attention, il vous reste un seul essai. <a href='?page=resetpass'>Mot de passe oublié ?</a>";
+                    $warning = "Attention, il vous reste un seul essai.";
                 }
 
                 if ($user->isValid()) {

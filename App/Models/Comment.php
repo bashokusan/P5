@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use DateTime;
+
 /**
  * Class for comment object defining a comment
  * Created when comment form is submitted
@@ -105,9 +107,9 @@ class Comment
     }
 
     /**
-     * @param string $publishDate [description]
+     * @param DateTime  $publishDate [description]
      */
-    public function setPublishDate($publishDate)
+    public function setPublishDate(DateTime $publishDate)
     {
         $this->publishDate = $publishDate;
     }

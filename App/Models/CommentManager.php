@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Comment;
+use DateTime;
 use PDO;
 
 /**
@@ -98,6 +99,10 @@ class CommentManager
     ]);
         $query->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Comment::class);
         $commentList = $query->fetchAll();
+
+        foreach ($commentList as $comment) {
+            $comment->setPublishDate(new DateTime($comment->publishDate()));
+        }
 
         $query->closeCursor();
         return $commentList;
