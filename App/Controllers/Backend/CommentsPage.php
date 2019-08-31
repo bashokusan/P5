@@ -23,13 +23,7 @@ class CommentsPage extends Controller
     {
         $db = DBFactory::getPDO();
         $commentManager = new CommentManager($db);
-
-        $flagComments = $commentManager->getListNoId('flag');
-        $flagCommentsCount = $commentManager->count('flag');
-        $checkedComment = $commentManager->getListNoId('checked');
-        $checkedCommentsCount = $commentManager->count('checked');
         $commentsList = $commentManager->getListNoId();
-        $CommentsCount = $commentManager->count();
 
         ob_start();
         require_once $this->getViewPath().'comments.php';

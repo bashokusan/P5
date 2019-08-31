@@ -68,7 +68,6 @@ try {
             throw new \Exception("Page introuvable");
         }
     }
-
     // If user is logged in as guest (unconfirmed admin)
     elseif ($controller->loggedIn('guest')) {
         if (isset($_GET['page']) && $_GET['page'] === 'logout') {
@@ -79,7 +78,6 @@ try {
             $newpass->newPassPage();
         }
     }
-
     // If user is not logged in
     elseif (!$controller->loggedIn()) {
         if (!$_GET['page'] || (isset($_GET['page']) && $_GET['page'] === 'login') || isset($_GET['guest'])) {
@@ -90,7 +88,7 @@ try {
             $resetPass->resetPass();
         } elseif (isset($_GET['page']) && $_GET['page'] === 'reset') {
             // In url from the email sent after reset request
-            if (isset($_GET['restoken']) && isset($_GET['validator'])&& !empty($_GET['restoken']) && !empty($_GET['validator'])) {
+            if (isset($_GET['restoken']) && isset($_GET['validator']) && !empty($_GET['restoken']) && !empty($_GET['validator'])) {
                 if (ctype_xdigit($_GET['restoken']) && ctype_xdigit($_GET['validator'])) {
                     $newpass = new NewPass($viewPath, $templatePath);
                     $newpass->newPassPage();
