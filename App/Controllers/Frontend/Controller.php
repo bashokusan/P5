@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Frontend;
 
 /**
  * Parent Controller for Backend and Frontend Controllers
@@ -10,41 +10,12 @@ class Controller
     /**
      * @var string
      */
-    protected $viewPath;
+    private $viewPath = '../Views/Frontend/Pages/';
     /**
      * @var string
      */
-    protected $templatePath;
+    private $templatePath = '../Views/Frontend/Layout/template.php';
 
-    /**
-     * Set the viewPath and templatePath
-     * @param string $viewPath     Path to pages
-     * @param string $templatePath Path to template
-     */
-    public function __construct($viewPath, $templatePath)
-    {
-        $this->setViewPath($viewPath);
-        $this->setTemplatePath($templatePath);
-    }
-
-
-    // Setters
-
-    /**
-     * @param string $viewPath [description]
-     */
-    public function setViewPath($viewPath)
-    {
-        $this->viewPath = $viewPath;
-    }
-
-    /**
-     * @param string $templatePath [description]
-     */
-    public function setTemplatePath($templatePath)
-    {
-        $this->templatePath = $templatePath;
-    }
 
     // Getters
     public function getViewPath()

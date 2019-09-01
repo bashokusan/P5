@@ -2,7 +2,6 @@
 
 namespace App\Controllers\Backend;
 
-use App\Controllers\Controller;
 use App\Controllers\Helpers\SendEmail;
 use App\Models\DBFactory;
 use App\Models\User;
@@ -11,7 +10,7 @@ use App\Models\UserManager;
 /**
  *
  */
-class ResetPass extends Controller
+class ResetPass extends BackendController
 {
     //------------------------------------------------------------------------------
     // Reset Password Page Methods

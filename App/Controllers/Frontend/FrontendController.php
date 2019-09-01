@@ -2,7 +2,6 @@
 
 namespace App\Controllers\Frontend;
 
-use App\Controllers\Controller;
 use App\Models\DBFactory;
 use App\Models\Message;
 use App\Models\MessageManager;

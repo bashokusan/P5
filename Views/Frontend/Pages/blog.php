@@ -3,7 +3,7 @@
 <div class="posts_container">
   <?php foreach ($postList as $post) : ?>
     <div class="post_card">
-      <h3><?= htmlentities($post->title()) ?></h3>
+      <h2><?= htmlentities($post->title()) ?></h2>
 
       <p><em>Publié le <?= htmlentities($post->publishDate()->format('d/m/Y')) ?><?= ($post->updateDate()) ? " - Modifié le " . htmlentities($post->updateDate()->format('d/m/Y')) : ""; ?></em></p>
 

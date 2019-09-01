@@ -2,8 +2,6 @@
 
 namespace App\Controllers\Backend;
 
-use App\Controllers\Controller;
-
 use App\Models\DBFactory;
 use App\Models\UserManager;
 use App\Controllers\Helpers\SendEmail;
@@ -11,7 +9,7 @@ use App\Controllers\Helpers\SendEmail;
 /**
  *
  */
-class RequestsList extends Controller
+class RequestsList extends BackendController
 {
     //------------------------------------------------------------------------------
     // Requests Page Methods (Admin)
@@ -24,7 +22,7 @@ class RequestsList extends Controller
     {
         $db = DBFactory::getPDO();
         $userManager = new UserManager($db);
-        
+
         $userList = $userManager->getList('new');
         $acceptedUserList = $userManager->getList('accepted');
 

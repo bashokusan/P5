@@ -2,15 +2,13 @@
 
 namespace App\Controllers\Backend;
 
-use App\Controllers\Controller;
-
 use App\Models\DBFactory;
 use App\Models\PostManager;
 
 /**
  *
  */
-class PostsList extends Controller
+class PostsList extends BackendController
 {
 
   //------------------------------------------------------------------------------
