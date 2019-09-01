@@ -2,8 +2,6 @@
 
 namespace App\Controllers\Backend;
 
-use App\Controllers\Controller;
-
 use App\Models\DBFactory;
 use App\Models\Post;
 use App\Models\PostManager;
@@ -12,7 +10,7 @@ use App\Models\UserManager;
 /**
  *
  */
-class EditPost extends Controller
+class EditPost extends BackendController
 {
 
   //------------------------------------------------------------------------------

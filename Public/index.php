@@ -6,17 +6,11 @@ require_once '../vendor/autoload.php';
 
 use App\Controllers\Frontend\FrontendController;
 
-// Path to pages
-$viewPath = '../Views/Frontend/Pages/';
-// Path to template
-$templatePath = '../Views/Frontend/Layout/template.php';
-
-
 /**
  * Instance of FrontendController
  * @var FrontendController
  */
-$controller = new FrontendController($viewPath, $templatePath);
+$controller = new FrontendController();
 
 try {
     if (!isset($_GET['page']) || (isset($_GET['page']) && $_GET['page'] === 'home')) {
@@ -35,7 +29,7 @@ try {
 } catch (\Exception $e) {
     $errorMessage = $e->getMessage();
     ob_start();
-    require_once $viewPath.'error.php';
+    require_once '../Views/Backend/Pages/error.php';
     $content = ob_get_clean();
-    require $templatePath;
+    require '../Views/Backend/Layout/template.php';
 }

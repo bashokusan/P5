@@ -2,8 +2,6 @@
 
 namespace App\Controllers\Backend;
 
-use App\Controllers\Controller;
-
 use App\Models\DBFactory;
 use App\Models\User;
 use App\Models\UserManager;
@@ -11,7 +9,7 @@ use App\Models\UserManager;
 /**
  *
  */
-class Auth extends Controller
+class Auth extends BackendController
 {
     //------------------------------------------------------------------------------
     // Login Page Methods

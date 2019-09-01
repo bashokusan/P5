@@ -2,8 +2,6 @@
 
 namespace App\Controllers\Backend;
 
-use App\Controllers\Controller;
-
 use App\Models\DBFactory;
 use App\Models\PostManager;
 use App\Models\CommentManager;
@@ -11,7 +9,7 @@ use App\Models\CommentManager;
 /**
  *
  */
-class Homepage extends Controller
+class Homepage extends BackendController
 {
     //------------------------------------------------------------------------------
     // Home Page Methods

@@ -2,8 +2,6 @@
 
 namespace App\Controllers\Backend;
 
-use App\Controllers\Controller;
-
 use App\Controllers\Backend\Logout;
 use App\Models\DBFactory;
 use App\Models\User;
@@ -12,7 +10,7 @@ use App\Models\UserManager;
 /**
  *
  */
-class NewPass extends Controller
+class NewPass extends BackendController
 {
 
   //------------------------------------------------------------------------------

@@ -2,15 +2,13 @@
 
 namespace App\Controllers\Backend;
 
-use App\Controllers\Controller;
-
 use App\Models\DBFactory;
 use App\Models\CommentManager;
 
 /**
  *
  */
-class CommentsPage extends Controller
+class CommentsPage extends BackendController
 {
     //------------------------------------------------------------------------------
     // Comments Page Methods
