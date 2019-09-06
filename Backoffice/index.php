@@ -94,8 +94,7 @@ try {
             $request = new RequestPage();
             $request->requestPage();
         } else {
-            $login = new Auth();
-            $login->login();
+            throw new \Exception("Page introuvable");
         }
     }
 } catch (\Exception $e) {
@@ -103,5 +102,5 @@ try {
     ob_start();
     require_once '../Views/Backend/Pages/error.php';
     $content = ob_get_clean();
-    require '../Views/Backend/Layout/template.php';
+    require_once '../Views/Backend/Layout/template.php';
 }

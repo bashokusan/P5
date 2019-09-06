@@ -29,7 +29,7 @@ try {
 } catch (\Exception $e) {
     $errorMessage = $e->getMessage();
     ob_start();
-    require_once '../Views/Backend/Pages/error.php';
+    require_once '../Views/Frontend/Pages/error.php';
     $content = ob_get_clean();
-    require '../Views/Backend/Layout/template.php';
+    require_once '../Views/Frontend/Layout/template.php';
 }
