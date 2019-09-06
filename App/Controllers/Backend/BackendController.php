@@ -54,7 +54,14 @@ class BackendController
     {
         $token = bin2hex(random_bytes(32));
         setcookie('u_log', $token, time() + (60 * 20));
+        $_COOKIE['u_log'] = $token;
         $_SESSION['u_log'] = $token;
+
+        if ($_COOKIE['u_log'] != $_SESSION['u_log']){
+            $_SESSION = [];
+            session_destroy();
+            header('location:index.php');
+        }
     }
 
 
