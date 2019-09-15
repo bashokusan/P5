@@ -28,8 +28,7 @@ class Menu
      */
     public function menuFront() : string
     {
-        return $this->menuItem('home', 'About')
-        . $this->menuItem('blog', 'Blog');
+        return $this->menuItem('blog', 'Blog');
     }
 
     /**
