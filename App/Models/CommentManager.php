@@ -50,10 +50,10 @@ class CommentManager
         $and = " WHERE checked = 1 ";
         break;
       case 'flag':
-        $and = " WHERE checked = 2 ";;
+        $and = " WHERE checked = 2 ";
         break;
       case 'unchecked':
-        $and = " WHERE checked = 0 ";;
+        $and = " WHERE checked = 0 ";
         break;
       default:
         $and = " ";
@@ -84,7 +84,7 @@ class CommentManager
         $and = " AND checked = 1 ";
         break;
       case 'unchecked':
-        $and = " AND checked = 0 ";;
+        $and = " AND checked = 0 ";
         break;
       default:
         $and = " ";
@@ -143,7 +143,7 @@ class CommentManager
         $sql .=  "WHERE checked = 2";
         break;
       case 'unchecked':
-        $sql .=  "WHERE checked = 0";;
+        $sql .=  "WHERE checked = 0";
         break;
       default:
         $sql .=  " ";
