@@ -2,6 +2,8 @@
 
 namespace App\Controllers\Backend;
 
+use App\Models\DBFactory;
+
 /**
  * Parent Controller for Backend and Frontend Controllers
  */
@@ -10,14 +12,47 @@ class BackendController
     /**
      * @var string
      */
-    private $viewPath = '../Views/Backend/Pages/';
+    private $viewPath;
+
     /**
      * @var string
      */
-    private $templatePath = '../Views/Backend/Layout/template.php';
+    private $templatePath;
 
+    /**
+     * @var DBFactory
+     */
+    private $db;
+
+    public function __construct()
+    {
+        $this->setViewPath('../Views/Backend/Pages/');
+        $this->setTemplatePath('../Views/Backend/Layout/template.php');
+        $this->setDb(DBFactory::getPDO());
+    }
+
+    // Setters
+    public function setViewPath($viewPath)
+    {
+        $this->viewPath = $viewPath;
+    }
+
+    public function setTemplatePath($templatePath)
+    {
+        $this->templatePath = $templatePath;
+    }
+
+    public function setDb($db)
+    {
+        $this->db = $db;
+    }
 
     // Getters
+    public function getDb()
+    {
+        return $this->db;
+    }
+
     public function getViewPath()
     {
         return $this->viewPath;
@@ -27,7 +62,6 @@ class BackendController
     {
         return $this->templatePath;
     }
-
 
     /**
      * Check if user connected or not
@@ -57,7 +91,7 @@ class BackendController
         $_COOKIE['u_log'] = $token;
         $_SESSION['u_log'] = $token;
 
-        if ($_COOKIE['u_log'] != $_SESSION['u_log']){
+        if ($_COOKIE['u_log'] != $_SESSION['u_log']) {
             $_SESSION = [];
             session_destroy();
             header('location:index.php');

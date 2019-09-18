@@ -3,7 +3,6 @@
 namespace App\Controllers\Backend;
 
 use App\Controllers\Backend\Logout;
-use App\Models\DBFactory;
 use App\Models\User;
 use App\Models\UserManager;
 
@@ -49,12 +48,10 @@ class NewPass extends BackendController
      */
     public function updatemdp($password)
     {
-        $db = DBFactory::getPDO();
-        $userManager = new UserManager($db);
+        $userManager = new UserManager($this->getDb());
 
         // For user who reset password
         if (isset($_POST['selector']) && isset($_POST['validator']) && !empty($_POST['selector']) && !empty($_POST['validator'])) {
-
             $currentDateTime = date('U');
 
             // Check if there is a pending request with selector in form
@@ -79,24 +76,24 @@ class NewPass extends BackendController
             } else {
                 $error = "Une erreur est survenue. Veuillez soumettre une nouvelle réinitialisation.";
             }
-        }else {
-          // For users who change password
-          $user = $userManager->getUser($_SESSION['id']);
-          $id = $user->id();
-          // If not confirmed (ie first login and has not changed pass yet)
-          if ($user->confirm() == 0) {
-              $passhash = password_hash($password, PASSWORD_DEFAULT);
-              $userManager->update($id, (string)$passhash, 'confirm');
-              $logout = new Logout();
-              $logout->logout();
-          }
-          // If confirmed admin
-          else {
-              $passhash = password_hash($password, PASSWORD_DEFAULT);
-              $userManager->update($id, (string)$passhash);
-              $logout = new Logout();
-              $logout->logout();
-          }
+        } else {
+            // For users who change password
+            $user = $userManager->getUser($_SESSION['id']);
+            $id = $user->id();
+            // If not confirmed (ie first login and has not changed pass yet)
+            if ($user->confirm() == 0) {
+                $passhash = password_hash($password, PASSWORD_DEFAULT);
+                $userManager->update($id, (string)$passhash, 'confirm');
+                $logout = new Logout();
+                $logout->logout();
+            }
+            // If confirmed admin
+            else {
+                $passhash = password_hash($password, PASSWORD_DEFAULT);
+                $userManager->update($id, (string)$passhash);
+                $logout = new Logout();
+                $logout->logout();
+            }
         }
     }
 }

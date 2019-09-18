@@ -21,7 +21,7 @@
       <div class="post_actions">
           <p><a href="../Public/index.php?page=article&id=<?= htmlentities($post->id()) ?>">Voir l'article</a></p>
           <p><a href="?page=edit&postid=<?= htmlentities($post->id()) ?>">Modifier</a></p>
-          <form class="" action="" method="post">
+          <form class="" action="" method="post" onsubmit="return confirm('L\'article sera supprimé définivitement. Confirmer ?')">
             <input type="hidden" name="id" value="<?= htmlentities($post->id()) ?>">
             <input type="hidden" name="t_user" value="<?= htmlentities($token) ?>">
             <input type="submit" name="delete" value="Supprimer">

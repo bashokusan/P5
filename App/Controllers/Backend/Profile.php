@@ -2,7 +2,6 @@
 
 namespace App\Controllers\Backend;
 
-use App\Models\DBFactory;
 use App\Models\User;
 use App\Models\UserManager;
 
@@ -22,8 +21,7 @@ class Profile extends BackendController
         $id = (int)$_SESSION['id'];
         $token = (string)$_SESSION['t_user'];
 
-        $db = DBFactory::getPDO();
-        $userManager = new UserManager($db);
+        $userManager = new UserManager($this->getDb());
         $user = $userManager->getUser($id);
 
         if (isset($_POST['updateprofile']) && isset($_POST['userid'])) {

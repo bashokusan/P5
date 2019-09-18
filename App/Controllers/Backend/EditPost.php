@@ -2,7 +2,6 @@
 
 namespace App\Controllers\Backend;
 
-use App\Models\DBFactory;
 use App\Models\Post;
 use App\Models\PostManager;
 use App\Models\UserManager;
@@ -22,9 +21,8 @@ class EditPost extends BackendController
      */
     public function editPage()
     {
-        $db = DBFactory::getPDO();
-        $postManager = new PostManager($db);
-        $userManager = new UserManager($db);
+        $postManager = new PostManager($this->getDb());
+        $userManager = new UserManager($this->getDb());
         $users = $userManager->getList('confirmed');
         $sessionid = (int)$_SESSION['id'];
         $loggedinUser = $userManager->getUser($sessionid);
@@ -62,7 +60,7 @@ class EditPost extends BackendController
                 if ($newPost->id()) {
                     $id = $newPost->id();
                 } else {
-                    $id = $db->lastInsertId();
+                    $id = $this->getDb()->lastInsertId();
                 }
 
 

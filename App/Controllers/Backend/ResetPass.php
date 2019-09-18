@@ -3,7 +3,6 @@
 namespace App\Controllers\Backend;
 
 use App\Controllers\Helpers\SendEmail;
-use App\Models\DBFactory;
 use App\Models\User;
 use App\Models\UserManager;
 
@@ -25,8 +24,7 @@ class ResetPass extends BackendController
                 $email = htmlentities((string)$_POST['email']);
 
                 if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    $db = DBFactory::getPDO();
-                    $userManager = new UserManager($db);
+                    $userManager = new UserManager($this->getDb());
 
                     // get user from database with email from form
                     $loggingUser = $userManager->getUserByMail($email);

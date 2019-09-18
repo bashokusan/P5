@@ -2,7 +2,6 @@
 
 namespace App\Controllers\Backend;
 
-use App\Models\DBFactory;
 use App\Models\UserManager;
 use App\Controllers\Helpers\SendEmail;
 
@@ -20,8 +19,7 @@ class RequestsList extends BackendController
      */
     public function adminRequestPage()
     {
-        $db = DBFactory::getPDO();
-        $userManager = new UserManager($db);
+        $userManager = new UserManager($this->getDb());
 
         $userList = $userManager->getList('new');
         $acceptedUserList = $userManager->getList('accepted');
@@ -47,8 +45,7 @@ class RequestsList extends BackendController
         $pass = rand(10000000, 99999999);
         $hashPass = password_hash((string)$pass, PASSWORD_DEFAULT);
 
-        $db = DBFactory::getPDO();
-        $userManager = new UserManager($db);
+        $userManager = new UserManager($this->getDb());
         $user = $userManager->getUser($id);
 
         if ($hashPass) {

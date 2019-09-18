@@ -2,7 +2,6 @@
 
 namespace App\Controllers\Backend;
 
-use App\Models\DBFactory;
 use App\Models\User;
 use App\Models\UserManager;
 
@@ -28,9 +27,8 @@ class Auth extends BackendController
             // Save inputs in session
             $_SESSION['inputs'] = $_POST;
 
-            $db = DBFactory::getPDO();
             $user = new User($data);
-            $userManager = new UserManager($db);
+            $userManager = new UserManager($this->getDb());
 
             // Use Ip (see connect method for brute force attack defense)
             $ip = (string)$_SERVER['REMOTE_ADDR'];
@@ -55,7 +53,6 @@ class Auth extends BackendController
                             }
 
                             $this->connect($loggingUser);
-
                         } else {
                             $prohib = "Informations de connection éronées (mdp)";
                             // Save the failed connection into dabatase
@@ -84,25 +81,25 @@ class Auth extends BackendController
      */
     public function connect($user)
     {
-      // If user is confirmed (has changed his password once)
-      if ($user->confirm() == 1) {
-          session_start();
-          $token = bin2hex(random_bytes(32));
-          $_SESSION['t_user'] = $token;
-          $_SESSION['role'] = 'admin';
-          $_SESSION['id'] = $user->id();
-          $_SESSION['inputs'] = [];
-          header('Location: ?page=home');
-      }
-      // If user is new and has not changed his password yet
-      elseif ($user->confirm() == 0) {
-          session_start();
-          $token = bin2hex(random_bytes(32));
-          $_SESSION['t_user'] = $token;
-          $_SESSION['role'] = 'guest';
-          $_SESSION['id'] = $user->id();
-          $_SESSION['inputs'] = [];
-          header('Location: ?page=newpass');
-      }
+        // If user is confirmed (has changed his password once)
+        if ($user->confirm() == 1) {
+            session_start();
+            $token = bin2hex(random_bytes(32));
+            $_SESSION['t_user'] = $token;
+            $_SESSION['role'] = 'admin';
+            $_SESSION['id'] = $user->id();
+            $_SESSION['inputs'] = [];
+            header('Location: ?page=home');
+        }
+        // If user is new and has not changed his password yet
+        elseif ($user->confirm() == 0) {
+            session_start();
+            $token = bin2hex(random_bytes(32));
+            $_SESSION['t_user'] = $token;
+            $_SESSION['role'] = 'guest';
+            $_SESSION['id'] = $user->id();
+            $_SESSION['inputs'] = [];
+            header('Location: ?page=newpass');
+        }
     }
 }

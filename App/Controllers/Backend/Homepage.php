@@ -2,7 +2,6 @@
 
 namespace App\Controllers\Backend;
 
-use App\Models\DBFactory;
 use App\Models\PostManager;
 use App\Models\CommentManager;
 
@@ -20,9 +19,8 @@ class Homepage extends BackendController
      */
     public function homepage()
     {
-        $db = DBFactory::getPDO();
-        $postManager = new PostManager($db);
-        $commentManager = new CommentManager($db);
+        $postManager = new PostManager($this->getDb());
+        $commentManager = new CommentManager($this->getDb());
 
         $token = $_SESSION['t_user'];
         $postsCount = $postManager->count();
@@ -54,8 +52,7 @@ class Homepage extends BackendController
      */
     public function updateComment($idcomment, $idpost)
     {
-        $db = DBFactory::getPDO();
-        $commentManager = new CommentManager($db);
+        $commentManager = new CommentManager($this->getDb());
         $commentManager->updateCheck($idcomment, $idpost, 1);
 
         header('Location: ?page=home');
@@ -69,8 +66,7 @@ class Homepage extends BackendController
      */
     public function flagComment($idcomment, $idpost)
     {
-        $db = DBFactory::getPDO();
-        $commentManager = new CommentManager($db);
+        $commentManager = new CommentManager($this->getDb());
         $commentManager->updateCheck($idcomment, $idpost, 2);
 
         header('Location: ?page=home');

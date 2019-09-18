@@ -2,7 +2,6 @@
 
 namespace App\Controllers\Backend;
 
-use App\Models\DBFactory;
 use App\Models\CommentManager;
 
 /**
@@ -19,8 +18,7 @@ class CommentsPage extends BackendController
      */
     public function commentsPage()
     {
-        $db = DBFactory::getPDO();
-        $commentManager = new CommentManager($db);
+        $commentManager = new CommentManager($this->getDb());
         $commentsList = $commentManager->getListNoId();
 
         ob_start();
