@@ -2,7 +2,6 @@
 
 namespace App\Controllers\Frontend;
 
-use App\Models\DBFactory;
 use App\Models\Message;
 use App\Models\MessageManager;
 use App\Models\Post;
@@ -15,11 +14,6 @@ use App\Models\CommentManager;
  */
 class FrontendController extends Controller
 {
-
-//------------------------------------------------------------------------------
-    // METHODS
-    //------------------------------------------------------------------------------
-
     //------------------------------------------------------------------------------
     // Home Page Methods
     //------------------------------------------------------------------------------
@@ -79,8 +73,7 @@ class FrontendController extends Controller
      */
     public function blog()
     {
-        $db = DBFactory::getPDO();
-        $postManager = new PostManager($db);
+        $postManager = new PostManager($this->getDb());
 
         $postList = $postManager->getList();
 
@@ -107,13 +100,12 @@ class FrontendController extends Controller
      */
     public function post($id)
     {
-        $db = DBFactory::getPDO();
-        $manager = new PostManager($db);
+        $manager = new PostManager($this->getDb());
         $post = $manager->getUnique($id);
         if (!$post) {
             throw new \Exception("Cette page n'existe pas");
         }
-        $commentManager = new CommentManager($db);
+        $commentManager = new CommentManager($this->getDb());
 
         if (isset($_POST['add'])) {
             $author = htmlspecialchars((string)$_POST['author']);

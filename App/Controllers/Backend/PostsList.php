@@ -2,7 +2,6 @@
 
 namespace App\Controllers\Backend;
 
-use App\Models\DBFactory;
 use App\Models\PostManager;
 
 /**
@@ -20,8 +19,7 @@ class PostsList extends BackendController
      */
     public function postsPage()
     {
-        $db = DBFactory::getPDO();
-        $postManager = new PostManager($db);
+        $postManager = new PostManager($this->getDb());
 
         $token = $_SESSION['t_user'];
         $postList = $postManager->getList();
@@ -45,8 +43,7 @@ class PostsList extends BackendController
      */
     public function deletePost($id)
     {
-        $db = DBFactory::getPDO();
-        $postManager = new PostManager($db);
+        $postManager = new PostManager($this->getDb());
         $postManager->delete($id);
 
         header('Location: ?page=posts');

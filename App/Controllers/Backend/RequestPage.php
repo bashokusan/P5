@@ -2,7 +2,6 @@
 
 namespace App\Controllers\Backend;
 
-use App\Models\DBFactory;
 use App\Models\User;
 use App\Models\UserManager;
 
@@ -30,8 +29,7 @@ class RequestPage extends BackendController
             $_SESSION['inputs'] = $_POST;
 
             $user = new User($data);
-            $db = DBFactory::getPDO();
-            $userManager = new UserManager($db);
+            $userManager = new UserManager($this->getDb());
 
             if ($user->isValid()) {
                 $userManager->add($user);

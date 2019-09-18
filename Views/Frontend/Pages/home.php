@@ -8,8 +8,8 @@
 
     <div class="about">
       <h2>A propos de moi</h2>
-      <p>Pierre Simonnet</p>
-      <p>Je suis web développeur</p>
+      <h3>Je m'appelle Pierre Simonnet</h3>
+      <p>Je suis en formation via <a href="https://openclassrooms.com">OpenClassrooms</a> pour devenir web développeur PHP/Symfony.</p>
       <span><i class="fas fa-file-download"></i></span> <a href="../Public/Content/PierreSimonnet_CV.pdf">Téléchargez mon CV</a>
     </div>
 
