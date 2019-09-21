@@ -2,7 +2,7 @@
 
 namespace App\Controllers\Backend;
 
-use App\Models\DBFactory;
+use App\Controllers\DBFactory;
 
 /**
  * Parent Controller for Backend and Frontend Controllers
