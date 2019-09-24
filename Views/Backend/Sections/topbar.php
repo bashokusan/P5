@@ -1,8 +1,9 @@
 <header>
   <div class="logo">
     <a href="index.php"><img src=<?= $title == "Backoffice | Accueil" ? "../Backoffice/Content/logo_yellow.png" : "../Backoffice/Content/logo_white.png" ?> alt="logo"></a>
+    <i class='fa fa-bars fa-2x' aria-hidden='true' style='color:white'></i>
   </div>
-  <nav>
+  <nav class="menu">
     <ul>
       <div class="nav_menu">
         <?= $menu ?>

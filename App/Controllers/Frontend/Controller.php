@@ -2,12 +2,12 @@
 
 namespace App\Controllers\Frontend;
 
-use App\Models\DBFactory;
+use App\Controllers\DBFactory;
 
 /**
  * Parent Controller for Backend and Frontend Controllers
  */
-class Controller
+abstract class Controller
 {
     /**
      * @var string
@@ -24,6 +24,10 @@ class Controller
      */
     private $db;
 
+    /**
+     * @param string $viewPath     [description]
+     * @param string $templatePath [description]
+     */
     public function __construct($viewPath, $templatePath)
     {
         $this->setViewPath($viewPath);

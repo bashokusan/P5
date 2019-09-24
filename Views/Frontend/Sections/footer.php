@@ -6,5 +6,17 @@
     <li><a href="https://www.instagram.com/pierre_bashoku/"><i class="fab fa-instagram fa-lg" aria-hidden=true></i></a></li>
   </ul>
 </footer>
+<script>
+  $(document).ready(function () {
+      $(".fa-bars").click(function() {
+          if($(".menu").first().is(":hidden")){
+              $(".menu").slideDown("slow");
+          }else {
+              $(".menu").slideUp("slow");
+          }
+
+      });
+  });
+  </script>
 </body>
 </html>

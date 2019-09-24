@@ -1,9 +1,6 @@
 <?php
 session_start();
 
-// Loadtime (see Views/Backend/Sections/footer)
-define('LOADTIME', microtime(true));
-
 // Composer autoload
 require_once '../vendor/autoload.php';
 
